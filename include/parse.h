@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 02:45:32 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/09 14:43:06 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/04/08 19:04:52 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ typedef struct s_token
 }   t_token;
 
 
-/* 
                         // parsing :
 void ft_parse(char *str);
 
@@ -56,6 +55,5 @@ char	**ft_split2(char const *s, char c);
 // char	**ft_split3(char const *s);
 char	**ft_split3(char const *s);
 void ft_free(char **t);
-*/
 
 #endif
