@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:28 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/09 12:59:44 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/04/09 19:07:48 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	main(int ac, char **av, char **env)
 	// 	i++;
 	// }
 	//  char **t=ft_split3("hellothis is me");
-	print_tab(ft_split3(">>&&<<"));
+	print_tab(ft_split3("ls |cat|<< >>< |< f"));
     // print_tab(t);
 	return (0);
 }
