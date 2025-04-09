@@ -84,7 +84,7 @@ char	**ft_split2(char const *s, char c)
 
 	i = 0;
 	k = 0;
-	if (!s )
+	if (!s)
 		return (NULL);
 	if ((ft_count(s, c) + 1) == -1)
 		return (perror("Error split2.c : 90"), NULL);
@@ -96,7 +96,7 @@ char	**ft_split2(char const *s, char c)
 		ft_filter(s, c, &i);
 		t[k] = ft_copy(s, c, &i);
 		if (!t[k])
-			return(ft_free(t), NULL);
+			return (ft_free(t), NULL);
 		k++;
 	}
 	t[k] = NULL;

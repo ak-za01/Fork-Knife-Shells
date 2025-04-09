@@ -13,14 +13,15 @@
 #include "../../include/main.h"
 #include "../../include/parse.h"
 
-void ft_free(char **t)
+void	ft_free(char **t)
 {
-    int i=0;
-    while(t[i])
-    {
-        free(t[i]);
-        i++;
-    }
-    free(t);
-    
+	int	i;
+
+	i = 0;
+	while (t[i])
+	{
+		free(t[i]);
+		i++;
+	}
+	free(t);
 }

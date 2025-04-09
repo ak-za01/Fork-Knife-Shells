@@ -28,11 +28,11 @@ int	main(int ac, char **av, char **env)
 			ft_parse(str);
 			add_history(str);
 		}
-		else if(!str) 
+		else if (!str)
 			break ;
 		free(str);
 		i++;
 	}
-// print_tab(t);
-return (0);
+	// print_tab(t);
+	return (0);
 }
