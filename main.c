@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:28 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/09 14:42:51 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/04/09 19:11:02 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int ac, char **av, char **env)
 		str = readline("Minishell > ");
 		if (str && str[0])
 		{
-			ft_parse(str);
+			// ft_parse(str);
 			add_history(str);
 		}
 		else if(!str) 
