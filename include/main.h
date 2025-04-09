@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:26 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/09 14:43:21 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/04/09 14:45:30 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@
 # endif
 
 int		main(int ac, char **av, char **env);
-/*
-	// delet later :
-	#include "./parse.h"
-	void	leaks(void);
-	void ft_print_list(t_token *data);
-	void print_tab(char **t);
- */
+
+// delet later :
+#include "./parse.h"
+void	leaks(void);
+void ft_print_list(t_token *data);
+void print_tab(char **t);
+
 
 
 #endif
