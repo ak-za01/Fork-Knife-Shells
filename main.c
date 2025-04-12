@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:28 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/12 13:06:52 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/04/12 18:52:25 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int	main(int ac, char **av, char **env)
 	// while (i<1)
 	while (1)
 	{
-		str = readline("Minishell > ");
+		
+		str = readline(MAGENTA"Minishell > "RESET);
 		if (str && str[0])
 		{
 			ft_parse(str);
@@ -34,6 +35,13 @@ int	main(int ac, char **av, char **env)
 		free(str);
 		i++;
 	}
+	
 
+
+	// char **t=ft_split2("\'hello", ' ');
+	// if(!t)
+	// 	printf("error");
+	// else
+	// 	print_tab(t);
 	return (0);
 }

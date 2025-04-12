@@ -1,5 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   road.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/12 15:46:28 by aakritah          #+#    #+#             */
+/*   Updated: 2025/04/12 15:46:36 by aakritah         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 
+/* 
 1. Input Capture
 Goal: Get the raw command string from the user and prepare it for parsing.
 
@@ -189,3 +201,7 @@ Signal Handling: Handle Ctrl+C/D/\.
 Final Structuring: Build command list.
 Testing: Validate everything.
 This roadmap covers your parsing role end-to-end. You’re already rolling with tokenization—next up could be fleshing out get_token_type or testing your token list. Where do you want to jump in?
+
+
+
+*/

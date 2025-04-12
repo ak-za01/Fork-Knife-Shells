@@ -6,30 +6,13 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:45:20 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/11 13:55:42 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/04/12 15:18:05 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/main.h"
 #include "../../include/parse.h"
 
-static char	**ft_set_charset(void)
-{
-	char	**charset;
-
-	charset = malloc(sizeof(char *) * 8);
-	if (!charset)
-		return (NULL);
-	charset[0] = ">>";
-	charset[1] = "<<";
-	charset[2] = ">";
-	charset[3] = "<";
-	charset[4] = "|";
-	charset[5] = "\"";
-	charset[6] = "\'";
-	charset[7] = NULL;
-	return (charset);
-}
 static int	ft_check_t(char const *t, char **c)
 {
 	int	k;
@@ -165,10 +148,9 @@ char	**ft_split3(char const *str)
 	{
 		t[i] = ft_copy(str, charset, &x);
 		if (!t[i])
-			return (ft_free(t),NULL); 
+			return (ft_free(charset),ft_free(t),NULL); 
 		i++;
 	}
 	t[i] = NULL;
-	free(charset);
-	return (t);
+	return (free(charset),t);
 }
