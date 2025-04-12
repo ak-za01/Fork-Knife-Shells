@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 02:49:05 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/08 19:03:31 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/04/11 13:23:44 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,31 +18,32 @@ void	leaks(void)
 	system("leaks -q Minishell");
 }
 
-void ft_print_list(t_token *data)
+void	ft_print_list(t_token *data)
 {
-    if(!data)
-        return;
-    while(data)
-    {
-        ft_printf("\n----------------\n");
-        ft_printf("%s\n",data->value);
-        ft_printf("%d",data->type);
-        ft_printf("\n----------------\n");
-        data=data->next;
-    }
+	if (!data)
+		return ;
+	while (data)
+	{
+		ft_printf("\n----------------\n");
+		ft_printf("%s\n", data->value);
+		ft_printf("%d", data->type);
+		ft_printf("\n----------------\n");
+		data = data->next;
+	}
 }
 
-void print_tab(char **t)
+void	print_tab(char **t)
 {
-    int i=0;
-    if(!t)
-        return;
-        ft_printf("----------------\n");
-    while(t[i])
-    {
-        ft_printf("> %s <\n",t[i]);
-        i++;
-    }
-        ft_printf("----------------\n");
+	int	i;
 
+	i = 0;
+	if (!t)
+		return ;
+	ft_printf("----------------\n");
+	while (t[i])
+	{
+		ft_printf("> %s <\n", t[i]);
+		i++;
+	}
+	ft_printf("----------------\n");
 }

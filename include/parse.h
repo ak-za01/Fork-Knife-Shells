@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 02:45:32 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/09 21:19:49 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/04/11 15:47:32 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	ft_check_buildin_cmd(char *t);
 t_token_type	ft_get_token_type(char *t, int f);
 void  ft_set_tokens(t_token **data);
 int  ft_validat_list(t_token **data);
+void ft_put_error(char *t, int fd);
 
 
 

@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 07:07:00 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/09 21:46:23 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/04/12 12:08:23 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,12 @@ int	ft_tokenize(char *str, t_token **data)
 {
 	char	**t;
 
-	ft_initialize_list(str, data);
+	if (ft_initialize_list(str, data) < 0)
+		return (ft_put_error("intialize Error: line 21", 2), -1);
 	ft_set_tokens(data);
 	if (ft_validat_list(data) < 0)
-		return (-1);
+		return (-1);		
+		// return (ft_put_error(perrorr("validation Error: line 24")), -1);		
 	return (0);
 }
 
@@ -39,15 +41,14 @@ int	ft_initialize_list(char *str, t_token **data)
 	{
 		t2 = ft_split3(t1[i]);
 		if (!t2)
-			return (-1);
+			return (ft_free(t1), -1);
 		j = 0;
 		while (t2[j])
 		{
 			ft_add_list_end(data, ft_creat_new_list(t2[j], string_t));
 			j++;
 		}
-		ft_free(t2);
-		i++;
+		(ft_free(t2),i++) ;
 	}
 	ft_free(t1);
 	ft_add_list_end(data, ft_creat_new_list(NULL, end_t));
@@ -133,7 +134,7 @@ int	ft_validat_list(t_token **data)
 	while (ptr)
 	{
 		if (ptr->type < 5 && ptr->next->type < 5)
-			return (-1);
+		return (ft_put_error("intialize Error: line 21 >> bash: syntax error near unexpected token `|'\n", 2), -1);
 		if (ptr->type < 5 && ptr->next->type == 9)
 			return (-1);
 		if (ptr->type == 0 && i == 0)
