@@ -4,9 +4,7 @@ CC = cc
 
 # CFLAGS = -fsanitize=address -g -I./libs/readline/include
 
-CFLAGS = -I./libs/readline/include
-
-RDFLAGS = -L./libs/readline/lib -lreadline
+CFLAGS =  -I$(brew --prefix readline)/include -I./libs/readline/include
 
 headers  = ./include/main.h \
 			./include/parse.h \
@@ -26,7 +24,7 @@ all: $(NAME) clean
 
 $(NAME): $(OBJC)
 #	make -C $(libft_Dir)
-	@$(CC) $(CFLAGS) $(OBJC) -o $(NAME) $(libft) $(RDFLAGS) && ./$(NAME)
+	@$(CC) $(CFLAGS) $(OBJC) -o $(NAME) $(libft) -lreadline && ./$(NAME)
 
 %.o: %.c $(headers)
 	@$(CC) $(CFLAGS) -c $< -o $@
