@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:26 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/12 18:31:08 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/04/24 16:43:10 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 # define MAIN_H
 
 # include <stdio.h>
+# include <fcntl.h>
+
 # include <unistd.h>
+# include <stdlib.h>
 
 # include "../libs/42_Libft/libft.h"
 
@@ -39,6 +42,8 @@ int		main(int ac, char **av, char **env);
 void	leaks(void);
 void ft_print_list(t_token *data);
 void print_tab(char **t);
+void	ft_print_list2(t_token *data);
+void	ft_print_list3(t_token *data);
 
 
 

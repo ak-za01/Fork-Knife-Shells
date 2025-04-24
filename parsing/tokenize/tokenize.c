@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 07:07:00 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/12 19:03:53 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/04/24 21:36:18 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@ int	ft_tokenize(char *str, t_token **data)
 	ft_set_tokens(data);
 	if (ft_validat_list(data) < 0)
 		return (-1);
-
+	
 		
 	// fix cmd token like " > out ls"		
+	// fix cmd token like " < in  ls"	
+		
 	return (0);
 }
 

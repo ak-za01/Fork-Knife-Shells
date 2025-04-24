@@ -1,12 +1,32 @@
+#               ----------------      MAC :    ----------------
+
 CC = cc
 
-# CFLAGS = -Wall -Werror -Wextra -I./readline/include
+# CFLAGS = -Wall -Werroro -Wextra -I./readline/include
 
 # CFLAGS = -fsanitize=address -g -I./libs/readline/include
 
 CFLAGS = -I./libs/readline/include
 
 RDFLAGS = -L./libs/readline/lib -lreadline
+
+
+#               ----------------      LNX :    ----------------
+
+
+# CC = cc
+
+# # CFLAGS = -Wall -Werroro -Wextra -I./readline/include
+
+# # CFLAGS = -fsanitize=address -g -I./libs/readline/include
+
+# CFLAGS = -I./libs/readline/include
+
+# RDFLAGS = -lreadline -lncurses
+
+
+#               ----------------                ----------------
+
 
 headers  = ./include/main.h \
 			./include/parse.h \
@@ -16,13 +36,15 @@ SRC  = ./main.c \
 		./parsing/parse.c \
 		./parsing/tokenize/tokenize.c \
 		./parsing/tokenize/list.c \
+		./parsing/Yard/shunting_yard.c  \
+		./parsing/Yard/list.c  \
 		./parsing/utils/ft_split2.c \
 		./parsing/utils/ft_split3.c \
 		./parsing/utils/utils1.c \
 
 OBJC = $(SRC:%.c=%.o)
 
-libft_Dir = ./libs/42_libft
+libft_Dir = ./libs/42_Libft
 libft = $(libft_Dir)/libft.a
 
 NAME = Minishell
@@ -31,7 +53,7 @@ all: $(NAME) clean
 
 $(NAME): $(OBJC)
 #	make -C $(libft_Dir)
-	@$(CC) $(CFLAGS) $(OBJC) -o $(NAME) $(libft) $(RDFLAGS) && ./$(NAME)
+	@$(CC) $(CFLAGS) $(OBJC) -o $(NAME) $(libft) $(RDFLAGS)  && ./$(NAME)
 
 %.o: %.c $(headers)
 	@$(CC) $(CFLAGS) -c $< -o $@

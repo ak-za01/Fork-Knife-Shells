@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 07:10:20 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/04 08:14:02 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/04/24 21:30:34 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_token	*ft_creat_new_list(char *str, t_token_type type)
 	else
 		n->value = ft_strdup(str);
 	n->type = type;
+	n->prec = -1;
 	n->next = NULL;
 	n->prev = NULL;
 	return (n);
@@ -77,4 +78,16 @@ void	ft_free_list(t_token **data)
 		free(ptr->value);
 		free(ptr);
 	}
+}
+
+t_token *ft_last_list(t_token *data)
+{
+	t_token	*ptr;
+
+	if (!data) 
+		return NULL;
+	ptr = data;
+	while(ptr->next)
+		ptr=ptr->next;
+	return ptr;
 }
