@@ -8,9 +8,11 @@ CFLAGS =  -I$(brew --prefix readline)/include -I./libs/readline/include
 
 headers  = ./include/main.h \
 			./include/parse.h \
+			./include/builtins.h \
 
 SRC  = ./main.c \
 		./utils_delet.c \
+		execution/builtins.c
 
 
 OBJC = $(SRC:%.c=%.o)
@@ -18,7 +20,7 @@ OBJC = $(SRC:%.c=%.o)
 libft_Dir = ./libs/42_libft
 libft = $(libft_Dir)/libft.a
 
-NAME = Minishell
+NAME = minishell
 
 all: $(NAME) clean
 
@@ -35,7 +37,7 @@ clean:
 
 fclean: clean
 #	make -C $(libft_Dir) fclean
-	@rm -rf $(NAME)
+	@rm -rf
 
 re: fclean all
 
