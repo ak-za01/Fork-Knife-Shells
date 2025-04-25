@@ -17,7 +17,7 @@ SRC  = ./main.c \
 
 OBJC = $(SRC:%.c=%.o)
 
-libft_Dir = ./libs/42_libft
+libft_Dir = ./libs/42_Libft
 libft = $(libft_Dir)/libft.a
 
 NAME = minishell
