@@ -6,12 +6,24 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 02:37:10 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/12 15:27:26 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/04/26 18:37:51 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/main.h"
 #include "../../include/parse.h"
+
+static void	ft_fix_norminet_1(char *a, char const *b, long *n1)
+{
+	*a = *b;
+	(*n1) = !(*n1);
+}
+
+static void	ft_fix_norminet_2(long *n2, long *n1)
+{
+	(*n1)++;
+	(*n2)++;
+}
 
 static long	ft_count(char const *s, char c)
 {
@@ -28,11 +40,11 @@ static long	ft_count(char const *s, char c)
 	while (s[i])
 	{
 		if ((s[i] == '\'' || s[i] == '\"') && i_c == 0)
-			(q = s[i], i_c = !i_c);
+			ft_fix_norminet_1(&q, s + i, &i_c);
 		else if (i_c == 1 && s[i] == q)
 			i_c = !i_c;
 		if (s[i] != c && f == 0 && i_c == 0)
-			(count++, f = 1);
+			ft_fix_norminet_2(&f, &count);
 		else if (s[i] == c)
 			f = 0;
 		i++;
@@ -40,12 +52,6 @@ static long	ft_count(char const *s, char c)
 	if (i_c == 1)
 		return (-1);
 	return (count);
-}
-
-static void	ft_filter(const char *s, char c, long *i)
-{
-	while (s[*i] && s[*i] == c)
-		(*i)++;
 }
 
 static char	*ft_copy(const char *s, char c, long *i)
@@ -62,7 +68,7 @@ static char	*ft_copy(const char *s, char c, long *i)
 	while (s[j] && (s[j] != c || i_c == 1))
 	{
 		if ((s[j] == '\'' || s[j] == '\"') && i_c == 0)
-			(q = s[j], i_c = !i_c);
+			ft_fix_norminet_1(&q, s + j, &i_c);
 		else if (i_c == 1 && s[j] == q)
 			i_c = !i_c;
 		j++;
@@ -71,7 +77,7 @@ static char	*ft_copy(const char *s, char c, long *i)
 	if (!t)
 		return (NULL);
 	while (*i < j)
-		(t[k++] = s[*i], (*i)++);
+		t[k++] = s[(*i)++];
 	t[k] = '\0';
 	return (t);
 }
@@ -87,13 +93,14 @@ char	**ft_split2(char const *s, char c)
 	if (!s)
 		return (NULL);
 	if ((ft_count(s, c)) == -1)
-		return (NULL);	
+		return (NULL);
 	t = malloc((ft_count(s, c) + 1) * sizeof(char *));
 	if (!t)
 		return (NULL);
 	while (k < ft_count(s, c))
 	{
-		ft_filter(s, c, &i);
+		while (s[i] && s[i] == c)
+			i++;
 		t[k] = ft_copy(s, c, &i);
 		if (!t[k])
 			return (ft_free(t), NULL);
@@ -102,4 +109,3 @@ char	**ft_split2(char const *s, char c)
 	t[k] = NULL;
 	return (t);
 }
-

@@ -35,9 +35,12 @@ SRC  = ./main.c \
 		./utils_delet.c \
 		./parsing/parse.c \
 		./parsing/tokenize/tokenize.c \
+		./parsing/tokenize/set_token.c\
+		./parsing/tokenize/validate_list.c \
 		./parsing/tokenize/list.c \
 		./parsing/Yard/shunting_yard.c  \
-		./parsing/Yard/list.c  \
+		./parsing/Yard/filter_list.c  \
+		./parsing/Yard/moves.c  \
 		./parsing/utils/ft_split2.c \
 		./parsing/utils/ft_split3.c \
 		./parsing/utils/utils1.c \

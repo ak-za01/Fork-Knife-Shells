@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 07:10:20 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/24 21:30:34 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/04/26 15:18:59 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_token	*ft_creat_new_list(char *str, t_token_type type)
 		n->value = ft_strdup(str);
 	n->type = type;
 	n->prec = -1;
+	n->c_arg = NULL;
 	n->next = NULL;
 	n->prev = NULL;
 	return (n);
@@ -65,9 +66,22 @@ void	ft_add_list_end(t_token **data, t_token *n)
 	return ;
 }
 
+t_token	*ft_last_list(t_token *data)
+{
+	t_token	*ptr;
+
+	if (!data)
+		return (NULL);
+	ptr = data;
+	while (ptr->next)
+		ptr = ptr->next;
+	return (ptr);
+}
+
 void	ft_free_list(t_token **data)
 {
 	t_token	*ptr;
+	int		i;
 
 	if (!data)
 		return ;
@@ -76,18 +90,16 @@ void	ft_free_list(t_token **data)
 		ptr = (*data);
 		(*data) = (*data)->next;
 		free(ptr->value);
+		if (ptr->c_arg)
+		{
+			i = 0;
+			while (ptr->c_arg[i])
+			{
+				free(ptr->c_arg[i]);
+				i++;
+			}
+			free(ptr->c_arg);
+		}
 		free(ptr);
 	}
-}
-
-t_token *ft_last_list(t_token *data)
-{
-	t_token	*ptr;
-
-	if (!data) 
-		return NULL;
-	ptr = data;
-	while(ptr->next)
-		ptr=ptr->next;
-	return ptr;
 }

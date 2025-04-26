@@ -6,12 +6,37 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 23:52:48 by noctis            #+#    #+#             */
-/*   Updated: 2025/04/24 17:23:47 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/04/26 15:38:13 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/main.h"
 #include "../../include/parse.h"
+
+void	ft_move_list_shunting_yard(t_token **data, t_token **a, t_token **b)
+{
+	if ((*data)->prec == string_p)
+	{
+		ft_push(data, a);
+	}
+	else
+	{
+		if (!*b)
+			ft_push(data, b);
+		else
+		{
+			if ((*data)->prec > ft_last_list(*b)->prec)
+				ft_push(data, b);
+			else
+			{
+				while (*b && (*data)->prec <= ft_last_list(*b)->prec)
+					ft_pop(b, a);
+				ft_push(data, b);
+			}
+		}
+	}
+	return ;
+}
 
 void	ft_push(t_token **data, t_token **a)
 {
