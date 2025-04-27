@@ -1,10 +1,32 @@
+#               ----------------      MAC :    ----------------
+
 CC = cc
 
-# CFLAGS = -Wall -Werror -Wextra -I./readline/include
+# CFLAGS = -Wall -Werroro -Wextra -I./readline/include
 
 # CFLAGS = -fsanitize=address -g -I./libs/readline/include
 
-CFLAGS =  -I$(brew --prefix readline)/include -I./libs/readline/include
+CFLAGS = -I./libs/readline/include
+
+RDFLAGS = -L./libs/readline/lib -lreadline
+
+
+#               ----------------      LNX :    ----------------
+
+
+# CC = cc
+
+# # CFLAGS = -Wall -Werroro -Wextra -I./readline/include
+
+# # CFLAGS = -fsanitize=address -g -I./libs/readline/include
+
+# CFLAGS = -I./libs/readline/include
+
+# RDFLAGS = -lreadline -lncurses
+
+
+#               ----------------                ----------------
+
 
 headers  = ./include/main.h \
 			./include/parse.h \
@@ -12,21 +34,33 @@ headers  = ./include/main.h \
 
 SRC  = ./main.c \
 		./utils_delet.c \
-		execution/builtins.c
-
+		./parsing/parse.c \
+		./parsing/tokenize/tokenize.c \
+		./parsing/tokenize/set_token.c\
+		./parsing/tokenize/validate_list.c \
+		./parsing/tokenize/list.c \
+		./parsing/Yard/shunting_yard.c  \
+		./parsing/Yard/filter_list.c  \
+		./parsing/Yard/moves.c  \
+		./parsing/utils/ft_split2.c \
+		./parsing/utils/ft_split3.c \
+		./parsing/utils/utils1.c \
+		./execution/builtins.c \
+		./execution/echo.c \
+		./execution/split_env.c \
 
 OBJC = $(SRC:%.c=%.o)
 
 libft_Dir = ./libs/42_Libft
 libft = $(libft_Dir)/libft.a
 
-NAME = minishell
+NAME = Minishell
 
 all: $(NAME) clean
 
 $(NAME): $(OBJC)
 #	make -C $(libft_Dir)
-	@$(CC) $(CFLAGS) $(OBJC) -o $(NAME) $(libft) -lreadline && ./$(NAME)
+	@$(CC) $(CFLAGS) $(OBJC) -o $(NAME) $(libft) $(RDFLAGS)  && ./$(NAME)
 
 %.o: %.c $(headers)
 	@$(CC) $(CFLAGS) -c $< -o $@
@@ -37,7 +71,7 @@ clean:
 
 fclean: clean
 #	make -C $(libft_Dir) fclean
-	@rm -rf
+	@rm -rf $(NAME)
 
 re: fclean all
 

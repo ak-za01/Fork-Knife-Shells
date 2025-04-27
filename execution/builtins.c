@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:01:40 by anktiri           #+#    #+#             */
-/*   Updated: 2025/04/24 19:30:18 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/04/27 07:32:40 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,13 @@ t_env	*create_env_list(char **env)
 		new_node = malloc(sizeof(t_env));
 		if (!new_node)
 			return (NULL);
-		temp = ft_split(*env, '=');
+		temp = ft_split_env(*env, '=');
 		if (!temp)
 			return ((free(new_node)), NULL);
 		new_node->name = temp[0];
 		new_node->value = temp[1];
 		new_node->next = NULL;
+		free(temp);
 		if (!env_list)
 			env_list = new_node;
 		else
@@ -42,50 +43,36 @@ t_env	*create_env_list(char **env)
 	return (env_list);
 }
 
-int is_builtin(char *cmd)
-{
-    if (!cmd)
-        return 0;
-    if (strcmp(cmd, "echo") == 0 ||
-        strcmp(cmd, "cd") == 0 ||
-        strcmp(cmd, "pwd") == 0 ||
-        strcmp(cmd, "export") == 0 ||
-        strcmp(cmd, "unset") == 0 ||
-        strcmp(cmd, "env") == 0 ||
-        strcmp(cmd, "exit") == 0)
-        return 1;
-    return 0;
-}
 
-int exec_builtin(char **args, t_env **env_list)
+int exec_builtin(t_token *data)
 {
-    if (!args || !args[0])
+    if (!data->value || !data->value[0])
         return (ERROR);
 
-    if (strcmp(args[0], "echo") == 0)
-        return ft_echo(args);
-    // else if (strcmp(args[0], "cd") == 0)
-    //     return ft_cd(args, *env_list);
-    if (strcmp(args[0], "pwd") == 0)
+    if (strcmp(data->value, "echo") == 0)
+        return ft_echo(data);
+    // else if (strcmp(data->value, "cd") == 0)
+    //     return ft_cd(data, *env_list);
+    if (strcmp(data->value, "pwd") == 0)
         return ft_pwd();
-    // else if (strcmp(args[0], "export") == 0)
-    //     return ft_export(args, env_list);
-    // else if (strcmp(args[0], "unset") == 0)
-    //     return ft_unset(args, env_list);
-    else if (strcmp(args[0], "env") == 0)
-        return ft_env(*env_list);
-    else if (strcmp(args[0], "exit") == 0)
-        return ft_exit(args);
+    // else if (strcmp(data->value, "export") == 0)
+    //     return ft_export(data, env_list);
+    // else if (strcmp(data->value, "unset") == 0)
+    //     return ft_unset(data, env_list);
+    else if (strcmp(data->value, "env") == 0)
+        return ft_env(data);
+    else if (strcmp(data->value, "exit") == 0)
+        return ft_exit(data);
     return (ERROR);
 }
 
-int ft_env(t_env *env_list)
+int ft_env(t_token	*data)
 {
 	t_env	*current;
 
-	if (!env_list)
+	if (!data->env_list)
 		return (SUCCESS);
-	current = env_list;
+	current = data->env_list;
 	while (current)
 	{
 		printf("%s=%s\n", current->name, current->value);
@@ -94,21 +81,16 @@ int ft_env(t_env *env_list)
 	return (SUCCESS);
 }
 
-int ft_exit(char **args)
+int ft_exit(t_token *data)
 {
-	int exit_code;
-
-	if (args[1])
-	{
-		exit_code = atoi(args[1]);
-		if (exit_code < 0)
-			exit_code = 0;
-	}
-	else
-		exit_code = 0;
-	printf("exit\n");
-	exit(exit_code);
-	return (SUCCESS);
+    int exit_code = 0;
+    if (data->c_arg[1])
+        exit_code = ft_atoi(data->c_arg[1]) % 256;
+    if (exit_code < 0)
+        exit_code = 0;
+    printf("exit\n");
+    exit(exit_code);
+    return (SUCCESS);
 }
 
 int	ft_pwd(void)
@@ -125,32 +107,4 @@ int	ft_pwd(void)
 		perror("getcwd() error");
 		return (ERROR);
 	}
-}
-
-int	ft_echo(char **args)
-{
-	int i = 1;
-	int newline = 1;
-
-	if (!args || !args[1])
-	{
-		printf("\n");
-		return (SUCCESS);
-	}
-	while (args[i] && ft_strncmp(args[i], "-n", 3) == 0)
-	{
-		newline = 0;
-		printf("enter");
-		i++;
-	}
-	while (args[i])
-	{
-		printf("%s", args[i]);
-		if (args[i + 1])
-			printf(" ");
-		i++;
-	}
-	if (newline)
-		printf("\n");
-	return (SUCCESS);
 }

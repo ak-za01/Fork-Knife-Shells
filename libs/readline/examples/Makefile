@@ -21,7 +21,7 @@ RL_LIBRARY_VERSION = 8.2
 SHELL = /bin/sh
 RM = rm -f
 
-prefix = /Users/aakritah/Code/Projet.G/42_Minishell/libs/readline
+prefix = /Users/anktiri/Desktop/Fork-Knife-Shells/libs/readline
 exec_prefix = ${prefix}
 
 datarootdir = ${prefix}/share
@@ -32,7 +32,7 @@ datadir = ${datarootdir}
 
 top_srcdir = ..
 #BUILD_DIR = .
-BUILD_DIR = /Users/aakritah/Code/Projet.G/42_Minishell/libs/readline
+BUILD_DIR = /Users/anktiri/Desktop/Fork-Knife-Shells/libs/readline
 installdir = $(datadir)/readline
 
 INSTALL = /usr/bin/install -c

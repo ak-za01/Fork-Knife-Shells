@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 02:49:05 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/08 19:03:31 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/04/26 12:15:11 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,31 +18,77 @@ void	leaks(void)
 	system("leaks -q Minishell");
 }
 
-void ft_print_list(t_token *data)
+void	ft_print_list(t_token *data)
 {
-    if(!data)
-        return;
-    while(data)
-    {
-        ft_printf("\n----------------\n");
-        ft_printf("%s\n",data->value);
-        ft_printf("%d",data->type);
-        ft_printf("\n----------------\n");
-        data=data->next;
-    }
+	ft_printf(RED "\n Printf list data :\n\n" RESET);
+	if (!data)
+	{
+		ft_printf("nothing\n");
+		return ;
+	}
+	while (data)
+	{
+		ft_printf("\tCMD : %s", data->value);
+		ft_printf(RED "  -|-  " RESET);
+		ft_printf("Token : %d", data->type);
+		ft_printf(RED "  -|-  " RESET);
+		ft_printf("Precd : %d", data->prec);
+		ft_printf(RED "  -|-  " RESET);
+		ft_printf("\n \t arg : \n");
+		print_tab(data->c_arg);
+		ft_printf("\n\n");
+		data = data->next;
+	}
+	ft_printf(RED " > done <\n" RESET);
 }
 
-void print_tab(char **t)
+void	ft_print_list2(t_token *data)
 {
-    int i=0;
-    if(!t)
-        return;
-        ft_printf("----------------\n");
-    while(t[i])
-    {
-        ft_printf("> %s <\n",t[i]);
-        i++;
-    }
-        ft_printf("----------------\n");
+	if (!data)
+	{
+		ft_printf("\t\tnothing\n");
+		return ;
+	}
+	while (data)
+	{
+		ft_printf("\t\tCMD : %s", data->value);
+		ft_printf(RED "  -|-  " RESET);
+		ft_printf("Token : %d", data->type);
+		ft_printf(RED "  -|-  " RESET);
+		ft_printf("Precd : %d", data->prec);
+		ft_printf(RED "  -|-  " RESET);
+		ft_printf("\n \t\t arg : \n");
+		ft_printf("\n\n", data->prec);
+		data = data->next;
+	}
+}
 
+void	ft_print_list3(t_token *data)
+{
+	if (!data)
+	{
+		ft_printf("nothing\n");
+		return ;
+	}
+	ft_printf("\n----------------\n");
+	while (data)
+	{
+		ft_printf(" %s ", data->value);
+		data = data->next;
+	}
+	ft_printf("\n----------------\n");
+}
+
+void	print_tab(char **t)
+{
+	int	i;
+
+	i = 0;
+	if (!t)
+		return ;
+	while (t[i])
+	{
+		ft_printf("\n\t\t > %s <\n", t[i]);
+		i++;
+	}
 }
