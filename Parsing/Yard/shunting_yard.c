@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shunting_yard.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 23:43:02 by noctis            #+#    #+#             */
-/*   Updated: 2025/04/26 15:38:42 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/04/29 01:02:16 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ void	set_precedence(t_token **data)
 	{
 		if (ptr->type == 0)
 			ptr->prec = pipe_p;
-		else if (0 < ptr->type && ptr->type < 5)
-			ptr->prec = redirect_p;
 		else
 			ptr->prec = string_p;
 		ptr = ptr->next;

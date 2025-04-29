@@ -3,15 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:26 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/26 21:15:43 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/04/29 01:57:45 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAIN_H
 # define MAIN_H
+
+// delet later
+# include "./parse.h"
 
 # include "../libs/42_Libft/libft.h"
 # include <fcntl.h>
@@ -32,11 +35,10 @@
 # define MAGENTA "\033[1;35m"
 # define RESET "\033[0m"
 
+//------------------------------ Main :
 int		main(int ac, char **av, char **env);
 
-// delet later :
-# include "./parse.h"
-
+//------------------------------ Delet Later :
 void	leaks(void);
 void	ft_print_list(t_token *data);
 void	print_tab(char **t);

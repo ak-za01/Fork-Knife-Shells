@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 02:45:32 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/26 21:16:31 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/04/29 01:56:34 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,22 @@
 
 typedef enum e_token_type
 {
-	pipe_t,    // 0 : |
-	append_t,  // 1 : >>
-	heredoc_t, // 2 : <<
-	outfile_t, // 3 : >
-	infile_t,  // 4 : <
-	string_t,  // 5
-	cmd_t,     // 6
-	b_cmd_t,   // 7
-	cmd_arg_t, // 8
-	end_t      // 9
+	pipe_t,
+	append_t,
+	heredoc_t,
+	outfile_t,
+	infile_t,
+	string_t,
+	cmd_t,
+	b_cmd_t,
+	cmd_arg_t,
+	end_t
 }						t_token_type;
 
 typedef enum e_token_precedence
 {
-	end_p,     // 0
-	string_p,  // 1
-	pipe_p,    // 2
-	redirect_p // 3
+	string_p,
+	pipe_p,
 }						t_token_precedence;
 
 typedef struct s_token
@@ -41,14 +39,25 @@ typedef struct s_token
 	t_token_type		type;
 	t_token_precedence	prec;
 	char				**c_arg;
+	char				**c_red;
 	struct s_token		*next;
 	struct s_token		*prev;
 }						t_token;
 
-// parsing :
+typedef struct s_ast
+{
+	char				*value;
+	t_token_type		type;
+	char				**c_arg;
+	char				**c_red;
+	struct s_ast		*next;
+	struct s_ast		*prev;
+}						t_ast;
+
+//------------------------------ Parsing :
 t_token					*ft_parse(char *str);
 
-// tokenizing
+//------------------------------Ttokenizing :
 int						ft_tokenize(char *str, t_token **data);
 int						ft_initialize_list(char *str, t_token **data);
 void					ft_set_tokens(t_token **data);
@@ -65,7 +74,7 @@ void					ft_add_list_end(t_token **data, t_token *n);
 t_token					*ft_last_list(t_token *data);
 void					ft_free_list(t_token **data);
 
-// Shunting yard
+//------------------------------ Shunting Yard :
 void					ft_shunting_yard(t_token **data);
 void					set_precedence(t_token **data);
 void					ft_move_list_shunting_yard(t_token **data, t_token **a,
@@ -73,14 +82,24 @@ void					ft_move_list_shunting_yard(t_token **data, t_token **a,
 void					ft_push(t_token **data, t_token **a);
 void					ft_pop(t_token **b, t_token **a);
 
-// filter
+//------------------------------ Filter 1  :
 int						ft_filter_list(t_token **data);
-void					ft_remove_end_token(t_token **data);
-long					ft_count_arg_node(t_token *ptr);
+int						ft_remove_end_token(t_token **data);
+long					ft_count_arg_node(t_token *ptr, int f);
 int						ft_copy_arg_node(t_token *ptr);
 void					ft_free_arg_node(t_token **data);
 
-// utils
+//------------------------------ Filter 2 :
+int						ft_filter_list2(t_token **data);
+int						ft_filter_search(t_token *ptr);
+int						ft_filter_cas_1(t_token **ptr);
+int						ft_filter_cas_2(t_token **ptr);
+void					ft_free_arg_node2(t_token **data);
+
+//------------------------------ Tree :
+int						ft_tree(t_token **data, t_ast **tree);
+
+//------------------------------ Utils :
 char					**ft_split2(char const *s, char c);
 char					**ft_split3(char const *s);
 void					ft_free(char **t);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:45:20 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/26 21:10:01 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/04/29 00:07:04 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 static int	ft_check_t(char const *t, char **c)
 {
 	int	k;
-	int	s;
 
 	k = 0;
 	while (c[k])
@@ -28,7 +27,6 @@ static int	ft_check_t(char const *t, char **c)
 		}
 		else
 		{
-			s = ft_strlen(c[k]);
 			if (t[0] == c[k][0])
 				return (k);
 		}
