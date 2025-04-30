@@ -54,6 +54,7 @@ int	ft_remove_end_token(t_token **data)
 	tmp->prev = NULL;
 	tmp->next = NULL;
 	ft_free_list(&tmp);
+	return (0);
 }
 
 long	ft_count_arg_node(t_token *ptr, int f)
