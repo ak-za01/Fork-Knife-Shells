@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:01:40 by anktiri           #+#    #+#             */
-/*   Updated: 2025/04/27 07:32:40 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/04/30 18:53:50 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,21 +64,6 @@ int exec_builtin(t_token *data)
     else if (strcmp(data->value, "exit") == 0)
         return ft_exit(data);
     return (ERROR);
-}
-
-int ft_env(t_token	*data)
-{
-	t_env	*current;
-
-	if (!data->env_list)
-		return (SUCCESS);
-	current = data->env_list;
-	while (current)
-	{
-		printf("%s=%s\n", current->name, current->value);
-		current = current->next;
-	}
-	return (SUCCESS);
 }
 
 int ft_exit(t_token *data)

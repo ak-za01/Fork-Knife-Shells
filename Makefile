@@ -2,11 +2,11 @@
 
 CC = cc
 
-# CFLAGS = -Wall -Werroro -Wextra -I./readline/include
+CFLAGS = -Wall -Werror -Wextra -I./libs/readline/include
 
 # CFLAGS = -fsanitize=address -g -I./libs/readline/include
 
-CFLAGS = -I./libs/readline/include
+# CFLAGS = -I./libs/readline/include
 
 RDFLAGS = -L./libs/readline/lib -lreadline
 
@@ -16,7 +16,7 @@ RDFLAGS = -L./libs/readline/lib -lreadline
 
 # CC = cc
 
-# # CFLAGS = -Wall -Werroro -Wextra -I./readline/include
+# # CFLAGS = -Wall -Werror -Wextra -I./libs/readline/include
 
 # # CFLAGS = -fsanitize=address -g -I./libs/readline/include
 
@@ -28,26 +28,31 @@ RDFLAGS = -L./libs/readline/lib -lreadline
 #               ----------------                ----------------
 
 
-headers  = ./include/main.h \
+headers  =	./include/main.h \
 			./include/parse.h \
 			./include/builtins.h \
 
-SRC  = ./main.c \
-		./utils_delet.c \
-		./parsing/parse.c \
-		./parsing/tokenize/tokenize.c \
-		./parsing/tokenize/set_token.c\
-		./parsing/tokenize/validate_list.c \
-		./parsing/tokenize/list.c \
-		./parsing/Yard/shunting_yard.c  \
-		./parsing/Yard/filter_list.c  \
-		./parsing/Yard/moves.c  \
-		./parsing/utils/ft_split2.c \
-		./parsing/utils/ft_split3.c \
-		./parsing/utils/utils1.c \
-		./execution/builtins.c \
-		./execution/echo.c \
-		./execution/split_env.c \
+PARSING  =	./main.c \
+			./utils_delet.c \
+			./Parsing/parse.c \
+			./Parsing/Tokenize/tokenize.c \
+			./Parsing/Tokenize/set_token.c\
+			./Parsing/Tokenize/validate_list.c \
+			./Parsing/Tokenize/list.c \
+			./Parsing/Yard/shunting_yard.c  \
+			./Parsing/Yard/filter_list.c  \
+			./Parsing/Yard/filter_list2.c  \
+			./Parsing/Utils/ft_split2.c \
+			./Parsing/Utils/ft_split3.c \
+			./Parsing/Utils/utils1.c \
+
+EXECUTION =	./execution/builtins.c \
+			./execution/echo.c \
+			./execution/environment.c \
+			./execution/split_env.c \
+
+SRC =	${PARSING} \
+		${EXECUTION} \
 
 OBJC = $(SRC:%.c=%.o)
 
