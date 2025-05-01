@@ -3,127 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:45:20 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/29 00:07:04 by noctis           ###   ########.fr       */
+/*   Updated: 2025/05/01 18:53:23 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/main.h"
 #include "../../include/parse.h"
-
-static int	ft_check_t(char const *t, char **c)
-{
-	int	k;
-
-	k = 0;
-	while (c[k])
-	{
-		if (k < 2)
-		{
-			if ((t[0] && t[1]) && (t[0] == c[k][0]) && t[1] == c[k][1])
-				return (k);
-		}
-		else
-		{
-			if (t[0] == c[k][0])
-				return (k);
-		}
-		k++;
-	}
-	return (-1);
-}
-
-static int	ft_count(char const *str, char **charset)
-{
-	int		x;
-	int		copy;
-	int		k;
-	int		f;
-	int		i_c;
-	char	q;
-
-	x = 0;
-	copy = 0;
-	k = 0;
-	f = 0;
-	i_c = 0;
-	while (str[x])
-	{
-		k = ft_check_t(str + x, charset);
-		if ((k == 6 || k == 5) && i_c == 0)
-		{
-			q = str[x];
-			i_c = !i_c;
-		}
-		else if (i_c == 1 && str[x] == q)
-			i_c = !i_c;
-		if (i_c == 0)
-		{
-			if (k == -1)
-			{
-				if (f == 0)
-				{
-					copy++;
-					f = 1;
-					x++;
-				}
-				else
-					x++;
-			}
-			else if (k >= 0)
-			{
-				copy++;
-				f = 0;
-				x++;
-				if (k < 2)
-					x++;
-			}
-		}
-		else
-			x++;
-	}
-	return (copy);
-}
-
-static char	*ft_copy(char const *str, char **charset, int *x)
-{
-	int		k;
-	int		i;
-	int		y;
-	char	q;
-	char	*t;
-
-	i = *x;
-	k = ft_check_t(str + *x, charset);
-	if (k == 5 || k == 6)
-	{
-		q = str[*x];
-		(*x)++;
-		while (str[*x] != q)
-			(*x)++;
-		(*x)++;
-	}
-	else if (2 <= k && k <= 4)
-		(*x)++;
-	else if (k >= 0)
-		(*x) += 2;
-	else if (k == -1)
-		while (str[*x] && ft_check_t(str + *x, charset) == -1)
-			(*x)++;
-	t = malloc(*x - i + 1);
-	if (!t)
-		return (NULL);
-	y = 0;
-	while (i + y < *x)
-	{
-		t[y] = str[i + y];
-		y++;
-	}
-	t[y] = '\0';
-	return (t);
-}
 
 char	**ft_split3(char const *str)
 {
@@ -138,17 +26,116 @@ char	**ft_split3(char const *str)
 		return (NULL);
 	i = 0;
 	x = 0;
-	s = ft_count(str, charset);
+	s = ft_count_split3(str, charset);
 	t = malloc(sizeof(char *) * (s + 1));
 	if (!t)
 		return (NULL);
 	while (i < s)
 	{
-		t[i] = ft_copy(str, charset, &x);
+		t[i] = ft_copy_split3(str, charset, &x);
 		if (!t[i])
-			return (ft_free(charset), ft_free(t), NULL);
+			return (free(charset), ft_free(t), NULL);
 		i++;
 	}
 	t[i] = NULL;
 	return (free(charset), t);
+}
+
+int	ft_count_split3(const char *str, char **charset)
+{
+	int		i;
+	int		count;
+	int		skip;
+	char	quote;
+
+	i = 0;
+	count = 0;
+	quote = 0;
+	while (str[i])
+	{
+		skip = 0;
+		if (!quote && ft_is_special(&str[i], charset, &skip) && str[i] != '\''
+			&& str[i] != '\"')
+		{
+			count++;
+			i += skip;
+			continue ;
+		}
+		count += ft_skip_token_quoted(str, charset, &i);
+	}
+	return (count);
+}
+
+char	*ft_copy_split3(const char *str, char **charset, int *x)
+{
+	int		j;
+	int		s;
+	int		start;
+	int		skip;
+	char	*t;
+
+	start = *x;
+	skip = 0;
+	if (ft_is_special(&str[*x], charset, &skip) && str[*x] != '\''
+		&& str[*x] != '\"')
+		*x += skip;
+	else
+		ft_skip_token_quoted(str, charset, x);
+	s = *x - start;
+	t = malloc(s + 1);
+	if (!t)
+		return (NULL);
+	j = 0;
+	while (j < s)
+	{
+		t[j] = str[start + j];
+		j++;
+	}
+	t[s] = '\0';
+	return (t);
+}
+
+int	ft_is_special(const char *str, char **charset, int *len)
+{
+	int	i;
+	int	s;
+
+	i = 0;
+	while (charset[i])
+	{
+		s = ft_strlen(charset[i]);
+		if (ft_strncmp(str, charset[i], s) == 0)
+		{
+			*len = s;
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	ft_skip_token_quoted(const char *str, char **charset, int *i)
+{
+	int		skip;
+	char	quote;
+
+	skip = 0;
+	quote = 0;
+	while (str[*i])
+	{
+		if (str[*i] == '\'' || str[*i] == '\"')
+		{
+			if (!quote)
+				quote = str[*i];
+			else if (quote == str[*i])
+				quote = 0;
+			(*i)++;
+			continue ;
+		}
+		if (!quote && ft_is_special(&str[*i], charset, &skip) && str[*i] != '\''
+			&& str[*i] != '\"')
+			break ;
+		(*i)++;
+	}
+	return (1);
 }

@@ -6,26 +6,42 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 02:37:10 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/26 18:37:51 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/05/01 18:53:05 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/main.h"
 #include "../../include/parse.h"
 
-static void	ft_fix_norminet_1(char *a, char const *b, long *n1)
+char	**ft_split2(char const *s, char c)
 {
-	*a = *b;
-	(*n1) = !(*n1);
+	long	i;
+	long	k;
+	char	**t;
+
+	i = 0;
+	k = 0;
+	if (!s)
+		return (NULL);
+	if ((ft_count_split2(s, c)) == -1)
+		return (NULL);
+	t = malloc((ft_count_split2(s, c) + 1) * sizeof(char *));
+	if (!t)
+		return (NULL);
+	while (k < ft_count_split2(s, c))
+	{
+		while (s[i] && s[i] == c)
+			i++;
+		t[k] = ft_copy_split2(s, c, &i);
+		if (!t[k])
+			return (ft_free(t), NULL);
+		k++;
+	}
+	t[k] = NULL;
+	return (t);
 }
 
-static void	ft_fix_norminet_2(long *n2, long *n1)
-{
-	(*n1)++;
-	(*n2)++;
-}
-
-static long	ft_count(char const *s, char c)
+long	ft_count_split2(char const *s, char c)
 {
 	long	i;
 	long	f;
@@ -54,7 +70,7 @@ static long	ft_count(char const *s, char c)
 	return (count);
 }
 
-static char	*ft_copy(const char *s, char c, long *i)
+char	*ft_copy_split2(const char *s, char c, long *i)
 {
 	long	j;
 	long	k;
@@ -82,30 +98,14 @@ static char	*ft_copy(const char *s, char c, long *i)
 	return (t);
 }
 
-char	**ft_split2(char const *s, char c)
+void	ft_fix_norminet_1(char *a, char const *b, long *n1)
 {
-	long	i;
-	long	k;
-	char	**t;
+	*a = *b;
+	(*n1) = !(*n1);
+}
 
-	i = 0;
-	k = 0;
-	if (!s)
-		return (NULL);
-	if ((ft_count(s, c)) == -1)
-		return (NULL);
-	t = malloc((ft_count(s, c) + 1) * sizeof(char *));
-	if (!t)
-		return (NULL);
-	while (k < ft_count(s, c))
-	{
-		while (s[i] && s[i] == c)
-			i++;
-		t[k] = ft_copy(s, c, &i);
-		if (!t[k])
-			return (ft_free(t), NULL);
-		k++;
-	}
-	t[k] = NULL;
-	return (t);
+void	ft_fix_norminet_2(long *n2, long *n1)
+{
+	(*n1)++;
+	(*n2)++;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:26 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/29 01:57:45 by noctis           ###   ########.fr       */
+/*   Updated: 2025/05/01 18:32:35 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 # define MAIN_H
 
 // delet later
-# include "./parse.h"
-
 # include "../libs/42_Libft/libft.h"
+# include "./parse.h"
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -32,6 +31,7 @@
 
 # define RED "\033[1;31m"
 # define CYAN "\033[1;36m"
+# define YELLOW "\033[33m"
 # define MAGENTA "\033[1;35m"
 # define RESET "\033[0m"
 
@@ -41,9 +41,8 @@ int		main(int ac, char **av, char **env);
 //------------------------------ Delet Later :
 void	leaks(void);
 void	ft_print_list(t_token *data);
+void	ft_print_list1(t_token *data);
 void	print_tab(char **t);
-void	ft_print_list2(t_token *data);
-void	ft_print_list3(t_token *data);
 
 #endif
 
