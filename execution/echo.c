@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 07:32:22 by anktiri           #+#    #+#             */
-/*   Updated: 2025/04/27 08:44:53 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/02 12:20:16 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,47 +41,50 @@ int ft_strcmp(const char *s1, const char *s2)
 void print_expanded_arg(char *arg, t_env *env_list)
 {
     char *ptr = arg;
-    char *end = arg + ft_strlen(arg);
     char var_name[256];
     int j;
-    int is_single_quoted;
-    int is_double_quoted;
+    int in_single_quote = 0;
+    int in_double_quote = 0;
 
-	is_single_quoted = (arg[0] == '\'' && end > arg && *(end - 1) == '\'');
-    is_double_quoted = (arg[0] == '"' && end > arg && *(end - 1) == '"');
-    if (is_single_quoted || is_double_quoted)
-    {
-        ptr++;
-        end--;
-    }
-
-    if (is_single_quoted)
-    {
-        while (ptr < end)
-        {
-            ft_putchar(*ptr);
-            ptr++;
-        }
+    if (!arg)
         return;
-    }
-    while (ptr < end)
+
+    while (*ptr)
     {
-        if (*ptr == '$' && *(ptr + 1) && (ft_isalnum(*(ptr + 1)) || *(ptr + 1) == '?'))
+        // Toggle quote states
+        if (*ptr == '\'' && !in_double_quote)
+        {
+            in_single_quote = !in_single_quote;
+            ptr++;
+            continue;
+        }
+        if (*ptr == '"' && !in_single_quote)
+        {
+            in_double_quote = !in_double_quote;
+            ptr++;
+            continue;
+        }
+
+        // Handle variable expansion outside single quotes
+        if (*ptr == '$' && *(ptr + 1) && (ft_isalnum(*(ptr + 1)) || *(ptr + 1) == '?') && !in_single_quote)
         {
             ptr++;
             j = 0;
-            while (ptr < end && (ft_isalnum(*ptr) || *ptr == '_'))
-                var_name[j++] = *ptr++;
-            if (j == 0 && *(ptr - 1) == '?')
+            if (*ptr == '?')
             {
-                var_name[j++] = '?';
+                var_name[j++] = *ptr++;
+            }
+            else
+            {
+                while (*ptr && (ft_isalnum(*ptr) || *ptr == '_'))
+                    var_name[j++] = *ptr++;
             }
             var_name[j] = '\0';
 
             if (ft_strcmp(var_name, "?") == 0)
             {
                 // extern int g_exit_status;
-                // printf("%d", g_exit_status);
+                // ft_putnbr(g_exit_status);
             }
             else
             {
@@ -90,7 +93,7 @@ void print_expanded_arg(char *arg, t_env *env_list)
                 {
                     if (ft_strcmp(var_name, env->name) == 0)
                     {
-                        printf("%s", env->value);
+                        ft_putstr(env->value);
                         break;
                     }
                     env = env->next;
@@ -99,7 +102,7 @@ void print_expanded_arg(char *arg, t_env *env_list)
         }
         else
         {
-            putchar(*ptr);
+            ft_putchar(*ptr);
             ptr++;
         }
     }
@@ -113,25 +116,30 @@ int ft_echo(t_token *data)
 
     if (!data || !data->c_arg || !data->c_arg[0])
     {
-        printf("\n");
-        return (SUCCESS);
+        ft_putstr("\n");
+        return (0);
     }
+
+    // Check for -n flags
     while (data->c_arg[i] && is_n_flag(data->c_arg[i]))
     {
         newline = 0;
         i++;
     }
+
+    // Process each argument
     while (data->c_arg[i])
     {
-        if (!first_arg && !((data->c_arg[i-1][0] == '\'' ||
-				data->c_arg[i-1][0] == '"') || (data->c_arg[i][0] == '\''
-				|| data->c_arg[i][0] == '"')))
-            printf(" ");
+        if (!first_arg)
+            ft_putstr(" ");
         print_expanded_arg(data->c_arg[i], data->env_list);
         first_arg = 0;
         i++;
     }
+
+    // Print newline if -n is not specified
     if (newline)
-        printf("\n");
-    return (SUCCESS);
+        ft_putstr("\n");
+
+    return (0);
 }

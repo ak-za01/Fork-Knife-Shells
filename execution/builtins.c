@@ -6,43 +6,11 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:01:40 by anktiri           #+#    #+#             */
-/*   Updated: 2025/04/30 18:53:50 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/02 15:58:14 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/builtins.h"
-
-
-t_env	*create_env_list(char **env)
-{
-	t_env	*env_list;
-	t_env	*current;
-	t_env	*new_node;
-	char	**temp;
-
-	env_list = ((current = NULL), NULL);
-	while (*env)
-	{
-		new_node = malloc(sizeof(t_env));
-		if (!new_node)
-			return (NULL);
-		temp = ft_split_env(*env, '=');
-		if (!temp)
-			return ((free(new_node)), NULL);
-		new_node->name = temp[0];
-		new_node->value = temp[1];
-		new_node->next = NULL;
-		free(temp);
-		if (!env_list)
-			env_list = new_node;
-		else
-			current->next = new_node;
-		current = new_node;
-		env++;
-	}
-	return (env_list);
-}
-
 
 int exec_builtin(t_token *data)
 {
@@ -55,8 +23,8 @@ int exec_builtin(t_token *data)
     //     return ft_cd(data, *env_list);
     if (strcmp(data->value, "pwd") == 0)
         return ft_pwd();
-    // else if (strcmp(data->value, "export") == 0)
-    //     return ft_export(data, env_list);
+    else if (strcmp(data->value, "export") == 0)
+        return ft_export(data);
     // else if (strcmp(data->value, "unset") == 0)
     //     return ft_unset(data, env_list);
     else if (strcmp(data->value, "env") == 0)

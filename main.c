@@ -6,12 +6,11 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:28 by aakritah          #+#    #+#             */
-/*   Updated: 2025/05/01 20:32:58 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/06 21:49:26 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/main.h"
-#include "./include/parse.h"
 
 int	main(int ac, char **av, char **env)
 {
@@ -42,5 +41,6 @@ int	main(int ac, char **av, char **env)
 			break ;
 		free(str);
 	}
+	free_env_list(&env_list);
 	return (0);
 }

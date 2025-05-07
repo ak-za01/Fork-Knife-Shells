@@ -50,6 +50,7 @@ EXECUTION =	./execution/builtins.c \
 			./execution/echo.c \
 			./execution/environment.c \
 			./execution/split_env.c \
+			./execution/export.c \
 
 SRC =	${PARSING} \
 		${EXECUTION} \

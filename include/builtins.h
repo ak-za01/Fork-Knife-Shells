@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 21:46:46 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/01 20:17:00 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/02 15:57:49 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 int ft_echo(t_token	*data);
 // int ft_cd(t_token	*data, t_env *env_list);
 int ft_pwd(void);
-// int ft_export(t_token	*data, t_env **env_list);
+int ft_export(t_token	*data);
 // int ft_unset(t_token	*data, t_env **env_list);
 int ft_env(t_token	*data);
 int ft_exit(t_token	*data);
