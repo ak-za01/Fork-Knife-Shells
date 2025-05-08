@@ -1,0 +1,49 @@
+
+                |------------ echo : ------------|
+
+------------------------------------------------------------------
+
+Minishell > export _tmp=5
+Minishell > echo $_tmp
+rs: $_tmp
+
+status :  fixed
+------------------------------------------------------------------
+
+Minishell > echo "$1sda1a"
+rs: 
+
+bash-3.2$ echo  "$1sdaa"
+rs: sdaa
+
+bash-3.2$ echo  $1453sdaa
+rs: 453sdaa
+
+bash-3.2$ echo  $@453sdaa
+rs: 453sdaa
+
+start :
+$?
+$1...9
+$@
+$$ // not sure if we need to do it , but it need to prin pid
+
+status :  fixed
+------------------------------------------------------------------
+
+
+
+
+                |------------ export : ------------|
+
+
+export $1=test
+minishell: export: `$1=test': not a valid identifier
+
+bash-3.2$ export $1=test
+bash: export: `=test': not a valid identifier
+
+
+status : not fixed
+------------------------------------------------------------------
+
