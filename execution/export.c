@@ -6,11 +6,9 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:50:37 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/09 21:13:08 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/11 22:45:30 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "../include/builtins.h"
 
 #include "../include/builtins.h"
 
@@ -32,46 +30,22 @@ char	*ft_strndup(const char *str, size_t n)
 	return (result);
 }
 
-char	*remove_quotes(char *str)
-{
-	int		len;
-	char	*result;
-	
-	if (!str)
-		return (NULL);
-	len = ft_strlen(str);
-	if (len >= 2)
-	{
-		if ((str[0] == '"' && str[len - 1] == '"') || 
-			(str[0] == '\'' && str[len - 1] == '\''))
-		{
-			result = ft_strndup(str + 1, len - 2);
-			return (result);
-		}
-	}
-	return (ft_strdup(str));
-}
-
 int	valid_variable(char *str)
 {
 	int		i;
-	char	*clean_str;
 	int		valid;
-
-	clean_str = remove_quotes(str);
-	if (!clean_str)
-		return (0);
+	
 	i = 0;
 	valid = 1;
-	if (!clean_str[i])
+	if (!str[i])
 		valid = 0;
-	else if (ft_isdigit(clean_str[0]))
+	else if (ft_isdigit(str[0]))
 		valid = 0;
 	else
 	{
-		while (clean_str[i] && clean_str[i] != '=')
+		while (str[i] && str[i] != '=')
 		{
-			if (!ft_isalnum(clean_str[i]) && clean_str[i] != '_')
+			if (!ft_isalnum(str[i]) && str[i] != '_')
 			{
 				valid = 0;
 				break;
@@ -79,20 +53,19 @@ int	valid_variable(char *str)
 			i++;
 		}
 	}
-	free(clean_str);
 	return (valid);
 }
 
 void	error_message(char *cmd, char *str)
 {
-	char	*clean_str;
+	char	*clean_str = NULL;
 
-	clean_str = remove_quotes(str);
-	if (clean_str)
+	// clean_str = remove_quotes(str);
+	// later add a flag to detect if there are quotes
+	if (!clean_str)
 	{
 		fprintf(stderr, "minishell: %s: `%s': not a valid identifier\n", 
-				cmd, clean_str);
-		free(clean_str);
+				cmd, str);
 	}
 	else
 		fprintf(stderr, "minishell: %s: invalid argument\n", cmd);
@@ -103,17 +76,12 @@ int	search_variable(t_env **current, char *str)
 	t_env	*temp;
 	int		i;
 	char	*var_name;
-	char	*clean_str;
 
-	clean_str = remove_quotes(str);
-	if (!clean_str)
-		return (0);
 	i = 0;
 	temp = *current;
-	while (clean_str[i] && clean_str[i] != '=')
+	while (str[i] && str[i] != '=')
 		i++;
-	var_name = ft_strndup(clean_str, i);
-	free(clean_str);
+	var_name = ft_strndup(str, i);
 	if (!var_name)
 		return (0);
 	while (temp)
@@ -134,13 +102,8 @@ char	*get_var_value(char *str)
 {
 	char	**value;
 	char	*result;
-	char	*clean_str;
-
-	clean_str = remove_quotes(str);
-	if (!clean_str)
-		return (NULL);
-	value = ft_split_env(clean_str, '=');
-	free(clean_str);
+	
+	value = ft_split_env(str, '=');
 	if (!value)
 		return (NULL);
 	result = value[1];
@@ -154,14 +117,9 @@ t_env	*add_new_node(char *arg, t_env *env_list)
 	t_env	*new_node;
 	t_env	*current;
 	char	**value;
-	char	*clean_arg;
 
 	current = env_list;
-	clean_arg = remove_quotes(arg);
-	if (!clean_arg)
-		return (NULL);
-	value = ft_split_env(clean_arg, '=');
-	free(clean_arg);
+	value = ft_split_env(arg, '=');
 	if (!value)
 		return (NULL);
 	new_node = malloc(sizeof(t_env));
@@ -185,18 +143,10 @@ t_env	*add_new_node(char *arg, t_env *env_list)
 static int	process_existing_var(t_env *current, char *arg)
 {
 	char	*new_val;
-	char	*clean_arg;
-
-	clean_arg = remove_quotes(arg);
-	if (!clean_arg)
-		return (1);
-	if (!ft_strchr(clean_arg, '='))
-	{
-		free(clean_arg);
+	
+	if (!ft_strchr(arg, '='))
 		return (0);
-	}
 	new_val = get_var_value(arg);
-	free(clean_arg);
 	if (!new_val)
 		return (1);
 	if (current->value)
@@ -205,50 +155,38 @@ static int	process_existing_var(t_env *current, char *arg)
 	return (0);
 }
 
-static int	process_export_arg(t_token *data, char *arg)
+static int	process_export_arg(char *arg, t_env *env_list)
 {
 	t_env	*current;
-	char	*clean_arg;
 
 	if (!valid_variable(arg))
 	{
 		error_message("export", arg);
 		return (1);
 	}
-	current = data->env_list;
+	current = env_list;
 	if (search_variable(&current, arg))
 		return (process_existing_var(current, arg));
 	else
 	{
-		clean_arg = remove_quotes(arg);
-		if (!clean_arg)
+		if (!add_new_node(arg, env_list))
 			return (1);
-		if (ft_strchr(clean_arg, '='))
-		{
-			free(clean_arg);
-			if (!add_new_node(arg, data->env_list))
-				return (1);
-		}
-		else
-			free(clean_arg);
 	}
 	return (0);
 }
 
-int	ft_export(t_token *data)
+int	ft_export(t_token *data, t_extra x)
 {
 	int		i;
-	int		ret;
 
 	i = 1;
-	ret = 0;
 	if (!data->c_arg[i])
 		return (0);
 	while (data->c_arg[i])
 	{
-		if (process_export_arg(data, data->c_arg[i]))
-			ret = 1;
+		if (process_export_arg(data->c_arg[i], x.env_list))
+			x.exit_status = 1;
 		i++;
 	}
-	return (ret);
+	return (x.exit_status);
 }

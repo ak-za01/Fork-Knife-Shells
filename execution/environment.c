@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:53:28 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/02 18:50:52 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/11 22:44:17 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,17 @@ t_env	*create_env_list(char **env)
 	return (env_list);
 }
 
-int	ft_env(t_token	*data)
+int	ft_env(t_token	*data, t_extra x)
 {
 	t_env	*current;
 
-	if (!data->env_list || data->c_arg[1])
+	if (!x.env_list || data->c_arg[1])
 		return (SUCCESS);
-	current = data->env_list;
+	current = x.env_list;
 	while (current)
 	{
-		printf("%s=%s\n", current->name, current->value);
+		if (current->value && current->name)
+			printf("%s=%s\n", current->name, current->value);
 		current = current->next;
 	}
 	return (SUCCESS);

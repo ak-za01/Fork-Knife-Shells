@@ -6,6 +6,7 @@
 		"builtins.h": "c",
 		"libft.h": "c",
 		"unistd.h": "c",
-		"stdlib.h": "c"
+		"stdlib.h": "c",
+		"complex": "c"
 	}
 }
