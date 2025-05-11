@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 02:45:32 by aakritah          #+#    #+#             */
-/*   Updated: 2025/05/01 20:18:12 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/11 08:43:01 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,13 @@ typedef struct s_env
 	char				*value;
 	struct				s_env *next;
 }						t_env;
+
+typedef struct s_extra
+{
+	t_env *env_list;
+	int exit_num;
+	
+}				t_extra;
 
 typedef struct s_token
 {

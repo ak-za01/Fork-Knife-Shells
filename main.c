@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:28 by aakritah          #+#    #+#             */
-/*   Updated: 2025/05/06 21:49:26 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/11 08:50:00 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,12 @@ int	main(int ac, char **av, char **env)
 {
 	char	*str;
 	t_token	*data;
-	t_env	*env_list;
+	t_extra  x;
 
 	atexit(leaks);
-	env_list = create_env_list(env);
 	((void)ac, (void)av);
+	x.env_list = create_env_list(env);
+	x.exit_num = 0;
 	while (1)
 	{
 		str = readline(MAGENTA "Minishell > " RESET);
@@ -29,10 +30,9 @@ int	main(int ac, char **av, char **env)
 			data = ft_parse(str);
 			if (data)
 			{
-				data->env_list = env_list;
 				// ft_print_list(data);
 				if (data->type == b_cmd_t)
-				exec_builtin(data);
+					exec_builtin(data); // pass env here
 				add_history(str);
 				ft_free_list(&data);
 			}
@@ -41,6 +41,6 @@ int	main(int ac, char **av, char **env)
 			break ;
 		free(str);
 	}
-	free_env_list(&env_list);
+	free_env_list(&x);
 	return (0);
 }

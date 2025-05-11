@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 21:46:46 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/02 15:57:49 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/11 08:49:09 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int ft_exit(t_token	*data);
 // //	Helper functions
 int		exec_builtin(t_token *data);
 t_env	*create_env_list(char **env);
-void	free_env_list(t_env **env_list);
+void	free_env_list(t_extra *x);
 char	**ft_split_env(char const *s, char c);
 // char *get_env_value(t_env *env_list, char *name);
 

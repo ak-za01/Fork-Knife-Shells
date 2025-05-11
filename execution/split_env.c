@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 22:44:05 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/02 13:52:41 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/11 08:46:10 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,18 +72,20 @@ char	**ft_split_env(char const *s, char c)
 	return (result);
 }
 
-void	free_env_list(t_env **env_list)
+void	free_env_list(t_extra *x)
 {
-	t_env	*tmp;
-
-	if (!env_list)
+	t_env *ptr=x->env_list;
+	t_env *tmp;
+	
+	if (!ptr)
 		return ;
-	while (*env_list)
+	while (ptr)
 	{
-		tmp = (*env_list);
-		(*env_list) = (*env_list)->next;
+		tmp = (ptr);
+		(ptr) = (ptr)->next;
 		free(tmp->name);
 		free(tmp->value);
 		free(tmp);
 	}
+	return ;
 }
