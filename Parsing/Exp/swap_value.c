@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   swap_value.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 19:23:53 by noctis            #+#    #+#             */
-/*   Updated: 2025/05/12 12:32:36 by noctis           ###   ########.fr       */
+/*   Updated: 2025/05/12 17:47:42 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_swap_value(int i, char *ptr, t_extra *x)
 	int (s_q), (d_q), f = 0;
 	s_q = 0;
 	d_q = 0;
-	t = malloc(ft_calcul_total_len(0, ptr, x->env_list) + 1);
+	t = malloc(ft_calcul_total_len(0, ptr, x) + 1);
 	if (!t)
 		return (NULL);
 	while (*ptr)
@@ -32,7 +32,7 @@ char	*ft_swap_value(int i, char *ptr, t_extra *x)
 		{
 			var = (ptr++, ft_get_expand_name(&ptr, &f));
 			if (f == 1)
-				(ft_handle_special_char(x->env_list, var, t, &i), free(var));
+				(ft_handle_special_char(x, var, t, &i), free(var));
 			else
 				(ft_copy_exp_value(x->env_list, var, t, &i), free(var));
 		}
@@ -108,12 +108,12 @@ void	ft_copy_exp_value(t_env *env_list, char *var, char *t, int *i)
 	}
 }
 
-void	ft_handle_special_char(t_env *env_list, char *var, char *t, int *i)
+void	ft_handle_special_char(t_extra *x, char *var, char *t, int *i)
 {
 	(void)var;
 	(void)t;
 	(void)i;
-	(void)env_list;
+	(void)x;
 	// if (ft_strcmp(var, "?") == 0)
 	// {
 	// 	// extern int g_exit_status;

@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:28 by aakritah          #+#    #+#             */
-/*   Updated: 2025/05/12 17:32:44 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/12 17:41:41 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ int	main(int ac, char **av, char **env)
 				// ft_print_list(data);
 				if (data->type == b_cmd_t)
 					exec_builtin(data, x);
-				add_history(str);
 				ft_free_list(&data);
 			}
+			add_history(str);
 		}
 		else if (!str)
 			break ;
