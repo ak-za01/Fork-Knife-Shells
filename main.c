@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:28 by aakritah          #+#    #+#             */
-/*   Updated: 2025/05/12 13:09:35 by noctis           ###   ########.fr       */
+/*   Updated: 2025/05/12 15:39:12 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ int	main(int ac, char **av, char **env)
 			data = ft_parse(str, &x);
 			if (data)
 			{
-				// ft_print_list(data);
-				if (data->type == b_cmd_t)
-					exec_builtin(data, x);
+				ft_print_list(data);
+				// if (data->type == b_cmd_t)
+				// 	exec_builtin(data, x);
 				add_history(str);
 				ft_free_list(&data);
 			}
