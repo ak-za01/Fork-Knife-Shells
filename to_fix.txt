@@ -11,6 +11,17 @@ bash: export: `=test': not a valid identifier
 
 
 status : not fixed
+
+------------------------------------------------------------------
+
+Minishell > export t="|"
+minishell: export: `|': not a valid identifier
+
+[noctis@Ayoubikre Desktop]$ export t="|"
+[noctis@Ayoubikre Desktop]$ echo $t
+|
+
+
 ------------------------------------------------------------------
 
 
