@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 09:31:09 by aakritah          #+#    #+#             */
-/*   Updated: 2025/05/12 12:13:05 by noctis           ###   ########.fr       */
+/*   Updated: 2025/05/12 17:39:26 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,17 @@ int	ft_expanding_list(t_token **data, t_extra *x)
 	while (ptr->type != end_t)
 	{
 		if (ft_check(ptr->value))
+		// {
 			ptr->f = 1;
-		t = ft_strdup(ptr->value);
-		if (!t)
-			return (-1);
-		free(ptr->value);
-		ptr->value = ft_swap_value(0, t, x);
-		if (!ptr->value)
-			return (-1);
-		free(t);
+			t = ft_strdup(ptr->value);
+			if (!t)
+				return (-1);
+			free(ptr->value);
+			ptr->value = ft_swap_value(0, t, x);
+			if (!ptr->value)
+				return (-1);
+			free(t);
+		// }
 		ptr = ptr->next;
 	}
 	return (0);
