@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:26 by aakritah          #+#    #+#             */
-/*   Updated: 2025/05/01 18:32:35 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/05/12 12:48:26 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 // delet later
 # include "../libs/42_Libft/libft.h"
 # include "./parse.h"
+# include "./builtins.h"
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>

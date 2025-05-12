@@ -1,58 +1,55 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils1.c                                           :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/04 02:59:30 by aakritah          #+#    #+#             */
-/*   Updated: 2025/05/12 09:18:47 by noctis           ###   ########.fr       */
+/*   Created: 2025/05/12 07:59:14 by noctis            #+#    #+#             */
+/*   Updated: 2025/05/12 12:21:08 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/main.h"
 #include "../../include/parse.h"
 
-void	ft_free(char **t)
+int	ft_check(char *t)
 {
 	int	i;
 
 	i = 0;
 	while (t[i])
 	{
-		free(t[i]);
+		if (t[i] == '$')
+			return (1);
 		i++;
 	}
-	free(t);
-}
-
-void	ft_free2(char **t, int s)
-{
-	int	i;
-
 	i = 0;
-	while (i < s)
+	while (t[i])
 	{
-		free(t[i]);
+		if (t[i] == '\"' || t[i] == '\'')
+			return (1);
 		i++;
 	}
-	free(t);
+	return (0);
 }
 
-char	**ft_set_charset(void)
+int	ft_strlen_2(char **t)
 {
-	char	**charset;
+	int	s;
 
-	charset = malloc(sizeof(char *) * 8);
-	if (!charset)
-		return (NULL);
-	charset[0] = ">>";
-	charset[1] = "<<";
-	charset[2] = ">";
-	charset[3] = "<";
-	charset[4] = "|";
-	charset[5] = "\"";
-	charset[6] = "\'";
-	charset[7] = NULL;
-	return (charset);
+	s = 0;
+	while (t[s])
+		s++;
+	return (s);
+}
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	while (*s1 && *s2 && *s1 == *s2)
+	{
+		s1++;
+		s2++;
+	}
+	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }

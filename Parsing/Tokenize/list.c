@@ -6,7 +6,7 @@
 /*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 07:10:20 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/29 00:53:19 by noctis           ###   ########.fr       */
+/*   Updated: 2025/05/12 10:26:16 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ t_token	*ft_creat_new_list(char *str, t_token_type type)
 		n->value = ft_strdup(str);
 	n->type = type;
 	n->prec = -1;
+	n->f = 0;
+	n->arg_s = 0;
 	n->c_arg = NULL;
+	n->red_s = 0;
 	n->c_red = NULL;
 	n->next = NULL;
 	n->prev = NULL;
@@ -92,9 +95,9 @@ void	ft_free_list(t_token **data)
 		if (ptr->value)
 			free(ptr->value);
 		if (ptr->c_arg)
-			ft_free(ptr->c_arg);
+			ft_free2(ptr->c_arg, ptr->arg_s);
 		if (ptr->c_red)
-			ft_free(ptr->c_red);
+			ft_free2(ptr->c_red, ptr->red_s);
 		free(ptr);
 	}
 }

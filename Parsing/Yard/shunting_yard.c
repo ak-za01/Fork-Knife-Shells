@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shunting_yard.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 23:43:02 by noctis            #+#    #+#             */
-/*   Updated: 2025/05/01 18:40:03 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/05/11 23:41:51 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_shunting_yard(t_token **data)
 
 	a = NULL;
 	b = NULL;
-	set_precedence(data);
+	ft_set_precedence(data);
 	while (*data)
 		ft_move_list_shunting_yard(data, &a, &b);
 	while (b)
@@ -30,7 +30,7 @@ void	ft_shunting_yard(t_token **data)
 	return ;
 }
 
-void	set_precedence(t_token **data)
+void	ft_set_precedence(t_token **data)
 {
 	t_token	*ptr;
 

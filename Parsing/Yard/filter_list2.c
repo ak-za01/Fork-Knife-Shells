@@ -6,7 +6,7 @@
 /*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 08:39:32 by noctis            #+#    #+#             */
-/*   Updated: 2025/04/29 00:55:32 by noctis           ###   ########.fr       */
+/*   Updated: 2025/05/12 12:28:33 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,28 +43,28 @@ int	ft_filter_list2(t_token **data)
 
 int	ft_filter_search(t_token *ptr)
 {
-	int	f1;
-	int	f2;
+	int	found_cmd;
+	int	found_red;
 
 	if (!ptr)
 		return (0);
-	f1 = 0;
-	f2 = 0;
+	found_cmd = 0;
+	found_red = 0;
 	while (ptr && ptr->type != pipe_t)
 	{
 		if (ptr->type == cmd_t || ptr->type == b_cmd_t)
 		{
-			f1 = 1;
+			found_cmd = 1;
 		}
 		if (0 < ptr->type && ptr->type <= 5)
 		{
-			f2 = 1;
+			found_red = 1;
 		}
 		ptr = ptr->next;
 	}
-	if (f1 == 1 && f2 == 1)
+	if (found_cmd == 1 && found_red == 1)
 		return (1);
-	if (f1 == 0 && f2 == 1)
+	if (found_cmd == 0 && found_red == 1)
 		return (2);
 	return (0);
 }
@@ -72,15 +72,14 @@ int	ft_filter_search(t_token *ptr)
 int	ft_filter_cas_1(t_token **ptr)
 {
 	t_token	*tmp1;
-	int		count;
-	int		i;
 
-	i = 0;
+	int (count), i = 0;
 	tmp1 = *ptr;
 	count = ft_count_arg_node(tmp1, 2);
 	while (tmp1 && !(tmp1->type == cmd_t || tmp1->type == b_cmd_t))
 		tmp1 = tmp1->next;
-	tmp1->c_red = malloc((count + 1) * sizeof(char *));
+	tmp1->red_s = count;
+	tmp1->c_red = malloc((tmp1->red_s + 1) * sizeof(char *));
 	if (!tmp1->c_red)
 		return (-1);
 	while (*ptr && (*ptr)->type != pipe_t)
@@ -88,8 +87,6 @@ int	ft_filter_cas_1(t_token **ptr)
 		if (!((*ptr)->type == cmd_t || (*ptr)->type == b_cmd_t))
 		{
 			tmp1->c_red[i] = ft_strdup((*ptr)->value);
-			if (!tmp1->c_red[i])
-				return (-1);
 			i++;
 		}
 		(*ptr) = (*ptr)->next;
@@ -107,14 +104,13 @@ int	ft_filter_cas_2(t_token **ptr)
 	i = 0;
 	tmp1 = *ptr;
 	count = ft_count_arg_node(tmp1, 2);
+	(*ptr)->red_s = count;
 	(*ptr)->c_red = malloc((count + 1) * sizeof(char *));
 	if (!(*ptr)->c_red)
 		return (-1);
 	while (tmp1 && tmp1->type != pipe_t)
 	{
 		(*ptr)->c_red[i] = ft_strdup(tmp1->value);
-		if (!(*ptr)->c_red[i])
-			return (-1);
 		i++;
 		tmp1 = tmp1->next;
 	}
@@ -135,7 +131,7 @@ void	ft_free_arg_node2(t_token **data)
 	while (ptr)
 	{
 		tmp = ptr->next;
-		if (0 < ptr->type && ptr->type < 6)
+		if ((0 < ptr->type && ptr->type <= 5) || ptr->type == ambiguous_t)
 		{
 			if (ptr->prev)
 				ptr->prev->next = tmp;
@@ -146,9 +142,9 @@ void	ft_free_arg_node2(t_token **data)
 			if (ptr->value)
 				free(ptr->value);
 			if (ptr->c_arg)
-				ft_free(ptr->c_arg);
+				ft_free2(ptr->c_arg, ptr->arg_s);
 			if (ptr->c_red)
-				ft_free(ptr->c_red);
+				ft_free2(ptr->c_red, ptr->red_s);
 			free(ptr);
 		}
 		ptr = tmp;

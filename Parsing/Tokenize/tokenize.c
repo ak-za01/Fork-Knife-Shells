@@ -6,7 +6,7 @@
 /*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 07:07:00 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/29 00:21:34 by noctis           ###   ########.fr       */
+/*   Updated: 2025/05/12 11:37:37 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_tokenize(char *str, t_token **data)
 {
 	if (ft_initialize_list(str, data) < 0)
 		return (ft_put_error_tokens(0, 2), -1);
-	ft_set_tokens(data);
+	ft_set_tokens_befor_expanding(data);
 	if (ft_validat_list(data) < 0)
 		return (-1);
 	return (0);

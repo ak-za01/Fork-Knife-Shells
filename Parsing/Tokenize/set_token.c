@@ -6,14 +6,14 @@
 /*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:02:17 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/28 06:41:29 by noctis           ###   ########.fr       */
+/*   Updated: 2025/05/12 07:23:25 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/main.h"
 #include "../../include/parse.h"
 
-void	ft_set_tokens(t_token **data)
+void	ft_set_tokens_befor_expanding(t_token **data)
 {
 	t_token	*ptr;
 	int		f;

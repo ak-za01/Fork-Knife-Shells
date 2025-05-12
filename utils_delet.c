@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_delet.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 02:49:05 by aakritah          #+#    #+#             */
-/*   Updated: 2025/05/01 18:42:58 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/05/12 12:37:09 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	leaks(void)
 
 // ----------------------------------------------------
 
-static void	ft_print_tab2(char **arr, const char *label)
+static void	ft_print_tab2(int s, char **arr, const char *label)
 {
 	int	i;
 
@@ -31,10 +31,10 @@ static void	ft_print_tab2(char **arr, const char *label)
 		return ;
 	}
 	i = 0;
-	while (arr[i])
+	while (i < s)
 	{
 		printf("%s", arr[i]);
-		if (arr[i + 1])
+		if (i + 1 < s)
 			printf(YELLOW " | " RESET);
 		i++;
 	}
@@ -61,8 +61,9 @@ void	ft_print_list(t_token *data)
 			printf(" \t" CYAN "%-8s:" RESET " " YELLOW "None" RESET "\n",
 				"CMD");
 		printf("\t" CYAN "%-8s:" RESET " %d\n", "Token", data->type);
-		ft_print_tab2(data->c_arg, "Args");
-		ft_print_tab2(data->c_red, "Redirs");
+		printf("\t" CYAN "%-8s:" RESET " %d\n", "expand", data->f);
+		ft_print_tab2(data->arg_s, data->c_arg, "Args");
+		ft_print_tab2(data->red_s, data->c_red, "Redirs");
 		printf("\n");
 		data = data->next;
 	}
