@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 07:32:22 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/02 12:20:16 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/12 12:51:00 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,6 @@ int is_n_flag(char *str)
         str++;
     }
     return (1);
-}
-
-int ft_strcmp(const char *s1, const char *s2)
-{
-    while (*s1 && *s2 && *s1 == *s2)
-    {
-        s1++;
-        s2++;
-    }
-    return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }
 
 void print_expanded_arg(char *arg, t_env *env_list)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 02:59:30 by aakritah          #+#    #+#             */
-/*   Updated: 2025/05/01 13:44:48 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/05/12 09:18:47 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,19 @@ void	ft_free(char **t)
 
 	i = 0;
 	while (t[i])
+	{
+		free(t[i]);
+		i++;
+	}
+	free(t);
+}
+
+void	ft_free2(char **t, int s)
+{
+	int	i;
+
+	i = 0;
+	while (i < s)
 	{
 		free(t[i]);
 		i++;

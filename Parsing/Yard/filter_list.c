@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   filter_list.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:47:36 by aakritah          #+#    #+#             */
-/*   Updated: 2025/04/30 17:25:58 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/05/12 09:17:56 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ int	ft_filter_list(t_token **data)
 	ptr = *data;
 	while (ptr)
 	{
-		if (ptr->type == cmd_t || ptr->type == b_cmd_t)
+		if (ptr->type == cmd_t || ptr->type == b_cmd_t || ptr->type == skip_t)
 		{
-			ptr->c_arg = malloc(sizeof(char *) * (ft_count_arg_node(ptr, 1)
-						+ 1));
+			ptr->arg_s = ft_count_arg_node(ptr, 1);
+			ptr->c_arg = malloc(sizeof(char *) * (ptr->arg_s + 1));
 			if (!ptr->c_arg)
 				return (-1);
 			if (ft_copy_arg_node(ptr) == -1)
@@ -76,7 +76,7 @@ long	ft_count_arg_node(t_token *ptr, int f)
 		count = 0;
 		while (ptr && ptr->type != pipe_t)
 		{
-			if (0 < ptr->type && ptr->type <= 5)
+			if ((0 < ptr->type && ptr->type <= 5) || ptr->type == ambiguous_t)
 				count++;
 			ptr = ptr->next;
 		}
@@ -93,7 +93,7 @@ int	ft_copy_arg_node(t_token *ptr)
 	tmp = ptr;
 	while (tmp && tmp->type != pipe_t)
 	{
-		if (6 <= tmp->type && tmp->type <= 8)
+		if ((6 <= tmp->type && tmp->type <= 8) || tmp->type == skip_t)
 		{
 			ptr->c_arg[i] = ft_strdup(tmp->value);
 			if (!ptr->c_arg[i])
@@ -126,9 +126,9 @@ void	ft_free_arg_node(t_token **data)
 			if (ptr->value)
 				free(ptr->value);
 			if (ptr->c_arg)
-				ft_free(ptr->c_arg);
+				ft_free2(ptr->c_arg, ptr->arg_s);
 			if (ptr->c_red)
-				ft_free(ptr->c_red);
+				ft_free2(ptr->c_red, ptr->red_s);
 			free(ptr);
 		}
 		ptr = tmp;
