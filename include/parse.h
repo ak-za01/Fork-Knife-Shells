@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 02:45:32 by aakritah          #+#    #+#             */
-/*   Updated: 2025/05/12 12:43:35 by noctis           ###   ########.fr       */
+/*   Updated: 2025/05/12 17:49:45 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,11 @@ int						ft_check_ptr_value(char c, int f);
 char					*ft_get_expand_name(char **ptr, int *f);
 void					ft_copy_exp_value(t_env *env_list, char *var, char *t,
 							int *i);
-void					ft_handle_special_char(t_env *env_list, char *var,
+void					ft_handle_special_char(t_extra *x, char *var,
 							char *t, int *i);
 int						ft_toggle_quote(char **ptr, int *s_q, int *d_q);
 int						ft_calculs_exp_len(t_env *env_list, char *var);
-int						ft_calcul_total_len(int s, char *ptr, t_env *env_list);
+int						ft_calcul_total_len(int s, char *ptr, t_extra *x);
 int						ft_calcul_var_len(char *ptr);
 int						ft_calcul_sepcial_len(char *var, t_env *env_list);
 int						ft_fix_list(t_token **data);

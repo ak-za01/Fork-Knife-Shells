@@ -1,0 +1,12 @@
+{
+	"files.associations": {
+		"parse.h": "c",
+		"main.h": "c",
+		"string.h": "c",
+		"builtins.h": "c",
+		"libft.h": "c",
+		"unistd.h": "c",
+		"stdlib.h": "c",
+		"complex": "c"
+	}
+}

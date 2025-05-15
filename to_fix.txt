@@ -12,20 +12,29 @@ bash: export: `=test': not a valid identifier
 
 status : not fixed
 
+
 ------------------------------------------------------------------
 
 Minishell > export t="|"
-minishell: export: `|': not a valid identifier
+minishell: export: `|` : not a valid identifier
+
+Minishell > export t=">"
+minishell: export: `>`: not a valid identifier
 
 [noctis@Ayoubikre Desktop]$ export t="|"
 [noctis@Ayoubikre Desktop]$ echo $t
-|
+    |
+
+status : not fixed
 
 
-------------------------------------------------------------------
 
+
+
+
+
+                |------------ others : ------------|
 
 fix add history if the comand fail
 
-
-fix the status exist in the expanding -> ft_handle_special_char
+fix the status exist in the expanding -> ft_handle_special_char() and ft_calcul_sepcial_len()

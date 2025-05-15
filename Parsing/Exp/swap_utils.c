@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   swap_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 22:33:44 by noctis            #+#    #+#             */
-/*   Updated: 2025/05/12 12:33:09 by noctis           ###   ########.fr       */
+/*   Updated: 2025/05/12 17:49:13 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_calculs_exp_len(t_env *env_list, char *var)
 	return (0);
 }
 
-int	ft_calcul_total_len(int s, char *ptr, t_env *env_list)
+int	ft_calcul_total_len(int s, char *ptr, t_extra *x)
 {
 	char	*var;
 
@@ -61,9 +61,9 @@ int	ft_calcul_total_len(int s, char *ptr, t_env *env_list)
 		{
 			var = (ptr++, ft_get_expand_name(&ptr, &f));
 			if (f == 1)
-				s += ft_calcul_sepcial_len(var, env_list);
+				s += ft_calcul_sepcial_len(var, x->env_list);
 			else
-				s += ft_calculs_exp_len(env_list, var);
+				s += ft_calculs_exp_len(x->env_list, var);
 			free(var);
 		}
 		else
