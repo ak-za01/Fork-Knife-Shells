@@ -59,6 +59,10 @@ EXECUTION =	./execution/builtins.c \
 			./execution/environment.c \
 			./execution/split_env.c \
 			./execution/export.c \
+			./execution/export_utils.c \
+			./execution/export_utils2.c \
+			./execution/unset.c \
+			./execution/cd.c \
 
 SRC =	${PARSING} \
 		${EXECUTION} \

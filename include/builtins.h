@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 21:46:46 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/11 20:26:18 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/16 19:54:41 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,9 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <string.h>
+# include <errno.h>
+# include <signal.h>
 # include "main.h"
-
-// Struct for environment variables
-// typedef struct s_env
-// {
-//     char *name;
-//     char *value;
-//     struct s_env *next;
-// } t_env;
 
 // Return values
 # define SUCCESS 0
@@ -33,10 +27,10 @@
 
 // Built-in function prototypes
 int ft_echo(t_token	*data);
-// int ft_cd(t_token	*data, t_env *env_list);
+int ft_cd(char **c_args, t_extra x);
 int ft_pwd(void);
 int ft_export(t_token *data, t_extra x);
-// int ft_unset(t_token	*data, t_env **env_list);
+int ft_unset(t_token *data, t_extra x);
 int ft_env(t_token	*data, t_extra x);
 int ft_exit(t_token	*data, t_extra x);
 
@@ -45,6 +39,15 @@ int		exec_builtin(t_token *data, t_extra x);
 t_env	*create_env_list(char **env);
 void	free_env_list(t_extra *x);
 char	**ft_split_env(char const *s, char c);
+
+// //	Helper functions for export
+int		search_variable(t_env **current, char *str);
+t_env	*add_new_node(char *arg, t_env *env_list);
+int		valid_variable(char *str);
+void	sort_env_list(t_env *env_list, t_env **original, t_env **added);
+void	print_export(t_env *env_list);
+void	print_env_node(t_env *node);
+void	free_temp_env(t_env *node);
 // char *get_env_value(t_env *env_list, char *name);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 02:45:32 by aakritah          #+#    #+#             */
-/*   Updated: 2025/05/12 17:49:45 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/15 17:44:41 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_env
 {
 	char				*name;
 	char				*value;
+	int					original;
 	struct s_env		*next;
 }						t_env;
 
