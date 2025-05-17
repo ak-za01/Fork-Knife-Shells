@@ -1,13 +1,23 @@
 
-
                 |------------ export : ------------|
 
 
-export $1=test
-minishell: export: `$1=test': not a valid identifier
+[noctis@Ayoubikre ~]$ export $1=
+bash: export: `=': not a valid identifier
+[noctis@Ayoubikre ~]$ export =
+bash: export: `=': not a valid identifier
+[noctis@Ayoubikre ~]$ export =asd
+bash: export: `=asd': not a valid identifier
+[noctis@Ayoubikre ~]$ export $asdf=asd
+bash: export: `=asd': not a valid identifier
 
-bash-3.2$ export $1=test
-bash: export: `=test': not a valid identifier
+Minishell > export =
+Minishell > export =as
+Minishell > export $asdf=as
+Minishell > export $1=
+
+Minishell > export "" 
+minishell: export: `'`: not a valid identifier
 
 
 status : not fixed
@@ -15,26 +25,55 @@ status : not fixed
 
 ------------------------------------------------------------------
 
-Minishell > export t="|"
-minishell: export: `|` : not a valid identifier
+                |------------ cd : ------------|
 
-Minishell > export t=">"
-minishell: export: `>`: not a valid identifier
+cd ~
+cd ~/D...
 
-[noctis@Ayoubikre Desktop]$ export t="|"
-[noctis@Ayoubikre Desktop]$ echo $t
-    |
+Minishell > cd
+cd: missing argument
+
+minishell > unset HOME
+minishell > cd
+minishell: cd: HOME not set
+
+// set bothe to the home directory value in the env list .  in case of unsiting it return 1 as exit status
 
 status : not fixed
 
 
+------------------------------------------------------------------
 
+                |------------ exit : ------------|
 
+exit status of negaitve numbers not handled
 
+[noctis@Ayoubikre ~]$ echo $?
+0
+[noctis@Ayoubikre ~]$ exit -1 adf asd
+exit
+bash: exit: too many arguments
+[noctis@Ayoubikre ~]$ echo $?
+1
+[noctis@Ayoubikre ~]$ exit a adf asd
+exit
+bash: exit: a: numeric argument required
 
+❯ echo $?
+2
 
-                |------------ others : ------------|
+// check if the N. dost pass long_max /long_min
 
-fix add history if the comand fail
+------------------------------------------------------------------
 
-fix the status exist in the expanding -> ft_handle_special_char() and ft_calcul_sepcial_len()
+                |------------ parsing : ------------|
+
+Minishell > echo $"""a"
+$a    
+[noctis@Ayoubikre ~]$ echo $"""a"
+a
+
+// fix quots withe more that 1 word "adf asd"
+
+// fix/print the status exist in the expanding -> ft_handle_special_char() and ft_calcul_sepcial_len()
+
