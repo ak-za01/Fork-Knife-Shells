@@ -66,6 +66,16 @@ bash: exit: a: numeric argument required
 
 ------------------------------------------------------------------
 
+                |------------ env : ------------|
+
+Minishell > env afjao fdas
+Minishell > 
+
+
+// env should work no mater the argument count type
+
+------------------------------------------------------------------
+
                 |------------ parsing : ------------|
 
 Minishell > echo $"""a"
