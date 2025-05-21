@@ -1,6 +1,5 @@
 |------------ unset : ------------|
 
-
 [noctis@Ayoubikre ~]$ unset $1=
 bash: unset: `=': not a valid identifier
 [noctis@Ayoubikre ~]$ unset =
@@ -32,8 +31,30 @@ Minishell > cd
 status : not fixed
 
 
+------------------------------------------------------------------
 
------------------------------------------------------------------
+                |------------ exit : ------------|
+
+# exit status of negaitve numbers not handled
+
+# [noctis@Ayoubikre ~]$ echo $?
+# 0
+# [noctis@Ayoubikre ~]$ exit -1 adf asd
+# exit
+# bash: exit: too many arguments
+# [noctis@Ayoubikre ~]$ echo $?
+# 1
+# [noctis@Ayoubikre ~]$ exit a adf asd
+# exit
+# bash: exit: a: numeric argument required
+
+# ❯ echo $?
+# 2
+
+// check if the N. dost pass long_max /long_min
+
+
+------------------------------------------------------------------
 
                 |------------ parsing : ------------|
 
