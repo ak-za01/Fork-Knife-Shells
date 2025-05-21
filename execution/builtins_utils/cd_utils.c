@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/16 18:27:50 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/16 19:52:13 by anktiri          ###   ########.fr       */
+/*   Created: 2025/05/21 11:26:23 by anktiri           #+#    #+#             */
+/*   Updated: 2025/05/21 11:31:40 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/builtins.h"
+#include "../../include/builtins.h"
 
-int	var_exist(t_env *env_list, char *name)
+static int	var_exist(t_env *env_list, char *name)
 {
 	t_env	*current;
 
@@ -26,7 +26,7 @@ int	var_exist(t_env *env_list, char *name)
 	return (0);
 }
 
-int	add_var(t_env *env_list, char *name, char *value)
+static int	add_var(t_env *env_list, char *name, char *value)
 {
 	t_env	*new_var;
 	t_env	*current;
@@ -55,7 +55,7 @@ int	add_var(t_env *env_list, char *name, char *value)
 	return (0);
 }
 
-int	update_var(t_env *env_list, char *name, char *dir)
+static int	update_var(t_env *env_list, char *name, char *dir)
 {
 	t_env	*current;
 
@@ -75,7 +75,7 @@ int	update_var(t_env *env_list, char *name, char *dir)
 	return (1);
 }
 
-static int	update_pwd(t_env *env_list, char *old_dir)
+int	update_pwd(t_extra x, char *old_dir)
 {
 	char	current[PATH_MAX];
 
@@ -83,48 +83,19 @@ static int	update_pwd(t_env *env_list, char *old_dir)
 	{
 		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd(strerror(errno), 2);
-		return (1);
+		return ((x.exit_status = 1));
 	}
-	if (!var_exist(env_list, "OLDPWD"))
+	if (!var_exist(x.env_list, "OLDPWD"))
 	{
-		if (add_var(env_list, "OLDPWD", old_dir))
-			return (1);
+		if (add_var(x.env_list, "OLDPWD", old_dir))
+			return ((x.exit_status = 1));
 	}
 	else 
 	{
-		if (update_var(env_list, "OLDPWD", old_dir))
-			return (1);
+		if (update_var(x.env_list, "OLDPWD", old_dir))
+			return ((x.exit_status = 1));
 	}
-	if (update_var(env_list, "PWD", current))
-		return (1);
-	return (0);
-}
-
-int	ft_cd(char **c_args, t_extra x)
-{
-	char	old_dir[PATH_MAX];
-
-	if (!c_args[1])
-	{
-		ft_putendl_fd("cd: missing argument", 2);
-		return (1);
-	}
-	if (!getcwd(old_dir, PATH_MAX))
-	{
-		ft_putstr_fd("cd: ", 2);
-		ft_putendl_fd(strerror(errno), 2);
-		return (1);
-	}
-	if (chdir(c_args[1]) != 0)
-	{
-		ft_putstr_fd("cd: ", 2);
-		if (errno == EACCES)
-			ft_putstr_fd("permission denied: ", 2);
-		else
-			ft_putstr_fd(strerror(errno), 2);
-		ft_putstr_fd(": ", 2);
-		ft_putendl_fd(c_args[1], 2);
-		return (1);
-	}
-	return (update_pwd(x.env_list, old_dir));
+	if (update_var(x.env_list, "PWD", current))
+		return ((x.exit_status = 1));
+	return ((x.exit_status = 0));
 }

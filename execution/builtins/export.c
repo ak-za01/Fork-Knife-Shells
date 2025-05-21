@@ -6,21 +6,22 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:50:37 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/16 18:41:01 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/21 11:39:36 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/builtins.h"
+#include "../../include/builtins.h"
 
 void	error_message(char *cmd, char *str)
 {
-	char	*clean_str = NULL;
+	char	*clean_str;
 
+	clean_str = NULL;
 	// clean_str = remove_quotes(str);
 	// later add a flag to detect if there are quotes
 	if (!clean_str)
 	{
-		ft_putstr_fd("minishell: ", 2);
+		// ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd, 2);
 		ft_putstr_fd(": `", 2);
 		ft_putstr_fd(str, 2);
@@ -34,7 +35,7 @@ char	*get_var_value(char *str)
 {
 	char	**value;
 	char	*result;
-	
+
 	value = ft_split_env(str, '=');
 	if (!value)
 		return (NULL);
@@ -47,7 +48,7 @@ char	*get_var_value(char *str)
 static int	process_existing_var(t_env *current, char *arg)
 {
 	char	*new_val;
-	
+
 	if (!ft_strchr(arg, '='))
 		return (0);
 	new_val = get_var_value(arg);
@@ -71,11 +72,8 @@ static int	process_export_arg(char *arg, t_env *env_list)
 	current = env_list;
 	if (search_variable(&current, arg))
 		return (process_existing_var(current, arg));
-	else
-	{
-		if (!add_new_node(arg, env_list))
-			return (1);
-	}
+	if (!add_new_node(arg, env_list))
+		return (1);
 	return (0);
 }
 

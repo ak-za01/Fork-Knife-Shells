@@ -6,11 +6,11 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 17:24:46 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/16 18:11:57 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/21 11:39:52 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/builtins.h"
+#include "../../include/builtins.h"
 
 void	free_temp_env(t_env *node)
 {

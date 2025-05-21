@@ -6,11 +6,11 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:53:28 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/15 17:51:10 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/21 11:39:26 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/builtins.h"
+#include "../../include/builtins.h"
 
 t_env	*create_env_list(char **env)
 {
@@ -45,8 +45,9 @@ int	ft_env(t_token	*data, t_extra x)
 {
 	t_env	*current;
 
-	if (!x.env_list || data->c_arg[1])
-		return (SUCCESS);
+	(void)data;
+	if (!x.env_list)
+		return (ERROR);
 	current = x.env_list;
 	while (current)
 	{

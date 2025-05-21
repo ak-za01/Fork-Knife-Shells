@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 21:46:46 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/16 19:54:41 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/21 12:09:11 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ void	sort_env_list(t_env *env_list, t_env **original, t_env **added);
 void	print_export(t_env *env_list);
 void	print_env_node(t_env *node);
 void	free_temp_env(t_env *node);
+
+int	update_pwd(t_extra x, char *old_dir);
+
 // char *get_env_value(t_env *env_list, char *name);
 
 #endif

@@ -54,15 +54,19 @@ PARSING  =	./main.c \
 			./Parsing/Utils/ft_split3.c \
 			./Parsing/Utils/utils1.c \
 
-EXECUTION =	./execution/builtins.c \
-			./execution/echo.c \
-			./execution/environment.c \
-			./execution/split_env.c \
-			./execution/export.c \
-			./execution/export_utils.c \
-			./execution/export_utils2.c \
-			./execution/unset.c \
-			./execution/cd.c \
+BUILTINS =	./execution/builtins/builtins.c \
+			./execution/builtins/cd.c \
+			./execution/builtins/echo.c \
+			./execution/builtins/environment.c \
+			./execution/builtins/exit.c \
+			./execution/builtins/export.c \
+			./execution/builtins/unset.c \
+			./execution/builtins_utils/cd_utils.c \
+			./execution/builtins_utils/export_utils.c \
+			./execution/builtins_utils/export_utils2.c \
+			./execution/builtins_utils/split_env.c \
+
+EXECUTION = ${BUILTINS} \
 
 SRC =	${PARSING} \
 		${EXECUTION} \

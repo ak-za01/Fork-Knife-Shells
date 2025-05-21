@@ -6,11 +6,11 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:49:14 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/16 18:17:55 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/21 11:39:48 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/builtins.h"
+#include "../../include/builtins.h"
 
 t_env	*add_new_node(char *arg, t_env *env_list)
 {
@@ -77,6 +77,8 @@ int	valid_variable(char *str)
 	valid = 1;
 	if (!str[i])
 		valid = 0;
+	else if (str[i] == '=')
+		valid = 0;
 	else if (ft_isdigit(str[0]))
 		valid = 0;
 	else
@@ -86,7 +88,7 @@ int	valid_variable(char *str)
 			if (!ft_isalnum(str[i]) && str[i] != '_')
 			{
 				valid = 0;
-				break;
+				break ;
 			}
 			i++;
 		}

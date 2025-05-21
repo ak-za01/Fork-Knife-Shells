@@ -6,11 +6,11 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:05:15 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/14 16:49:01 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/21 11:39:40 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/builtins.h"
+#include "../../include/builtins.h"
 
 int	remove_variable(char *arg, t_env *env_list)
 {
@@ -23,7 +23,7 @@ int	remove_variable(char *arg, t_env *env_list)
 	prev = NULL;
 	while (current)
 	{
-		if (!ft_strcmp(current->name , arg))
+		if (!ft_strcmp(current->name, arg))
 		{
 			if (prev)
 				prev->next = current->next;
@@ -40,7 +40,7 @@ int	remove_variable(char *arg, t_env *env_list)
 	return (1);
 }
 
-int ft_unset(t_token *data, t_extra x)
+int	ft_unset(t_token *data, t_extra x)
 {
 	int	i;
 
