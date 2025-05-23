@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:50:37 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/21 11:39:36 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/22 12:21:39 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	error_message(char *cmd, char *str)
 	// later add a flag to detect if there are quotes
 	if (!clean_str)
 	{
-		// ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd, 2);
 		ft_putstr_fd(": `", 2);
 		ft_putstr_fd(str, 2);

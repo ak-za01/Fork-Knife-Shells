@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 21:46:46 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/21 12:09:11 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/22 12:11:10 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int		exec_builtin(t_token *data, t_extra x);
 t_env	*create_env_list(char **env);
 void	free_env_list(t_extra *x);
 char	**ft_split_env(char const *s, char c);
+void	error_message(char *cmd, char *str);
 
 // //	Helper functions for export
 int		search_variable(t_env **current, char *str);

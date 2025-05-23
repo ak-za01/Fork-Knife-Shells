@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 18:27:50 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/21 11:39:18 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/22 11:48:55 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	handle_cd_tilde(t_extra x, char *old_dir, char *path)
 		ft_putendl_fd("cd: HOME not set", 2);
 		return ((x.exit_status = 1));
 	}
-	if (path[1])
+	if (path)
 	{
 		if (expand_tilde(home, path, old_dir, x))
 			return ((x.exit_status = 1));

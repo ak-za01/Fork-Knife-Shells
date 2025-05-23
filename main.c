@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:28 by aakritah          #+#    #+#             */
-/*   Updated: 2025/05/21 12:49:31 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/22 17:35:53 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	sig_handler(int signal)
 	{
 		printf("\n");
 		rl_on_new_line();
-		rl_replace_line(" ", 1);
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
@@ -41,7 +41,7 @@ int	main(int ac, char **av, char **env)
 	t_token	*data;
 	t_extra	x;
 
-	// atexit(leaks);
+	atexit(leaks);
 	((void)ac, (void)av);
 	signal_init();
 	x.env_list = create_env_list(env);

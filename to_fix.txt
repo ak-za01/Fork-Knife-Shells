@@ -1,21 +1,7 @@
-|------------ unset : ------------|
 
-[noctis@Ayoubikre ~]$ unset $1=
-bash: unset: `=': not a valid identifier
-[noctis@Ayoubikre ~]$ unset =
-bash: unset: `=': not a valid identifier
-[noctis@Ayoubikre ~]$ unset =asd
-bash: unset: `=asd': not a valid identifier
-[noctis@Ayoubikre ~]$ unset $asdf=asd
-bash: unset: `=asd': not a valid identifier
 
-Minishell > unset =
-Minishell > unset =as
-Minishell > unset $asdf=as
-Minishell > unset $1=
+                |------------ export : ------------|
 
-Minishell > unset "" 
-minishell: unset: `'`: not a valid identifier
 
 
 status : not fixed
@@ -23,46 +9,17 @@ status : not fixed
 
 ------------------------------------------------------------------
 
-                |------------ cd : ------------|
-
-Minishell > cd
-[3]    9659 segmentation fault  ./Minishell
 
 status : not fixed
 
 
-------------------------------------------------------------------
-
-                |------------ exit : ------------|
-
-# exit status of negaitve numbers not handled
-
-# [noctis@Ayoubikre ~]$ echo $?
-# 0
-# [noctis@Ayoubikre ~]$ exit -1 adf asd
-# exit
-# bash: exit: too many arguments
-# [noctis@Ayoubikre ~]$ echo $?
-# 1
-# [noctis@Ayoubikre ~]$ exit a adf asd
-# exit
-# bash: exit: a: numeric argument required
-
-# ❯ echo $?
-# 2
-
-// check if the N. dost pass long_max /long_min
 
 
-------------------------------------------------------------------
 
-                |------------ parsing : ------------|
 
-Minishell > echo $"""a"
-$a    
-[noctis@Ayoubikre ~]$ echo $"""a"
-a
 
-// fix quots withe more that 1 word "adf asd"
+                |------------ others : ------------|
 
-// fix/print the status exist in the expanding -> ft_handle_special_char() and ft_calcul_sepcial_len()
+fix add history if the comand fail
+
+fix the status exist in the expanding -> ft_handle_special_char() and ft_calcul_sepcial_len()
