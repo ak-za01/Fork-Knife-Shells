@@ -1,42 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/03 02:15:07 by aakritah          #+#    #+#             */
-/*   Updated: 2025/05/24 19:42:14 by anktiri          ###   ########.fr       */
+/*   Created: 2025/05/25 18:18:51 by anktiri           #+#    #+#             */
+/*   Updated: 2025/05/25 18:19:04 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/main.h"
-#include "../include/parse.h"
+#include "../../include/builtins.h"
 
-t_token	*ft_parse(char *str, t_extra *x)
+char	*ft_strjoin3(char *s1, char *s2, char *s3)
 {
-	t_token	*data;
+	char	*t;
+	int		s, i, j, k;  // Fixed syntax error
 
-	data = NULL;
-	if (ft_tokenize(str, &data) < 0)
-	{
-		ft_free_list(&data);
+	if (!s1 || !s2 || !s3)
 		return (NULL);
-	}
-	if (ft_expand(&data, x) < 0)
-	{
-		ft_free_list(&data);
+	s = ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3);
+	t = malloc(s + 1);
+	if (!t)
 		return (NULL);
-	}
-	if (ft_filter_list(&data) < 0)
+	i = 0;
+	while (s1[i] != '\0')
 	{
-		ft_free_list(&data);
-		return (NULL);
+		t[i] = s1[i];
+		i++;
 	}
-	if (ft_filter_list2(&data) < 0)
-	{
-		ft_free_list(&data);
-		return (NULL);
-	}
-	return (data);
+	j = 0;
+	while (s2[j] != '\0')
+		t[i++] = s2[j++];
+	k = 0;
+	while (s3[k] != '\0')
+		t[i++] = s3[k++];
+	t[i] = '\0';
+	return (t);
 }

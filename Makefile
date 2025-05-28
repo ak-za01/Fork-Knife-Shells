@@ -66,7 +66,12 @@ BUILTINS =	./execution/builtins/builtins.c \
 			./execution/builtins_utils/export_utils2.c \
 			./execution/builtins_utils/split_env.c \
 
+EXEC = 		./execution/exec/execution.c \
+			./execution/exec/exec_single.c \
+			./execution/exec/helpers.c \
+
 EXECUTION = ${BUILTINS} \
+			${EXEC} \
 
 SRC =	${PARSING} \
 		${EXECUTION} \
@@ -76,7 +81,7 @@ OBJC = $(SRC:%.c=%.o)
 libft_Dir = ./libs/42_Libft
 libft = $(libft_Dir)/libft.a
 
-NAME = Minishell
+NAME = minishell
 
 all: $(NAME) clean
 
