@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:49:14 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/21 11:39:48 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/30 21:57:18 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	valid_variable(char *str)
 	return (valid);
 }
 
-static void	print_env_list(t_env *list)
+void	print_env_list(t_env *list)
 {
 	t_env	*current;
 	t_env	*temp;
@@ -109,16 +109,4 @@ static void	print_env_list(t_env *list)
 		current = current->next;
 		free_temp_env(temp);
 	}
-}
-
-void	print_export(t_env *env_list)
-{
-	t_env	*original_list;
-	t_env	*added_list;
-
-	original_list = NULL;
-	added_list = NULL;
-	sort_env_list(env_list, &original_list, &added_list);
-	print_env_list(original_list);
-	print_env_list(added_list);
 }

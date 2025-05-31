@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 17:24:46 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/21 11:39:52 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/30 21:33:13 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	insert_sorted(t_env **sorted_list, t_env *new_node)
 	current->next = new_node;
 }
 
-void	sort_env_list(t_env *env_list, t_env **original, t_env **added)
+void	sort_env_list(t_env *env_list, t_env **copy)
 {
 	t_env	*current;
 	t_env	*temp;
@@ -68,10 +68,7 @@ void	sort_env_list(t_env *env_list, t_env **original, t_env **added)
 		if (!temp)
 			return ;
 		copy_env_node(temp, current);
-		if (current->original)
-			insert_sorted(original, temp);
-		else
-			insert_sorted(added, temp);
+		insert_sorted(copy, temp);
 		current = current->next;
 	}
 }

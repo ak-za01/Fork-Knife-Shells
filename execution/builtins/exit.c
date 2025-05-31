@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:41:31 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/21 11:45:25 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/30 21:29:38 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,15 @@ static int	is_numeric_arg(char *str)
 	return (1);
 }
 
+static int	check_overflow(long long result, int digit, int sign)
+{
+	if (sign == 1 && result > (LLONG_MAX - digit) / 10)
+		return (1);
+	if (sign == -1 && result > (LLONG_MAX - digit) / 10)
+		return (1);
+	return (0);
+}
+
 static int	str_to_exit_code(char *str, int *exit_code)
 {
 	long long	result;
@@ -45,9 +54,10 @@ static int	str_to_exit_code(char *str, int *exit_code)
 		i++;
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		if (result > LLONG_MAX / 10 || (result > LLONG_MAX && sign == -1))
+		if (check_overflow(result, str[i] - '0', sign))
 			return (0);
-		result = result * 10 + (str[i++] - '0');
+		result = result * 10 + (str[i] - '0');
+		i++;
 	}
 	result *= sign;
 	*exit_code = (result % 256 + 256) % 256;

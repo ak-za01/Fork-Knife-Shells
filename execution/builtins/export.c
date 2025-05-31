@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:50:37 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/22 12:21:39 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/30 21:55:19 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,15 @@ static int	process_export_arg(char *arg, t_env *env_list)
 int	ft_export(t_token *data, t_extra x)
 {
 	int		i;
+	t_env	*copy;
 
 	i = 1;
+	copy = NULL;
 	if (!data->c_arg[i])
-		print_export(x.env_list);
+	{
+		sort_env_list(x.env_list, &copy);
+		print_env_list(copy);
+	}
 	while (data->c_arg[i])
 	{
 		if (process_export_arg(data->c_arg[i], x.env_list))

@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 21:46:46 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/25 18:19:22 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/31 18:33:36 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,19 @@ void	error_message(char *cmd, char *str);
 int		update_pwd(t_extra x, char *old_dir);
 char	*get_env_value(t_env *env_list, char *name);
 char	*ft_strjoin3(char *s1, char *s2, char *s3);
+void	init_extra(t_extra *x, char **env);
+int		var_exist(t_env *env_list, char *name);
+int		add_var(t_env *env_list, char *name, char *value);
 
 
 //	Helper functions for export
 int		search_variable(t_env **current, char *str);
 t_env	*add_new_node(char *arg, t_env *env_list);
 int		valid_variable(char *str);
-void	sort_env_list(t_env *env_list, t_env **original, t_env **added);
-void	print_export(t_env *env_list);
+void	sort_env_list(t_env *env_list, t_env **copy);
 void	print_env_node(t_env *node);
 void	free_temp_env(t_env *node);
+void	print_env_list(t_env *list);
 
 
 // char *get_env_value(t_env *env_list, char *name);

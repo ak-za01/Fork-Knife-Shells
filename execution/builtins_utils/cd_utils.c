@@ -6,13 +6,13 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 11:26:23 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/21 11:31:40 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/31 18:16:48 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/builtins.h"
 
-static int	var_exist(t_env *env_list, char *name)
+int	var_exist(t_env *env_list, char *name)
 {
 	t_env	*current;
 
@@ -26,7 +26,7 @@ static int	var_exist(t_env *env_list, char *name)
 	return (0);
 }
 
-static int	add_var(t_env *env_list, char *name, char *value)
+int	add_var(t_env *env_list, char *name, char *value)
 {
 	t_env	*new_var;
 	t_env	*current;

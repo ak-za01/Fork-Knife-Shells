@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:28 by aakritah          #+#    #+#             */
-/*   Updated: 2025/05/26 19:46:40 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/31 19:05:52 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,10 @@ int	main(int ac, char **av, char **env)
 	t_token	*data;
 	t_extra	x;
 
-	atexit(leaks);
+	// atexit(leaks);
 	(void)ac, (void)av;
 	signal_init();
-	x.env_list = create_env_list(env);
-	x.exit_status = 0;
+	init_extra(&x, env);
 	while (1)
 	{
 		str = readline(MAGENTA "minishell > " RESET);
@@ -49,8 +48,8 @@ int	main(int ac, char **av, char **env)
 			data = ft_parse(str, &x);
 			if (data)
 			{
-				// ft_print_list(data);
-				exec_cmd(data, x);
+				ft_print_list(data);
+				// exec_cmd(data, x);
 				ft_free_list(&data);
 			}
 			add_history(str);

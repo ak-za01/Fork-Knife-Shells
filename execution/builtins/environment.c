@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:53:28 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/21 11:39:26 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/31 19:07:44 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,43 @@ int	ft_env(t_token	*data, t_extra x)
 		current = current->next;
 	}
 	return (SUCCESS);
+}
+
+static int	update_var(t_env *env_list, char *name)
+{
+	t_env	*current;
+	int		new_value;
+
+	current = env_list;
+	while (current)
+	{
+		if (ft_strcmp(current->name, name) == 0)
+		{
+			new_value = ft_atoi(current->value);
+			new_value++;
+			free(current->value);
+			current->value = ft_itoa(new_value);
+			if (!current->value)
+				return (1);
+			return (0);
+		}
+		current = current->next;
+	}
+	return (1);
+}
+
+void	init_extra(t_extra *x, char **env)
+{
+	x->env_list = create_env_list(env);
+	x->exit_status = 0;
+	if (!var_exist(x->env_list, "SHLVL"))
+	{
+		if (add_var(x->env_list, "SHLVL", "1"))
+			return ;
+	}
+	else
+	{
+		if (update_var(x->env_list, "SHLVL"))
+			return ;
+	}
 }
