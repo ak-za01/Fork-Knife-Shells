@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 17:13:15 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/27 23:53:25 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/01 17:47:07 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,9 @@ int	exec_external(t_token *data, t_extra x)
 	char	**env;
 	char	*cmd_path;
 	pid_t	pid;
-	
+
+	if (!data->value)
+		return (1);
 	cmd_path = find_path(data->value, x.env_list);
 	if (!cmd_path)
 		return (cmd_error(data->value, (x.exit_status = 127)));
@@ -137,14 +139,17 @@ int	exec_external(t_token *data, t_extra x)
 	return (free_external(cmd_path, env), x.exit_status);
 }
 
-int	exec_single(t_token *data, t_extra x)
+int	exec_single(t_token *data, t_extra *x)
 {
-	if (!data)
-		return (x.exit_status);
+	if (setup_redirections(data, x) != 0)
+	{
+		restore_std_fds(x);
+		return ((x->exit_status = 1));
+	}
 	if (data->type == b_cmd_t)
-		return (exec_builtin(data, x));
+		x->exit_status = exec_builtin(data, *x);
 	else if (data->type == cmd_t)
-		return (exec_external(data, x));
-	x.exit_status = 1;
-	return (1);
+		x->exit_status = exec_external(data, *x);
+	restore_std_fds(x);
+	return (x->exit_status);
 }

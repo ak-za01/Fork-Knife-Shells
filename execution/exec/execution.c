@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:11:52 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/31 20:22:58 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/01 20:59:28 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,36 +57,14 @@ static int	cleanup_execution_vars(t_extra *x)
 	return (x->exit_status);
 }
 
-static void	handle_child_process(t_token *current, t_extra *x)
-{
-	int	ret;
+// static int	cleanup_and_free(t_extra *x, pid_t *pids)
+// {
+// 	cleanup_pipes(x);
+// 	free(pids);
+// 	return (cleanup_execution_vars(x));
+// }
 
-	ret = 0;
-	if (has_redirections_in_token(current))
-		ret = handle_redirections_child(current, x);
-	if (ret == 0 && x->pipe_count > 0)
-		ret = handle_pipes_child(x, x->cmd_index, count_commands_total(x));
-	if (ret == 0)
-	{
-		if (is_builtin_command(current))
-			ret = exec_builtin_child(current, x);
-		else
-			ret = exec_external_child(current, x);
-	}
-	if (ret != 0)
-		x->exit_status = ret;
-	cleanup_child_process(x);
-	exit(x->exit_status);
-}
-
-static int	cleanup_and_free(t_extra *x, pid_t *pids)
-{
-	cleanup_pipes(x);
-	free(pids);
-	return (cleanup_execution_vars(x));
-}
-
-static void	restore_std_fds(t_extra *x)
+void	restore_std_fds(t_extra *x)
 {
 	if (x->stdin_backup != -1)
 	{
@@ -102,89 +80,69 @@ static void	restore_std_fds(t_extra *x)
 	}
 }
 
-static int	exec_loop(t_token *current, pid_t *pids, int cmd_count, 
-			t_extra *x, int *i)
+int	commands_count(t_token *data)
 {
-	while (current && *i < cmd_count)
+	t_token	*current;
+	int		count;
+
+	count = 0;
+	current = data;
+	while (current)
 	{
-		if (is_command_token(current))
+		if (current->type == cmd_t || current->type == b_cmd_t)
+			count++;
+		current = current->next;
+	}
+	return (count);
+}
+
+int	pipes_count(t_token *data)
+{
+	t_token	*current;
+	int		count;
+
+	count = 0;
+	current = data;
+	while (current)
+	{
+		if (current->value)
 		{
-			pids[*i] = fork();
-			if (pids[*i] == 0)
-				handle_child_process(current, x);
-			else if (pids[*i] < 0)
-			{
-				handle_fork_error(x);
-				return (1);
-			}
-			else
-			{
-				if (handle_parent_process(x, *i) != 0)
-					return (1);
-			}
-			x->cmd_index++;
-			(*i)++;
+			if (ft_strcmp(current->value, "|") == 0)
+				count++;
 		}
 		current = current->next;
 	}
-	return (0);
-}
-
-static int	exec_single_builtin(t_token *data, t_extra *x)
-{
-	t_token	*cmd_token;
-	int		ret;
-
-	cmd_token = find_command_token(data);
-	if (!cmd_token)
-		return (1);
-	ret = 0;
-	if (has_redirections_in_token(cmd_token))
-	{
-		x->stdin_backup = dup(STDIN_FILENO);
-		x->stdout_backup = dup(STDOUT_FILENO);
-		if (x->stdin_backup == -1 || x->stdout_backup == -1)
-			return (1);
-		if (handle_redirections_child(cmd_token, x) != 0)
-			ret = 1;
-		if (ret == 0)
-			ret = exec_builtin_child(cmd_token, x);
-		restore_std_fds(x);
-	}
-	else
-		ret = exec_builtin_child(cmd_token, x);
-	cleanup_execution_vars(x);
-	return (ret);
+	return (count);
 }
 
 int	exec_cmd(t_token *data, t_extra *x)
 {
 	t_token	*current;
-	pid_t	*pids;
+	// pid_t	*pids;
 	int		cmd_count;
-	int		i;
+	int		a;
 
-	if (!data)
-		return (1);
+	a = 0;
+	current = data;
 	if (init_execution_vars(x) != 0)
 		return (1);
-	cmd_count = count_commands(data);
+	if (setup_heredoc(data, x) != 0)
+		return (x->exit_status);
+	cmd_count = commands_count(data);
 	if (cmd_count == 0)
 		return (cleanup_execution_vars(x));
-	x->pipe_count = count_pipes(data);
-	if (cmd_count == 1 && x->pipe_count == 0 && is_single_builtin(data))
-		return (exec_single_builtin(data, x));
-	pids = malloc(sizeof(pid_t) * cmd_count);
-	if (!pids)
-		return (cleanup_execution_vars(x));
-	if (x->pipe_count > 0 && setup_pipes(x) != 0)
-		return (cleanup_and_free(x, pids));
-	current = data;
-	i = 0;
-	if (exec_loop(current, pids, cmd_count, x, &i) != 0)
-		return (cleanup_and_free(x, pids));
-	wait_for_all_children(pids, cmd_count, x);
-	cleanup_pipes(x);
-	free(pids);
+	x->pipe_count = pipes_count(data);
+	if (cmd_count == 1 && x->pipe_count == 0)
+		return (exec_single(data, x));
+	// pids = malloc(sizeof(pid_t) * cmd_count);
+	// if (!pids)
+	// 	return (cleanup_execution_vars(x));
+	// if (x->pipe_count > 0 && setup_pipes(x) != 0)
+	// 	return (cleanup_and_free(x, pids));
+	// if (exec_loop(current, pids, cmd_count, x) != 0)
+	// 	return (cleanup_and_free(x, pids));
+	// wait_for_all_children(pids, cmd_count, x);
+	// cleanup_pipes(x);
+	// free(pids);
 	return (cleanup_execution_vars(x));
 }

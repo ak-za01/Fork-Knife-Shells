@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:28 by aakritah          #+#    #+#             */
-/*   Updated: 2025/05/31 19:05:52 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/01 17:43:39 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ int	main(int ac, char **av, char **env)
 			data = ft_parse(str, &x);
 			if (data)
 			{
-				ft_print_list(data);
-				// exec_cmd(data, x);
+				// ft_print_list(data);
+				exec_cmd(data, &x);
 				ft_free_list(&data);
 			}
 			add_history(str);

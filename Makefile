@@ -2,9 +2,9 @@
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -I./libs/readline/include
+# CFLAGS = -Wall -Werror -Wextra -I./libs/readline/include
 
-# CFLAGS = -fsanitize=address -g -I./libs/readline/include
+CFLAGS = -fsanitize=address -g -I./libs/readline/include
 
 # CFLAGS = -I./libs/readline/include
 
@@ -69,6 +69,8 @@ BUILTINS =	./execution/builtins/builtins.c \
 EXEC = 		./execution/exec/execution.c \
 			./execution/exec/exec_single.c \
 			./execution/exec/helpers.c \
+			./execution/exec/redirection.c \
+			./execution/exec/heredoc.c \
 
 EXECUTION = ${BUILTINS} \
 			${EXEC} \
