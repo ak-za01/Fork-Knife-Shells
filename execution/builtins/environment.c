@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:53:28 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/11 22:44:17 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/04 23:39:19 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/builtins.h"
+#include "../../include/builtins.h"
 
 t_env	*create_env_list(char **env)
 {
@@ -30,7 +30,7 @@ t_env	*create_env_list(char **env)
 			return ((free(new_node)), NULL);
 		new_node->name = temp[0];
 		new_node->value = temp[1];
-		new_node->next = NULL;
+		new_node->original = ((new_node->next = NULL), 1);
 		if (!env_list)
 			env_list = new_node;
 		else
@@ -45,8 +45,9 @@ int	ft_env(t_token	*data, t_extra x)
 {
 	t_env	*current;
 
-	if (!x.env_list || data->c_arg[1])
-		return (SUCCESS);
+	(void)data;
+	if (!x.env_list)
+		return (ERROR);
 	current = x.env_list;
 	while (current)
 	{
@@ -55,4 +56,43 @@ int	ft_env(t_token	*data, t_extra x)
 		current = current->next;
 	}
 	return (SUCCESS);
+}
+
+static int	update_var(t_env *env_list, char *name)
+{
+	t_env	*current;
+	int		new_value;
+
+	current = env_list;
+	while (current)
+	{
+		if (ft_strcmp(current->name, name) == 0)
+		{
+			new_value = ft_atoi(current->value);
+			new_value++;
+			free(current->value);
+			current->value = ft_itoa(new_value);
+			if (!current->value)
+				return (1);
+			return (0);
+		}
+		current = current->next;
+	}
+	return (1);
+}
+
+void	init_extra(t_extra *x, char **env)
+{
+	x->env_list = create_env_list(env);
+	x->exit_status = 0;
+	if (!var_exist(x->env_list, "SHLVL"))
+	{
+		if (add_var(x->env_list, "SHLVL", "1"))
+			return ;
+	}
+	else
+	{
+		if (update_var(x->env_list, "SHLVL"))
+			return ;
+	}
 }

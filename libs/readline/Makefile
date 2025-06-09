@@ -31,7 +31,7 @@ PACKAGE_TARNAME = readline
 srcdir = .
 
 top_srcdir = .
-BUILD_DIR = /Users/aakritah/Code/Projet.G/Fork-Knife-Shells/libs/readline
+BUILD_DIR = /Users/aakritah/Code/Projet.G/42_Minishell/libs/readline
 
 INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}
@@ -48,7 +48,7 @@ MV = mv
 
 SHELL = /bin/sh
 
-prefix = /Users/aakritah/Code/Projet.G/Fork-Knife-Shells/libs/readline
+prefix = /Users/aakritah/Code/Projet.G/42_Minishell/libs/readline
 exec_prefix = ${prefix}
 
 datarootdir = ${prefix}/share

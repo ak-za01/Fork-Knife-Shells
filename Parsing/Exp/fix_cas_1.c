@@ -6,7 +6,7 @@
 /*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 23:54:04 by noctis            #+#    #+#             */
-/*   Updated: 2025/05/12 11:47:26 by noctis           ###   ########.fr       */
+/*   Updated: 2025/06/09 18:55:32 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,19 +70,41 @@ int	ft_add_nodes(char *t, t_token *ptr, t_token **data)
 	return (0);
 }
 
-int	ft_handle_cas_1(t_token **data, t_token *ptr)
+int	ft_check_if_ambiguous(char *str)
 {
+	int		i;
 	int		s;
+	int		f;
 	char	**t;
 
-	t = ft_split(ptr->value, ' ');
+	t = ft_split4(str);
 	if (!t)
 		return (-1);
-	s = ft_strlen_2(t);
-	if (ptr->prev && (0 < ptr->prev->type && ptr->prev->type < 5))
+	i = 0;
+	while (t[i])
 	{
-		if (s > 1)
+		f = ft_check_dollar_2(t[i]);
+		s = ft_count_split2(t[i], ' ');
+		if (f == 0 && s > 1)
+			return (ft_free(t), -2);
+		i++;
+	}
+	return (ft_free(t), 0);
+}
+
+int	ft_handle_cas_1(t_token **data, t_token *ptr)
+{
+	int	f;
+
+	if (ptr->prev && (1 < ptr->prev->type && ptr->prev->type < 5))
+	{
+		f = ft_check_if_ambiguous(ptr->value);
+		if (f == -1)
+			return (-1);
+		else if (f == -2)
 			ptr->type = ambiguous_t;
+		else
+			return (0);
 	}
 	else if (!ptr->prev || (ptr->prev && !(0 < ptr->prev->type
 				&& ptr->prev->type < 5)))
@@ -90,6 +112,5 @@ int	ft_handle_cas_1(t_token **data, t_token *ptr)
 		if (ft_add_nodes(ptr->value, ptr, data) < 0)
 			return (-1);
 	}
-	ft_free(t);
-	return (1);
+	return (0);
 }

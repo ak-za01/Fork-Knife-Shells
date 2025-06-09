@@ -6,11 +6,11 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 22:44:05 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/11 20:14:05 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/21 11:39:55 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/builtins.h"
+#include "../../include/builtins.h"
 
 static char	*ft_strndup(const char *s, size_t n)
 {
@@ -74,9 +74,10 @@ char	**ft_split_env(char const *s, char c)
 
 void	free_env_list(t_extra *x)
 {
-	t_env *ptr=x->env_list;
-	t_env *tmp;
-	
+	t_env	*ptr;
+	t_env	*tmp;
+
+	ptr = x->env_list;
 	if (!ptr)
 		return ;
 	while (ptr)

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 07:59:14 by noctis            #+#    #+#             */
-/*   Updated: 2025/05/12 17:39:31 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/09 18:32:39 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/main.h"
 #include "../../include/parse.h"
 
-int	ft_check(char *t)
+int	ft_check_dollar(char *t)
 {
 	int	i;
 
@@ -25,6 +25,21 @@ int	ft_check(char *t)
 		i++;
 	}
 	return (0);
+}
+
+int	ft_check_dollar_2(char *t)
+{
+	int	i;
+
+	if (!t)
+		return (0);
+	if (t[0] == '\"')
+		i = 2;
+	else if (t[0] == '\'')
+		i = 1;
+	else
+		i = 0;
+	return (i);
 }
 
 int	ft_strlen_2(char **t)

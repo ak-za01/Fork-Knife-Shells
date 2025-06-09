@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fix_cas_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 23:53:58 by noctis            #+#    #+#             */
-/*   Updated: 2025/05/12 12:11:13 by noctis           ###   ########.fr       */
+/*   Updated: 2025/06/08 16:38:45 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	ft_handle_cas_2(t_token *ptr)
 	int	s;
 
 	s = ft_get_node_count(ptr);
-	if (ptr->prev && (0 < ptr->prev->type && ptr->prev->type < 5))
+	if (ptr->prev && (1 < ptr->prev->type && ptr->prev->type < 5))
 	{
 		ptr->type = ambiguous_t;
 	}

@@ -6,103 +6,36 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:50:37 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/11 22:45:30 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/05/30 21:55:19 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/builtins.h"
-
-char	*ft_strndup(const char *str, size_t n)
-{
-	size_t	i;
-	char	*result;
-
-	result = malloc(ft_strlen(str) + 1);
-	if (!result)
-		return (NULL);
-	i = 0;
-	while (str[i] && i < n)
-	{
-		result[i] = str[i];
-		i++;
-	}
-	result[i] = '\0';
-	return (result);
-}
-
-int	valid_variable(char *str)
-{
-	int		i;
-	int		valid;
-	
-	i = 0;
-	valid = 1;
-	if (!str[i])
-		valid = 0;
-	else if (ft_isdigit(str[0]))
-		valid = 0;
-	else
-	{
-		while (str[i] && str[i] != '=')
-		{
-			if (!ft_isalnum(str[i]) && str[i] != '_')
-			{
-				valid = 0;
-				break;
-			}
-			i++;
-		}
-	}
-	return (valid);
-}
+#include "../../include/builtins.h"
 
 void	error_message(char *cmd, char *str)
 {
-	char	*clean_str = NULL;
+	char	*clean_str;
 
+	clean_str = NULL;
 	// clean_str = remove_quotes(str);
 	// later add a flag to detect if there are quotes
 	if (!clean_str)
 	{
-		fprintf(stderr, "minishell: %s: `%s': not a valid identifier\n", 
-				cmd, str);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": `", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
 	}
 	else
 		fprintf(stderr, "minishell: %s: invalid argument\n", cmd);
-}
-
-int	search_variable(t_env **current, char *str)
-{
-	t_env	*temp;
-	int		i;
-	char	*var_name;
-
-	i = 0;
-	temp = *current;
-	while (str[i] && str[i] != '=')
-		i++;
-	var_name = ft_strndup(str, i);
-	if (!var_name)
-		return (0);
-	while (temp)
-	{
-		if (!ft_strncmp(temp->name, var_name, ft_strlen(var_name) + 1))
-		{
-			free(var_name);
-			*current = temp;
-			return (1);
-		}
-		temp = temp->next;
-	}
-	free(var_name);
-	return (0);
 }
 
 char	*get_var_value(char *str)
 {
 	char	**value;
 	char	*result;
-	
+
 	value = ft_split_env(str, '=');
 	if (!value)
 		return (NULL);
@@ -112,38 +45,10 @@ char	*get_var_value(char *str)
 	return (result);
 }
 
-t_env	*add_new_node(char *arg, t_env *env_list)
-{
-	t_env	*new_node;
-	t_env	*current;
-	char	**value;
-
-	current = env_list;
-	value = ft_split_env(arg, '=');
-	if (!value)
-		return (NULL);
-	new_node = malloc(sizeof(t_env));
-	if (!new_node)
-	{
-		free(value[0]);
-		free(value[1]);
-		free(value);
-		return (NULL);
-	}
-	new_node->name = value[0];
-	new_node->value = value[1];
-	new_node->next = NULL;
-	while (current && current->next)
-		current = current->next;
-	current->next = new_node;
-	free(value);
-	return (env_list);
-}
-
 static int	process_existing_var(t_env *current, char *arg)
 {
 	char	*new_val;
-	
+
 	if (!ft_strchr(arg, '='))
 		return (0);
 	new_val = get_var_value(arg);
@@ -167,21 +72,23 @@ static int	process_export_arg(char *arg, t_env *env_list)
 	current = env_list;
 	if (search_variable(&current, arg))
 		return (process_existing_var(current, arg));
-	else
-	{
-		if (!add_new_node(arg, env_list))
-			return (1);
-	}
+	if (!add_new_node(arg, env_list))
+		return (1);
 	return (0);
 }
 
 int	ft_export(t_token *data, t_extra x)
 {
 	int		i;
+	t_env	*copy;
 
 	i = 1;
+	copy = NULL;
 	if (!data->c_arg[i])
-		return (0);
+	{
+		sort_env_list(x.env_list, &copy);
+		print_env_list(copy);
+	}
 	while (data->c_arg[i])
 	{
 		if (process_export_arg(data->c_arg[i], x.env_list))

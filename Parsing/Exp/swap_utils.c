@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   swap_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/11 22:33:44 by noctis            #+#    #+#             */
-/*   Updated: 2025/05/12 17:49:13 by anktiri          ###   ########.fr       */
+/*   Created: 2025/06/08 12:41:11 by aakritah          #+#    #+#             */
+/*   Updated: 2025/06/09 18:56:56 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,33 @@ int	ft_toggle_quote(char **ptr, int *s_q, int *d_q)
 	if (**ptr == '\'' && !(*d_q))
 	{
 		*s_q = !(*s_q);
-		(*ptr)++;
-		return (1);
 	}
 	if (**ptr == '"' && !(*s_q))
 	{
 		*d_q = !(*d_q);
-		(*ptr)++;
-		return (1);
 	}
 	return (0);
+}
+
+int	ft_calcul_total_len(int s, char *ptr, t_extra *x, int f)
+{
+	int (s_q), d_q = 0;
+	s_q = 0;
+	while (*ptr)
+	{
+		ft_toggle_quote(&ptr, &s_q, &d_q);
+		if (*ptr == '$' && ft_check_ptr_value(*(ptr + 1), 0) && !s_q)
+		{
+			if (ft_calcul_total_len_fix_norm(x, f, &s, &ptr) == -1)
+				return (-1);
+		}
+		else
+		{
+			s++;
+			ptr++;
+		}
+	}
+	return (s);
 }
 
 int	ft_calculs_exp_len(t_env *env_list, char *var)
@@ -44,35 +61,6 @@ int	ft_calculs_exp_len(t_env *env_list, char *var)
 		env = env->next;
 	}
 	return (0);
-}
-
-int	ft_calcul_total_len(int s, char *ptr, t_extra *x)
-{
-	char	*var;
-
-	int (s_q), (d_q), f = 0;
-	s_q = 0;
-	d_q = 0;
-	while (*ptr)
-	{
-		if (ft_toggle_quote(&ptr, &s_q, &d_q))
-			continue ;
-		if (*ptr == '$' && ft_check_ptr_value(*(ptr + 1), 0) && !s_q)
-		{
-			var = (ptr++, ft_get_expand_name(&ptr, &f));
-			if (f == 1)
-				s += ft_calcul_sepcial_len(var, x->env_list);
-			else
-				s += ft_calculs_exp_len(x->env_list, var);
-			free(var);
-		}
-		else
-		{
-			s++;
-			ptr++;
-		}
-	}
-	return (s);
 }
 
 int	ft_calcul_var_len(char *ptr)
@@ -95,14 +83,20 @@ int	ft_calcul_var_len(char *ptr)
 	return (s);
 }
 
-int	ft_calcul_sepcial_len(char *var, t_env *env_list)
+int	ft_calcul_sepcial_len(char *var, t_extra *x)
 {
-	(void)var;
-	(void)env_list;
-	// if (ft_strcmp(var, "?") == 0)
-	// {
-	// extern int g_exit_status;
-	// ft_putnbr(g_exit_status);
-	// }
+	char	*tmp;
+	int		s;
+
+	s = 0;
+	if (ft_strcmp(var, "?") == 0)
+	{
+		tmp = ft_itoa(x->exit_status);
+		if (!tmp)
+			return (-1);
+		s = ft_strlen(tmp);
+		free(tmp);
+		return (s);
+	}
 	return (0);
 }

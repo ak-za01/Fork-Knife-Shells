@@ -1,40 +1,22 @@
 
 
-                |------------ export : ------------|
+                |------------ echo : ------------|
 
 
-export $1=test
-minishell: export: `$1=test': not a valid identifier
+[noctis@Ayoubikre 42_Minishell]$ echo             a
+a
+[noctis@Ayoubikre 42_Minishell]$ echo         "$a"    a
+ a
+[noctis@Ayoubikre 42_Minishell]$ echo         ""    a
+ a
 
-bash-3.2$ export $1=test
-bash: export: `=test': not a valid identifier
 
-
-status : not fixed
 
 
 ------------------------------------------------------------------
 
-Minishell > export t="|"
-minishell: export: `|` : not a valid identifier
-
-Minishell > export t=">"
-minishell: export: `>`: not a valid identifier
-
-[noctis@Ayoubikre Desktop]$ export t="|"
-[noctis@Ayoubikre Desktop]$ echo $t
-    |
-
-status : not fixed
 
 
 
 
-
-
-
-                |------------ others : ------------|
-
-fix add history if the comand fail
-
-fix the status exist in the expanding -> ft_handle_special_char() and ft_calcul_sepcial_len()
+               

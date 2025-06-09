@@ -3,50 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   swap_value.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/11 19:23:53 by noctis            #+#    #+#             */
-/*   Updated: 2025/05/12 17:47:42 by anktiri          ###   ########.fr       */
+/*   Created: 2025/06/08 12:41:18 by aakritah          #+#    #+#             */
+/*   Updated: 2025/06/09 18:51:52 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/main.h"
 #include "../../include/parse.h"
 
-char	*ft_swap_value(int i, char *ptr, t_extra *x)
+char	*ft_swap_value(int i, char *ptr, t_extra *x, int f)
 {
-	char	*var;
-	char	*t;
+	t_norm	n_data;
 
-	int (s_q), (d_q), f = 0;
+	int (s), (s_q), d_q = 0;
 	s_q = 0;
-	d_q = 0;
-	t = malloc(ft_calcul_total_len(0, ptr, x) + 1);
-	if (!t)
-		return (NULL);
+	s = ft_calcul_total_len(0, ptr, x, 0);
+	n_data.t = malloc(s + 1);
+	if (s == -1 || !n_data.t)
+		return (free(n_data.t), NULL);
 	while (*ptr)
 	{
-		if (ft_toggle_quote(&ptr, &s_q, &d_q))
-			continue ;
+		ft_toggle_quote(&ptr, &s_q, &d_q);
 		if (*ptr == '$' && ft_check_ptr_value(*(ptr + 1), 0) && !s_q)
 		{
-			var = (ptr++, ft_get_expand_name(&ptr, &f));
-			if (f == 1)
-				(ft_handle_special_char(x, var, t, &i), free(var));
-			else
-				(ft_copy_exp_value(x->env_list, var, t, &i), free(var));
+			n_data.var = (ptr++, ft_get_expand_name(&ptr, &f));
+			if (!n_data.var)
+				return (NULL);
+			if (ft_swap_value_fix_norm(f, x, &n_data, &i) == -1)
+				return (free(n_data.var), NULL);
+			free(n_data.var);
 		}
 		else
-			t[i++] = *(ptr++);
+			n_data.t[i++] = *(ptr++);
 	}
-	return (t[i] = '\0', t);
+	return (n_data.t[i] = '\0', n_data.t);
 }
 
 int	ft_check_ptr_value(char c, int f)
 {
 	if (f == 0)
 	{
-		if (c && (c == '?' || c == '@' || c == '_' || ft_isalnum(c)))
+		if (c && (c == '?' || c == '@' || c == '\"' || c == '\'' || c == '_'
+				|| ft_isalnum(c)))
 			return (1);
 	}
 	if (f == 1)
@@ -108,16 +108,24 @@ void	ft_copy_exp_value(t_env *env_list, char *var, char *t, int *i)
 	}
 }
 
-void	ft_handle_special_char(t_extra *x, char *var, char *t, int *i)
+int	ft_handle_special_char(t_extra *x, char *var, char *t, int *i)
 {
-	(void)var;
-	(void)t;
-	(void)i;
-	(void)x;
-	// if (ft_strcmp(var, "?") == 0)
-	// {
-	// 	// extern int g_exit_status;
-	// 	// ft_putnbr(g_exit_status);
-	// }
-	return ;
+	char	*tmp;
+	int		s;
+
+	s = 0;
+	if (ft_strcmp(var, "?") == 0)
+	{
+		tmp = ft_itoa(x->exit_status);
+		if (!tmp)
+			return (-1);
+		while (tmp[s])
+		{
+			t[*i] = tmp[s];
+			s++;
+			(*i)++;
+		}
+		free(tmp);
+	}
+	return (0);
 }

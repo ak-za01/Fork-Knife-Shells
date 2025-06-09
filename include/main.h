@@ -6,7 +6,7 @@
 /*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:26 by aakritah          #+#    #+#             */
-/*   Updated: 2025/05/12 12:48:26 by noctis           ###   ########.fr       */
+/*   Updated: 2025/06/09 19:07:49 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		main(int ac, char **av, char **env);
 void	leaks(void);
 void	ft_print_list(t_token *data);
 void	ft_print_list1(t_token *data);
-void	print_tab(char **t);
+void	ft_print_tab(char **t);
 
 #endif
 

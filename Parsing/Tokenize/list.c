@@ -6,7 +6,7 @@
 /*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 07:10:20 by aakritah          #+#    #+#             */
-/*   Updated: 2025/05/12 10:26:16 by noctis           ###   ########.fr       */
+/*   Updated: 2025/06/09 18:46:05 by noctis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ t_token	*ft_creat_new_list(char *str, t_token_type type)
 	else
 		n->value = ft_strdup(str);
 	n->type = type;
-	n->prec = -1;
 	n->f = 0;
 	n->arg_s = 0;
 	n->c_arg = NULL;
