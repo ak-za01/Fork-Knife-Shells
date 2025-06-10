@@ -1,0 +1,22 @@
+
+
+                |------------ echo : ------------|
+
+
+[noctis@Ayoubikre 42_Minishell]$ echo             a
+a
+[noctis@Ayoubikre 42_Minishell]$ echo         "$a"    a
+ a
+[noctis@Ayoubikre 42_Minishell]$ echo         ""    a
+ a
+
+
+
+
+------------------------------------------------------------------
+
+
+
+
+
+               
