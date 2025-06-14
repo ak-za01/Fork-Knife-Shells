@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 21:46:46 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/01 20:56:33 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/14 00:55:17 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,18 @@
 # define SUCCESS 0
 # define ERROR 1
 
+
+int			pipes_count(t_token *data);
+int			ft_dup2(int f1, int f2);
+int			exec_external(t_token *data, t_extra *x);
+int			cleanup_execution_vars(t_extra *x);
+int			**create_pipe(t_token *data, t_extra *x);
+int			setup_pipe(t_extra *x);
+int			cmd_error(char *cmd, int status);
+void		*free_pipes(t_extra *x, int i);
+
+
+
 //	execution functions
 int			exec_cmd(t_token *data, t_extra *x);
 int			exec_single(t_token *data, t_extra *x);
@@ -36,7 +48,7 @@ int			setup_heredoc(t_token *data, t_extra *x);
 int			process_heredoc(t_token *data, t_extra *x);
 int			handle_heredoc(char *del);
 int			has_heredoc(char **c_red);
-void		restore_std_fds(t_extra *x);
+int			restore_std_fds(t_extra *x);
 void		print_error(char *file, char *error_msg);
 
 

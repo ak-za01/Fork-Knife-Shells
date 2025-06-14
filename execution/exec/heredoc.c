@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 12:22:54 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/01 20:59:42 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/14 00:50:47 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ int	has_heredoc(char **c_red)
 	while (c_red[a])
 	{
 		if (ft_strcmp(c_red[a], "<<") == 0)
-			return (1);
+			return (ERROR);
 		a++;
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 int	handle_heredoc(char *del)
@@ -41,7 +41,7 @@ int	handle_heredoc(char *del)
 	int		pipefd[2];
 
 	if (pipe(pipefd) == -1)
-		return ((perror("pipe")), -1);
+		return ((perror("pipe")), ERROR);
 	while (1)
 	{
 		line = readline("> ");
@@ -75,15 +75,15 @@ int	process_heredoc(t_token *data, t_extra *x)
 				close(fd_heredoc);
 			fd_heredoc = handle_heredoc(data->c_red[++a]);
 			if (fd_heredoc == -1)
-				return (-1);
+				return (ERROR);
 		}
 		else
 			a++;
 	}
 	if (fd_heredoc != -1)
 	{
-		if (dup2(fd_heredoc, STDIN_FILENO) == -1)
-			return ((close(fd_heredoc)), -1);
+		if (ft_dup2(fd_heredoc, STDIN_FILENO) != 0)
+			return ((x->exit_status = 1), ERROR);
 		close(fd_heredoc);
 	}
 	return ((x->exit_status = 0));
@@ -92,17 +92,26 @@ int	process_heredoc(t_token *data, t_extra *x)
 int	setup_heredoc(t_token *data, t_extra *x)
 {
 	t_token	*current;
+	pid_t	pid;
 
 	current = data;
-	while (current)
+	pid = fork();
+	if (pid == 0)
 	{
-		if (current->c_red && has_heredoc(current->c_red))
+		signal_init_child();
+		while (current)
 		{
-			if (process_heredoc(current, x) != 0)
-				return (-1);
+			if (current->c_red && has_heredoc(current->c_red))
+			{
+				if (process_heredoc(current, x) != 0)
+					return (ERROR);
+			}
+			current = current->next;
 		}
-		current = current->next;
 	}
+	else if (pid)
+		waitpid(pid, NULL, 0);
+		
 	x->exit_status = 0;
-	return (0);
+	return (SUCCESS);
 }

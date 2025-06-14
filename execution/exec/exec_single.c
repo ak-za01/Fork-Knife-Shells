@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 17:13:15 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/01 17:47:07 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/14 12:43:22 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,66 +77,78 @@ void	free_external(char *cmd_path, char **env)
 		ft_free(env);
 }
 
-void	free_exit(char *command_path, char **env_array, int exit_code)
+static void	exec_child(t_token *data, t_extra *x)
 {
-	free_external(command_path, env_array);
-	exit(exit_code);
+	signal_init_child();
+	if (data->c_red)
+	{
+		if (setup_redirections(data, x) != 0)
+			exit(1);
+	}
+	if (data->type == b_cmd_t)
+	{
+		x->exit_status = exec_builtin(data, *x);
+		exit(x->exit_status);
+	}
+	x->cmd_path = find_path(data->value, x->env_list);
+	if (!x->cmd_path)
+		exit(cmd_error(data->value, 127));
+	x->env = env_to_arr(x->env_list);
+	if (!x->env)
+	{
+		free(x->cmd_path);
+		exit(1);
+	}
+	execve(x->cmd_path, data->c_arg, x->env);
+	perror("execve");
+	free_external(x->cmd_path, x->env);
+	exit(127);
 }
 
-static void	exec_child(char *cmd_path, char **args, char **env)
+// static int	wait_for_childrenchild(t_extra *x);
+
+static void	close_all_pipes(t_extra *x)
 {
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-	if (execve(cmd_path, args, env) == -1)
+	int	i;
+
+	i = 0;
+	while (i < x->pipe_count)
 	{
-		perror("execve");
-		free_external(cmd_path, env);
-		exit(127);
+		close(x->pipefd[i][0]);
+		close(x->pipefd[i][1]);
+		i++;
 	}
 }
 
-static int	wait_child(pid_t pid)
+int	exec_external(t_token *data, t_extra *x)
 {
-	int	status;
-
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	else if (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status));
-	return (1);
-}
-
-int	cmd_error(char *cmd, int status)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(cmd, 2);
-	ft_putendl_fd(": command not found", 2);
-	return (status);
-}
-
-int	exec_external(t_token *data, t_extra x)
-{
-	char	**env;
-	char	*cmd_path;
+	t_token	*current;
 	pid_t	pid;
 
-	if (!data->value)
-		return (1);
-	cmd_path = find_path(data->value, x.env_list);
-	if (!cmd_path)
-		return (cmd_error(data->value, (x.exit_status = 127)));
-	env = env_to_arr(x.env_list);
-	if (!env)
-		return (free(cmd_path), 1);
-	pid = fork();
-	if (pid == 0)
-		exec_child(cmd_path, data->c_arg, env);
-	else if (pid > 0)
-		x.exit_status = wait_child(pid);
-	else
-		x.exit_status = (perror("fork"), 1);
-	return (free_external(cmd_path, env), x.exit_status);
+	current = data;
+	while (current)
+	{
+		if (current->type == b_cmd_t || current->type == cmd_t)
+		{
+			pid = fork();
+			if (pid == 0)
+			{
+				if (x->pipe_count > 0)
+					setup_pipe(x);
+				exec_child(current, x);
+			}
+			else if (pid == -1)
+			{
+				x->exit_status = (perror("fork"), 1);
+				break ;
+			}
+			x->cmd_index++;
+		}
+		current = current->next;
+	}
+	if (x->pipe_count > 0)
+		close_all_pipes(x);
+	return (x->exit_status);
 }
 
 int	exec_single(t_token *data, t_extra *x)
@@ -146,10 +158,8 @@ int	exec_single(t_token *data, t_extra *x)
 		restore_std_fds(x);
 		return ((x->exit_status = 1));
 	}
-	if (data->type == b_cmd_t)
-		x->exit_status = exec_builtin(data, *x);
-	else if (data->type == cmd_t)
-		x->exit_status = exec_external(data, *x);
-	restore_std_fds(x);
+	x->exit_status = exec_builtin(data, *x);
+	if (restore_std_fds(x) != 0)
+		return ((x->exit_status = ERROR));
 	return (x->exit_status);
 }

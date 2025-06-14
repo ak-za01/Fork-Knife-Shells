@@ -6,29 +6,13 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:28 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/01 17:43:39 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/14 08:43:51 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/main.h"
 
-void	sig_handler(int signal)
-{
-	if (signal == SIGINT)
-	{
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-}
-
-void	signal_init()
-{
-	rl_catch_signals = 0;
-	signal(SIGINT, sig_handler);
-	signal(SIGQUIT, SIG_IGN);
-}
+volatile sig_atomic_t g_signal_received = 0;
 
 int	main(int ac, char **av, char **env)
 {
@@ -38,11 +22,12 @@ int	main(int ac, char **av, char **env)
 
 	// atexit(leaks);
 	(void)ac, (void)av;
-	signal_init();
+	signal_init_interactive();
 	init_extra(&x, env);
 	while (1)
 	{
 		str = readline(MAGENTA "minishell > " RESET);
+		handle_signal_in_main();
 		if (str && str[0])
 		{
 			data = ft_parse(str, &x);

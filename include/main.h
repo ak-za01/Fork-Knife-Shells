@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:26 by aakritah          #+#    #+#             */
-/*   Updated: 2025/05/12 12:48:26 by noctis           ###   ########.fr       */
+/*   Updated: 2025/06/14 00:55:25 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,14 @@
 # define YELLOW "\033[33m"
 # define MAGENTA "\033[1;35m"
 # define RESET "\033[0m"
+
+// Global signal variable
+extern volatile sig_atomic_t g_signal_received;
+
+// Function declarations
+void signal_init_interactive(void);
+void signal_init_child(void);
+void handle_signal_in_main(void);
 
 //------------------------------ Main :
 int		main(int ac, char **av, char **env);

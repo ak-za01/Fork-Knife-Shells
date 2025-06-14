@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 02:45:32 by aakritah          #+#    #+#             */
-/*   Updated: 2025/05/31 19:53:11 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/12 21:55:53 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ typedef struct s_extra
 	int					stdin_backup;
     int					stdout_backup;
     int					pipe_count;
+    int					cmd_count;
     int					cmd_index;
     int					**pipefd;
-    int					prev_pipe_read;
 }						t_extra;
 
 typedef struct s_token

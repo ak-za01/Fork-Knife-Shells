@@ -1,6 +1,4 @@
-#include "../../include/builtins.h"
-
-volatile sig_atomic_t g_signal_received = 0;
+// #include "../../include/builtins.h"
 
 /**
  * Create pipes for pipeline execution

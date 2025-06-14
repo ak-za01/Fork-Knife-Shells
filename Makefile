@@ -71,6 +71,8 @@ EXEC = 		./execution/exec/execution.c \
 			./execution/exec/helpers.c \
 			./execution/exec/redirection.c \
 			./execution/exec/heredoc.c \
+			./execution/exec/pipe.c \
+			./execution/signals.c \
 
 EXECUTION = ${BUILTINS} \
 			${EXEC} \
@@ -89,7 +91,7 @@ all: $(NAME) clean
 
 $(NAME): $(OBJC)
 #	make -C $(libft_Dir)
-	@$(CC) $(CFLAGS) $(OBJC) -o $(NAME) $(libft) $(RDFLAGS)  && ./$(NAME)
+	@$(CC) $(CFLAGS) $(OBJC) -o $(NAME) $(libft) $(RDFLAGS)
 
 %.o: %.c $(headers)
 	@$(CC) $(CFLAGS) -c $< -o $@
