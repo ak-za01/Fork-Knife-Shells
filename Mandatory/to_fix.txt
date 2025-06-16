@@ -1,0 +1,12 @@
+
+
+|------------  : ------------|
+
+
+handle "."
+red errors input / output/ ambgues + exit status
+ 
+$adsfa > z4 "seg"  /  exit_status 0 
+
+
+------------------------------------------------------------------
