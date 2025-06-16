@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 21:46:46 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/14 00:55:17 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/16 18:29:13 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,14 @@ int			pipes_count(t_token *data);
 int			ft_dup2(int f1, int f2);
 int			exec_external(t_token *data, t_extra *x);
 int			cleanup_execution_vars(t_extra *x);
-int			**create_pipe(t_token *data, t_extra *x);
-int			setup_pipe(t_extra *x);
+int			create_pipe(t_extra *x);
+int			setup_pipe(int index, int cmd_count, int **pipefd);
 int			cmd_error(char *cmd, int status);
-void		*free_pipes(t_extra *x, int i);
-
+int			free_pipes(t_extra *x, int i);
+void 		close_pipe_in_parent(t_extra *x);
+void		close_all_pipes(t_extra *x);
+void		exec_child(t_token *data, t_extra *x);
+int			handle_ambiguous(int a, int red_s);
 
 
 //	execution functions

@@ -1,25 +1,9 @@
 
 
-                |------------ export : ------------|
+                |------------  : ------------|
 
 
+handle "."
+red errors input / output/ ambgues + exit status
 
-status : not fixed
-
-
-------------------------------------------------------------------
-
-
-status : not fixed
-
-
-
-
-
-
-
-                |------------ others : ------------|
-
-fix add history if the comand fail
-
-fix the status exist in the expanding -> ft_handle_special_char() and ft_calcul_sepcial_len()
+$adsfa > z4 "seg"  /  exit_status 0 

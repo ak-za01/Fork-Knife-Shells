@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 15:33:17 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/13 12:43:21 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/16 18:29:01 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	handle_output(char *file, int append, t_extra *x)
 {
 	int	fd;
 
-	if (file_errors(file, 1, x) == -1)
+	if (file_errors(file, 1, x) != 0)
 		return (ERROR);
 	if (append)
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
@@ -65,7 +65,7 @@ int	handle_input(char *file, t_extra *x)
 {
 	int	fd;
 
-	if (file_errors(file, 0, x) == -1)
+	if (file_errors(file, 0, x) != 0)
 		return (ERROR);
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
@@ -80,44 +80,46 @@ int	handle_input(char *file, t_extra *x)
 	return (SUCCESS);
 }
 
-int	process_redirection(char **c_red, t_extra *x)
+int	process_redirection(t_token *data, t_extra *x)
 {
 	int	a;
 
 	a = 0;
-	while (c_red[a])
+	while (a < data->red_s && data->c_red[a])
 	{
-		if (ft_strcmp(c_red[a], ">") == 0)
+		if(!data->c_red[a + 1])
+			break;
+		if (ft_strcmp(data->c_red[a], ">") == 0)
 		{
-			if (handle_output(c_red[++a], 0, x) == -1)
+			if (handle_output(data->c_red[++a], 0, x) != 0)
 				return (ERROR);
 		}
-		else if (ft_strcmp(c_red[a], ">>") == 0)
+		else if (ft_strcmp(data->c_red[a], ">>") == 0)
 		{
-			if (handle_output(c_red[++a], 1, x) == -1)
+			if (handle_output(data->c_red[++a], 1, x) != 0)
 				return (ERROR);
 		}
-		if (ft_strcmp(c_red[a], "<") == 0)
+		else if (ft_strcmp(data->c_red[a], "<") == 0)
 		{
-			if (handle_input(c_red[++a], x) == -1)
+			if (handle_input(data->c_red[++a], x) != 0)
 				return (ERROR);
 		}
-		else
 			a++;
 	}
-	return (SUCCESS);
+	return (handle_ambiguous(a, data->red_s));
 }
 
 int	setup_redirections(t_token *data, t_extra *x)
 {
 	t_token	*current;
 
+	
 	current = data;
 	while (current)
 	{
 		if (current->c_red)
 		{
-			if (process_redirection(current->c_red, x) != 0)
+			if (process_redirection(current, x) != 0)
 				return (ERROR);
 		}
 		current = current->next;

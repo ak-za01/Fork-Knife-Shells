@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 17:13:15 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/14 12:43:22 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/16 18:17:11 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@ char	*find_path(char	*cmd, t_env *env_list)
 	int		i;
 	
 	i = 0;
+	// cmd = ft_split2(t, ' ');
+	// if (!cmd || !*cmd || cmd[0][0] == '.')
+	// 	(ft_free2(data->pi, data->c - 1), ft_free(cmd),
+	// 		perror("execve Error: line 23"), exit(1));	
 	if (ft_strchr(cmd, '/'))
 	{
 		if (access(cmd, F_OK | X_OK) == 0)
@@ -77,7 +81,7 @@ void	free_external(char *cmd_path, char **env)
 		ft_free(env);
 }
 
-static void	exec_child(t_token *data, t_extra *x)
+void	exec_child(t_token *data, t_extra *x)
 {
 	signal_init_child();
 	if (data->c_red)
@@ -86,10 +90,9 @@ static void	exec_child(t_token *data, t_extra *x)
 			exit(1);
 	}
 	if (data->type == b_cmd_t)
-	{
-		x->exit_status = exec_builtin(data, *x);
-		exit(x->exit_status);
-	}
+		exit(x->exit_status = exec_builtin(data, *x));
+	if (!data->value)
+		exit (0);
 	x->cmd_path = find_path(data->value, x->env_list);
 	if (!x->cmd_path)
 		exit(cmd_error(data->value, 127));
@@ -103,52 +106,6 @@ static void	exec_child(t_token *data, t_extra *x)
 	perror("execve");
 	free_external(x->cmd_path, x->env);
 	exit(127);
-}
-
-// static int	wait_for_childrenchild(t_extra *x);
-
-static void	close_all_pipes(t_extra *x)
-{
-	int	i;
-
-	i = 0;
-	while (i < x->pipe_count)
-	{
-		close(x->pipefd[i][0]);
-		close(x->pipefd[i][1]);
-		i++;
-	}
-}
-
-int	exec_external(t_token *data, t_extra *x)
-{
-	t_token	*current;
-	pid_t	pid;
-
-	current = data;
-	while (current)
-	{
-		if (current->type == b_cmd_t || current->type == cmd_t)
-		{
-			pid = fork();
-			if (pid == 0)
-			{
-				if (x->pipe_count > 0)
-					setup_pipe(x);
-				exec_child(current, x);
-			}
-			else if (pid == -1)
-			{
-				x->exit_status = (perror("fork"), 1);
-				break ;
-			}
-			x->cmd_index++;
-		}
-		current = current->next;
-	}
-	if (x->pipe_count > 0)
-		close_all_pipes(x);
-	return (x->exit_status);
 }
 
 int	exec_single(t_token *data, t_extra *x)

@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:28 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/14 08:43:51 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/16 17:25:10 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	main(int ac, char **av, char **env)
 				ft_free_list(&data);
 			}
 			add_history(str);
+			printf("> exit : %d < \n",x.exit_status);
 		}
 		else if (!str)
 			break ;

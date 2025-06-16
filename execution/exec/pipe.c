@@ -6,87 +6,96 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:49:37 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/14 08:46:40 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/16 18:25:07 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/builtins.h"
 
-void	*free_pipes(t_extra *x, int i)
+void	close_all_pipes(t_extra *x)
+{
+	int	i;
+
+	i = 0;
+	while (i < x->pipe_count)
+	{
+		close(x->pipefd[i][0]);
+		close(x->pipefd[i][1]);
+		i++;
+	}
+}
+
+void close_pipe_in_parent(t_extra *x)
+{
+    if (x->cmd_index > 0)
+        close(x->pipefd[x->cmd_index - 1][0]);
+    if (x->cmd_index < x->cmd_count - 1)
+        close(x->pipefd[x->cmd_index][1]);
+    x->cmd_index++;
+}
+
+int	free_pipes(t_extra *x, int i)
 {
 	int	a;
 
 	a = 0;
-	if (i)
+	while (a < i)
 	{
-		while (a < i)
-		{
-			if (x->pipefd[a])
-				free(x->pipefd[a]);
-			a++;
-		}
-	}
-	else
-	{
-		while (a < x->pipe_count)
-		{
-			if (x->pipefd[a])
-				free(x->pipefd[a]);
-			a++;
-		}
+		if (x->pipefd[a])
+			free(x->pipefd[a]);
+		a++;
 	}
 	free(x->pipefd);
-	x->pipefd = NULL;
-	return (NULL);
+	return (SUCCESS);
 }
 
-int	**create_pipe(t_token *data, t_extra *x)
+int	create_pipe(t_extra *x)
 {
 	int	a;
-	int	**pipefd;
 
 	a = 0;
 	if (!x->pipe_count)
-		return (NULL);
-	if (x->pipe_count > 0)
+		return (ERROR);
+	x->pipefd = malloc(x->pipe_count * sizeof(int *));
+	if (!x->pipefd)
+		return (ERROR);
+	while (a < x->pipe_count)
 	{
-		pipefd = malloc(x->pipe_count * sizeof(int *));
-		if (!pipefd)
-			return (NULL);
-		while (a < x->pipe_count)
+		x->pipefd[a] = malloc(2 * sizeof(int));
+		if (!x->pipefd[a])
 		{
-			pipefd[a] = malloc (2 * sizeof(int));
-			if (!pipefd[a] || pipe(pipefd[a]))
-			{
-				perror("pipe");
-				return (free_pipes(x, a));
-			}
-			a++;
+			ft_putstr_fd("pipe", STDERR_FILENO);
+			return ((free_pipes(x, a)), ERROR);
 		}
-		return (pipefd);
+		if (pipe(x->pipefd[a]) == -1)
+		{
+			ft_putstr_fd("malloc", STDERR_FILENO);
+			return ((free_pipes(x, a)), ERROR);
+		}
+		a++;
 	}
-	return (NULL);
+	return (SUCCESS);
 }
 
-int	setup_pipe(t_extra *x)
+int	setup_pipe(int index, int cmd_count, int **pipefd)
 {
 	int	a;
 
 	a = 0;
-	if (x->cmd_index > 0)
+	if (index > 0)
 	{
-		if (ft_dup2(x->pipefd[x->cmd_index - 1][0], STDIN_FILENO) != 0)
+		if (ft_dup2(pipefd[index - 1][0], STDIN_FILENO) != 0)
 			return (ERROR);
 	}
-	if (x->cmd_index < x->pipe_count)
+	if (index < cmd_count - 1)
 	{
-		if (ft_dup2(x->pipefd[x->cmd_index][1], STDOUT_FILENO) != 0)
+		if (ft_dup2(pipefd[index][1], STDOUT_FILENO) != 0)
 			return (ERROR);
 	}
-	while (a < x->pipe_count)
+	while (a < cmd_count - 1)
 	{
-		close(x->pipefd[a][0]);
-		close(x->pipefd[a][1]);
+		close(pipefd[a][0]);
+		close(pipefd[a][1]);
 		a++;
 	}
 	return (SUCCESS);

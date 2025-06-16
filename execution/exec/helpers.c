@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 18:18:51 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/14 08:32:09 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/16 18:18:53 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,19 @@ int	pipes_count(t_token *data)
 	return (count);
 }
 
+void	free_pipe(t_extra *x)
+{
+	int	i;
+
+	i = 0;
+	while (i < x->pipe_count)
+	{
+        free(x->pipefd[i]);
+		i++;
+	}
+    free(x->pipefd);
+}
+
 int	cleanup_execution_vars(t_extra *x)
 {
 	if (x->stdin_backup != -1)
@@ -77,43 +90,7 @@ int	cleanup_execution_vars(t_extra *x)
 		close(x->stdout_backup);
 		x->stdout_backup = -1;
 	}
-	if (x->pipefd)
-	{
-		free_pipes(x, 0);
-		x->pipefd = NULL;
-	}
+	if (x->pipe_count > 0)
+		free_pipe(x);
 	return (x->exit_status);
-}
-
-int	cmd_error(char *cmd, int status)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(cmd, 2);
-	ft_putendl_fd(": command not found", 2);
-	return (status);
-}
-
-int	restore_std_fds(t_extra *x)
-{
-	if (x->stdin_backup != -1)
-	{
-		if (ft_dup2(x->stdin_backup, STDIN_FILENO) != 0)
-		{
-			x->exit_status = ERROR;
-			return (ERROR);
-		}
-		close(x->stdin_backup);
-		x->stdin_backup = -1;
-	}
-	if (x->stdout_backup != -1)
-	{
-		if (ft_dup2(x->stdout_backup, STDOUT_FILENO) != 0)
-		{
-			x->exit_status = ERROR;
-			return (ERROR);
-		}
-		close(x->stdout_backup);
-		x->stdout_backup = -1;
-	}
-	return (SUCCESS);
 }

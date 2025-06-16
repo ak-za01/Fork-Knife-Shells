@@ -69,6 +69,7 @@ BUILTINS =	./execution/builtins/builtins.c \
 EXEC = 		./execution/exec/execution.c \
 			./execution/exec/exec_single.c \
 			./execution/exec/helpers.c \
+			./execution/exec/helpers2.c \
 			./execution/exec/redirection.c \
 			./execution/exec/heredoc.c \
 			./execution/exec/pipe.c \
