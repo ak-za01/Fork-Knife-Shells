@@ -6,106 +6,31 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 17:13:15 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/16 18:17:11 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/17 21:50:05 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/builtins.h"
 
-char	*find_path(char	*cmd, t_env *env_list)
+int	exec_builtin(t_token *data, t_extra x)
 {
-	char	**paths;
-	char	*cmd_path;
-	int		i;
-	
-	i = 0;
-	// cmd = ft_split2(t, ' ');
-	// if (!cmd || !*cmd || cmd[0][0] == '.')
-	// 	(ft_free2(data->pi, data->c - 1), ft_free(cmd),
-	// 		perror("execve Error: line 23"), exit(1));	
-	if (ft_strchr(cmd, '/'))
-	{
-		if (access(cmd, F_OK | X_OK) == 0)
-			return (ft_strdup(cmd));
-		return (NULL);
-	}
-	paths = ft_split(get_env_value(env_list, "PATH"), ':');
-	if (!paths)
-		return (NULL);
-	while (paths[i])
-	{
-		cmd_path = ft_strjoin3(paths[i], "/", cmd);
-		if (cmd_path && access(cmd_path, F_OK | X_OK) == 0)
-			return((ft_free(paths)), cmd_path);
-		free(cmd_path);
-		i++;
-	}
-	ft_free(paths);
-	return (NULL);
-}
-
-char	**env_to_arr(t_env *env_list)
-{
-	t_env	*current;
-	char	**env;
-	int		count;
-	int		i;
-
-	i = 0;
-	count = 0;
-	current = env_list;
-	while (current)
-	{
-		if (current->original)
-			count++;
-		current = current->next;
-	}
-	env = ft_calloc((count + 1), sizeof (char *));
-	if (!env)
-		return (NULL);
-	current = env_list;
-	while (current)
-	{
-		if (current->original)
-			env[i++] = ft_strjoin3(current->name, "=", current->value);
-		current = current->next;
-	}
-	return (env);
-}
-
-void	free_external(char *cmd_path, char **env)
-{
-	if (cmd_path)
-		free(cmd_path);
-	if (env)
-		ft_free(env);
-}
-
-void	exec_child(t_token *data, t_extra *x)
-{
-	signal_init_child();
-	if (data->c_red)
-	{
-		if (setup_redirections(data, x) != 0)
-			exit(1);
-	}
-	if (data->type == b_cmd_t)
-		exit(x->exit_status = exec_builtin(data, *x));
-	if (!data->value)
-		exit (0);
-	x->cmd_path = find_path(data->value, x->env_list);
-	if (!x->cmd_path)
-		exit(cmd_error(data->value, 127));
-	x->env = env_to_arr(x->env_list);
-	if (!x->env)
-	{
-		free(x->cmd_path);
-		exit(1);
-	}
-	execve(x->cmd_path, data->c_arg, x->env);
-	perror("execve");
-	free_external(x->cmd_path, x->env);
-	exit(127);
+	if (!data->value || !data->value[0])
+		return (ERROR);
+	if (strcmp(data->value, "echo") == 0)
+		return (ft_echo(data));
+	else if (strcmp(data->value, "cd") == 0)
+		return (ft_cd(data->c_arg, x));
+	if (strcmp(data->value, "pwd") == 0)
+		return (ft_pwd());
+	else if (strcmp(data->value, "export") == 0)
+		return (ft_export(data, x));
+	else if (strcmp(data->value, "unset") == 0)
+		return (ft_unset(data, x));
+	else if (strcmp(data->value, "env") == 0)
+		return (ft_env(data, x));
+	else if (strcmp(data->value, "exit") == 0)
+		return (ft_exit(data, x));
+	return (ERROR);
 }
 
 int	exec_single(t_token *data, t_extra *x)

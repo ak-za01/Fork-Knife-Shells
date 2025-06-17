@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 12:22:54 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/14 00:50:47 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/17 17:41:54 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,13 @@ int	handle_heredoc(char *del)
 		line = readline("> ");
 		if (!line)
 			break ;
+		// filter 1
 		if (ft_strcmp(line, del) == 0)
 		{
 			free(line);
 			break ;
 		}
+		// filter 2
 		ft_putstr_fd(line, pipefd[1]);
 		ft_putstr_fd("\n", pipefd[1]);
 		free(line);
@@ -67,7 +69,8 @@ int	process_heredoc(t_token *data, t_extra *x)
 
 	a = 0;
 	fd_heredoc = -1;
-	while (data->c_red[a])
+
+	while (a < data->red_s)
 	{
 		if (ft_strcmp(data->c_red[a], "<<") == 0)
 		{
@@ -79,12 +82,6 @@ int	process_heredoc(t_token *data, t_extra *x)
 		}
 		else
 			a++;
-	}
-	if (fd_heredoc != -1)
-	{
-		if (ft_dup2(fd_heredoc, STDIN_FILENO) != 0)
-			return ((x->exit_status = 1), ERROR);
-		close(fd_heredoc);
 	}
 	return ((x->exit_status = 0));
 }
@@ -98,7 +95,7 @@ int	setup_heredoc(t_token *data, t_extra *x)
 	pid = fork();
 	if (pid == 0)
 	{
-		signal_init_child();
+		// signal_init_child();
 		while (current)
 		{
 			if (current->c_red && has_heredoc(current->c_red))
@@ -111,7 +108,6 @@ int	setup_heredoc(t_token *data, t_extra *x)
 	}
 	else if (pid)
 		waitpid(pid, NULL, 0);
-		
 	x->exit_status = 0;
 	return (SUCCESS);
 }

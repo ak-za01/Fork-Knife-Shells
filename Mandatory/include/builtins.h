@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 21:46:46 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/16 18:29:13 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/17 21:54:19 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,11 @@ void	close_pipe_in_parent(t_extra *x);
 void	close_all_pipes(t_extra *x);
 void	exec_child(t_token *data, t_extra *x);
 int		handle_ambiguous(int a, int red_s);
+int		free_pipes(t_extra *x, int i);
+void	free_pipe(t_extra *x);
 
 //	execution functions
-int		exec_cmd(t_token *data, t_extra *x);
+int		ft_execution(t_token *data, t_extra *x);
 int		exec_single(t_token *data, t_extra *x);
 
 // Redirection Functions

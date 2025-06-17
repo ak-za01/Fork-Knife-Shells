@@ -2,11 +2,11 @@
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -I./../readline/include
+# CFLAGS = -Wall -Werror -Wextra -I./../readline/include
 
 # CFLAGS = -fsanitize=address -g -I./../readline/include
 
-# CFLAGS = -I./../readline/include
+CFLAGS = -I./../readline/include
 
 RDFLAGS = -L./../readline/lib -lreadline
 
@@ -56,7 +56,7 @@ PARSING  =	./main.c \
 			./Parsing/Utils/ft_split4.c \
 			./Parsing/Utils/utils1.c \
 
-BUILTINS =	./execution/builtins/builtins.c \
+BUILTINS =	./execution/builtins/pwd.c \
 			./execution/builtins/cd.c \
 			./execution/builtins/echo.c \
 			./execution/builtins/environment.c \
@@ -69,9 +69,9 @@ BUILTINS =	./execution/builtins/builtins.c \
 			./execution/builtins_utils/split_env.c \
 
 EXEC = 		./execution/exec/execution.c \
+			./execution/exec/exec_external.c \
 			./execution/exec/exec_single.c \
 			./execution/exec/helpers.c \
-			./execution/exec/helpers2.c \
 			./execution/exec/redirection.c \
 			./execution/exec/heredoc.c \
 			./execution/exec/pipe.c \

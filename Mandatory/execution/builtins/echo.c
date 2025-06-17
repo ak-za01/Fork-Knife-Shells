@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 07:32:22 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/21 11:39:22 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/17 21:22:24 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	ft_echo(t_token *data)
 		if (!first_arg)
 			printf(" ");
 		printf("%s", data->c_arg[i]);
+		// ft_putstr_fd(data->c_arg[i], STDOUT_FILENO);
 		first_arg = 0;
 		i++;
 	}

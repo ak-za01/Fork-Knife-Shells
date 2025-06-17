@@ -6,32 +6,11 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:01:40 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/12 19:19:30 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/17 21:50:11 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/builtins.h"
-
-int	exec_builtin(t_token *data, t_extra x)
-{
-	if (!data->value || !data->value[0])
-		return (ERROR);
-	if (strcmp(data->value, "echo") == 0)
-		return (ft_echo(data));
-	else if (strcmp(data->value, "cd") == 0)
-		return (ft_cd(data->c_arg, x));
-	if (strcmp(data->value, "pwd") == 0)
-		return (ft_pwd());
-	else if (strcmp(data->value, "export") == 0)
-		return (ft_export(data, x));
-	else if (strcmp(data->value, "unset") == 0)
-		return (ft_unset(data, x));
-	else if (strcmp(data->value, "env") == 0)
-		return (ft_env(data, x));
-	else if (strcmp(data->value, "exit") == 0)
-		return (ft_exit(data, x));
-	return (ERROR);
-}
 
 int	ft_pwd(void)
 {
@@ -39,7 +18,9 @@ int	ft_pwd(void)
 
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
-		printf("%s\n", cwd);
+		// printf("%s\n", cwd);
+		ft_putstr_fd(cwd, STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 		return (SUCCESS);
 	}
 	else

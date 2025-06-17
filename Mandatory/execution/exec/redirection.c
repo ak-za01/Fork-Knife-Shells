@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 15:33:17 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/16 20:23:33 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/17 21:51:25 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/builtins.h"
+
+int	handle_ambiguous(int a, int red_s)
+{
+	if(a < red_s)
+	{
+		ft_putstr_fd("minishell: ambiguous redirect\n", STDERR_FILENO);
+		return (ERROR);
+	}
+	return (SUCCESS);
+}
 
 int	file_errors(char *file, int output)
 {
@@ -80,11 +90,8 @@ int	handle_input(char *file, t_extra *x)
 	return (SUCCESS);
 }
 
-int	process_redirection(t_token *data, t_extra *x)
+int	process_redirection(t_token *data, t_extra *x, int a)
 {
-	int	a;
-
-	a = 0;
 	while (a < data->red_s && data->c_red[a])
 	{
 		if(!data->c_red[a + 1])
@@ -104,7 +111,9 @@ int	process_redirection(t_token *data, t_extra *x)
 			if (handle_input(data->c_red[++a], x) != 0)
 				return (ERROR);
 		}
+		else if (ft_strcmp(data->c_red[a], "<<") == 0)
 			a++;
+		a++;
 	}
 	return (handle_ambiguous(a, data->red_s));
 }
@@ -115,14 +124,10 @@ int	setup_redirections(t_token *data, t_extra *x)
 
 	
 	current = data;
-	while (current)
+	if (current && current->c_red)
 	{
-		if (current->c_red)
-		{
-			if (process_redirection(current, x) != 0)
-				return (ERROR);
-		}
-		current = current->next;
+		if (process_redirection(current, x, 0) != 0)
+			return (ERROR);
 	}
 	return (SUCCESS);
 }

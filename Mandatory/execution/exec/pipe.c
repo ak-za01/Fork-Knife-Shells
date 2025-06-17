@@ -6,11 +6,43 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:49:37 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/16 18:25:07 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/17 21:47:21 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/builtins.h"
+
+int	pipes_count(t_token *data)
+{
+	t_token	*current;
+	int		count;
+
+	count = 0;
+	current = data;
+	while (current)
+	{
+		if (current->value)
+		{
+			if (current->type == pipe_t)
+				count++;
+		}
+		current = current->next;
+	}
+	return (count);
+}
+
+void	free_pipe(t_extra *x)
+{
+	int	i;
+
+	i = 0;
+	while (i < x->pipe_count)
+	{
+        free(x->pipefd[i]);
+		i++;
+	}
+    free(x->pipefd);
+}
 
 void	close_all_pipes(t_extra *x)
 {

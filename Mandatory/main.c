@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:28 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/16 21:27:14 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/17 21:48:29 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	main(int ac, char **av, char **env)
 			if (data)
 			{
 				// ft_print_list(data);
-				exec_cmd(data, &x);
+				x.exit_status = ft_execution(data, &x);
 				ft_free_list(&data);
 			}
 			// printf("\n > exit status : %d < \n", x.exit_status);
