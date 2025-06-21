@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:28 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/17 21:48:29 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/21 18:04:48 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(int ac, char **av, char **env)
 
 	// atexit(leaks);
 	(void)ac, (void)av;
-	// signal_init_interactive();
+	signal_init_interactive();
 	init_extra(&x, env);
 	while (1)
 	{

@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 18:27:50 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/22 11:48:55 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/21 18:01:13 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	ft_cd(char **c_args, t_extra x)
 {
 	char	old_dir[PATH_MAX];
 
-	if (!getcwd(old_dir, PATH_MAX))
+	if (!getcwd(old_dir, PATH_MAX) && !var_exist(x.env_list, "PWD"))
 	{
 		ft_putstr_fd("cd: ", 2);
 		ft_putendl_fd(strerror(errno), 2);

@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 00:45:01 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/14 00:47:15 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/20 13:17:15 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void sig_handler(int signal)
         rl_replace_line("", 0);
         rl_redisplay();
     }
+    // write(STDOUT_FILENO, "\n", 1);
 }
 
 void signal_init_interactive()
@@ -33,17 +34,17 @@ void signal_init_interactive()
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = SA_RESTART;
     sigaction(SIGINT, &sa, NULL);
-    
     sa.sa_handler = SIG_IGN;
     sigaction(SIGQUIT, &sa, NULL);
-    
+	sigaction(SIGPIPE, &sa, NULL);
     rl_catch_signals = 0;
 }
 
 void signal_init_child()
 {
-    signal(SIGINT, SIG_DFL);
-    signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGPIPE, SIG_DFL); 
 }
 
 void handle_signal_in_main()

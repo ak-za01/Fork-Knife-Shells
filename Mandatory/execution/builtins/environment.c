@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:53:28 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/31 19:07:44 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/20 14:12:11 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,52 @@ t_env	*create_env_list(char **env)
 			current->next = new_node;
 		current = new_node;
 		((free(temp)), env++);
+	}
+	return (env_list);
+}
+
+t_env	*create_env()
+{
+	t_env	*env_list;
+	char	cwd[1024];
+
+	env_list = malloc(sizeof(t_env));
+	if (!env_list)
+		return (NULL);
+	env_list->name = ft_strdup("SHLVL");
+	if (!env_list->name)
+	{
+		free(env_list);
+		return (NULL);
+	}
+	env_list->value = ft_strdup("1");  // Need to strdup, not assign literal
+	if (!env_list->value)
+	{
+		free(env_list->name);
+		free(env_list);
+		return (NULL);
+	}
+	env_list->original = 1;
+	env_list->next = NULL;
+	
+	// Fix the getcwd logic - it returns NULL on failure, not success
+	if (getcwd(cwd, sizeof(cwd)) == NULL)
+	{
+		perror("getcwd() error");
+		free(env_list->name);
+		free(env_list->value);
+		free(env_list);
+		return (NULL);
+	}
+	
+	// Add PWD to environment
+	if (add_var(env_list, "PWD", cwd))
+	{
+		// Clean up on failure
+		free(env_list->name);
+		free(env_list->value);
+		free(env_list);
+		return (NULL);
 	}
 	return (env_list);
 }
@@ -83,8 +129,10 @@ static int	update_var(t_env *env_list, char *name)
 
 void	init_extra(t_extra *x, char **env)
 {
-	x->env_list = create_env_list(env);
-	x->exit_status = 0;
+	if (env && *env)
+		x->env_list = create_env_list(env);
+	else
+		x->env_list = create_env();
 	if (!var_exist(x->env_list, "SHLVL"))
 	{
 		if (add_var(x->env_list, "SHLVL", "1"))

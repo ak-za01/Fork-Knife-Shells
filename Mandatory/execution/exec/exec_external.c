@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 21:48:57 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/17 21:50:41 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/20 11:58:39 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	cmd_error(char *cmd, int status)
 
 void	exec_child(t_token *data, t_extra *x)
 {
-	// signal_init_child();
+	signal_init_child();
 	if (data->c_red)
 	{
 		if (setup_redirections(data, x) != 0)
@@ -103,7 +103,7 @@ void	exec_child(t_token *data, t_extra *x)
 	x->env = env_to_arr(x->env_list);
 	if (!x->env)
 		(free(x->cmd_path), exit(1));
-	fprintf(stderr, RED"exit_status: %d, cmd_num: %d, cmd: %s\n"RESET, x->exit_status, x->cmd_index, data->value);
+	// fprintf(stderr, RED"exit_status: %d, cmd_num: %d, cmd: %s\n"RESET, x->exit_status, x->cmd_index, data->value);
 	execve(x->cmd_path, data->c_arg, x->env);
 	perror("execve");
 	free_external(x->cmd_path, x->env);
@@ -112,7 +112,7 @@ void	exec_child(t_token *data, t_extra *x)
 
 void	external_helper(t_token *current, t_extra *x)
 {
-	pid_t pid;
+	pid_t 	pid;
 	while (current)
 	{
 		if (current->type == b_cmd_t || current->type == cmd_t)
@@ -140,7 +140,11 @@ void	external_helper(t_token *current, t_extra *x)
 int exec_external(t_token *data, t_extra *x)
 {
 	t_token *current;
+	pid_t 	pid;
+	int		status;
+	int		a;
 
+	a = 0;
 	current = data;
 	if (x->pipe_count > 0)
 	{
@@ -148,6 +152,13 @@ int exec_external(t_token *data, t_extra *x)
 			return (perror("pipe creation failed"), 1);
 	}
 	external_helper(current, x);
+	while (a < x->cmd_count)
+	{
+		pid = waitpid(-1, &status, 0);
+        if (WIFEXITED(status))
+            x->exit_status = WEXITSTATUS(status);
+		a++;
+	}
 	close_all_pipes(x);
 	return (x->exit_status);
 }

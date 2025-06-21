@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 21:46:46 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/17 21:54:19 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/21 17:43:28 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,18 @@ int		exec_single(t_token *data, t_extra *x);
 
 // Redirection Functions
 int		setup_redirections(t_token *data, t_extra *x);
-int		setup_heredoc(t_token *data, t_extra *x);
-int		process_heredoc(t_token *data, t_extra *x);
-int		handle_heredoc(char *del);
+// int		setup_heredoc(t_token *data, t_extra *x);
+// int		process_heredoc(t_token *data, int *pipefd, t_extra *x);
+// int		handle_heredoc(char *del, int *pipefd);
 int		has_heredoc(char **c_red);
 int		restore_std_fds(t_extra *x);
 void	print_error(char *file, char *error_msg);
+
+int	setup_heredoc(t_token *data, t_extra *x);
+int	process_heredoc(t_token *data, t_extra *x);
+// int	handle_heredoc1(char *del,t_token *data);
+// int	handle_heredoc2(char *del,t_token *data);
+int	count_heredoc(t_token *data);
 
 // Built-in function prototypes
 int		ft_echo(t_token *data);

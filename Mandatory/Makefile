@@ -93,18 +93,18 @@ NAME = minishell
 all: $(NAME) clean
 
 $(NAME): $(OBJC)
-#	make -C $(libft_Dir)
-	@$(CC) $(CFLAGS) $(OBJC) -o $(NAME) $(libft) $(RDFLAGS)  && ./$(NAME)
+	make -C $(libft_Dir)
+	@$(CC) $(CFLAGS) $(OBJC) -o $(NAME) $(libft) $(RDFLAGS)
 
 %.o: %.c $(headers)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-#	make -C $(libft_Dir) clean
+	make -C $(libft_Dir) clean
 	@rm -rf $(OBJC) 
 
 fclean: clean
-#	make -C $(libft_Dir) fclean
+	make -C $(libft_Dir) fclean
 	@rm -rf $(NAME)
 
 re: fclean all

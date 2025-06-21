@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:49:37 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/17 21:47:21 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/20 08:09:53 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,16 @@ void	close_all_pipes(t_extra *x)
 	i = 0;
 	while (i < x->pipe_count)
 	{
-		close(x->pipefd[i][0]);
-		close(x->pipefd[i][1]);
+		 if (x->pipefd[i][0] != -1)
+        {
+            close(x->pipefd[i][0]);
+            x->pipefd[i][0] = -1;
+        }
+        if (x->pipefd[i][1] != -1)
+        {
+            close(x->pipefd[i][1]);
+            x->pipefd[i][1] = -1;
+        }
 		i++;
 	}
 }

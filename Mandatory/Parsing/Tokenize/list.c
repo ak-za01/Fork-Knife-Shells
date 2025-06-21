@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 07:10:20 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/17 17:12:08 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/20 09:46:07 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ t_token	*ft_creat_new_list(char *str, t_token_type type)
 	n->c_arg = NULL;
 	n->red_s = 0;
 	n->c_red = NULL;
-	n->pi_doc = NULL;
 	n->next = NULL;
 	n->prev = NULL;
 	return (n);
@@ -98,8 +97,6 @@ void	ft_free_list(t_token **data)
 			ft_free2(ptr->c_arg, ptr->arg_s);
 		if (ptr->c_red)
 			ft_free2(ptr->c_red, ptr->red_s);
-		if (ptr->pi_doc)
-			free(ptr->pi_doc);
 		free(ptr);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 11:26:23 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/31 18:16:48 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/20 21:46:38 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,6 @@ int	update_pwd(t_extra x, char *old_dir)
 		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd(strerror(errno), 2);
 		return ((x.exit_status = 1));
-	}
-	if (!var_exist(x.env_list, "OLDPWD"))
-	{
-		if (add_var(x.env_list, "OLDPWD", old_dir))
-			return ((x.exit_status = 1));
 	}
 	else 
 	{
