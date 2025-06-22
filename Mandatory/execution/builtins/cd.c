@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 18:27:50 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/21 18:01:13 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/22 20:52:09 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,43 @@ char	*get_env_value(t_env *env_list, char *name)
 	return (NULL);
 }
 
+int	ft_check_tilde(t_extra *x, char *old_dir, char *path)
+{
+	int	i;
+	int count;
+
+	i = 0;
+	count = 0;
+	while (path[i])
+	{
+		if (path[i] == '~')
+			count++;
+		i++;
+	}
+	printf("tilde count: %d\n", count);
+	if (path[0] == '~' && count == 1)
+		return (1);
+	return (0);
+}
+
 int	expand_tilde(char *home, char *path, char *old_dir, t_extra x)
 {
 	char	*expanded_path;
 	int		i;
 	int		j;
 
-	expanded_path = malloc(ft_strlen(home) + ft_strlen(path) + 1);
-	if (!expanded_path)
-		return (1);
-	i = ((j = 1), -1);
-	while (home[++i])
-		expanded_path[i] = home[i];
-	while (path[j])
-		expanded_path[i++] = path[j++];
-	expanded_path[i] = '\0';
+	// if (ft_check_tilde(&x, old_dir, path))
+	// {
+		expanded_path = malloc(ft_strlen(home) + ft_strlen(path) + 1);
+		if (!expanded_path)
+			return (1);
+		i = ((j = 1), -1);
+		while (home[++i])
+			expanded_path[i] = home[i];
+		while (path[j])
+			expanded_path[i++] = path[j++];
+		expanded_path[i] = '\0';
+	// }
 	if (chdir(expanded_path) != 0)
 	{
 		ft_putstr_fd("cd: ", 2);
@@ -124,8 +146,8 @@ int	ft_cd(char **c_args, t_extra x)
 			ft_putstr_fd("permission denied: ", 2);
 		else
 			ft_putstr_fd(strerror(errno), 2);
-		ft_putstr_fd(": ", 2);
-		ft_putendl_fd(c_args[1], 2);
+		// ft_putstr_fd(": ", 2);
+		// ft_putendl_fd(c_args[1], 2);
 		return (1);
 	}
 	return ((x.exit_status = update_pwd(x, old_dir)));

@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 15:33:17 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/20 12:35:08 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/22 16:48:52 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	file_errors(char *file, int output)
 		}
 	}
 	else if (!output)
-		return ((print_error(file, "No Such file or directory")), ERROR);
+		return ((print_error(file, "No such file or directory")), ERROR);
 	return (SUCCESS);
 }
 

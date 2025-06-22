@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 02:45:32 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/20 12:33:56 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/21 20:44:36 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ typedef struct s_env
 {
 	char			*name;
 	char			*value;
-	int				original;
 	struct s_env	*next;
 }					t_env;
 
@@ -151,9 +150,9 @@ int					ft_filter_cas_2(t_token **ptr);
 void				ft_free_arg_node2(t_token **data);
 
 //------------------------------ Utils :
-char				**ft_split2(char const *s, char c);
-long				ft_count_split2(char const *s, char c);
-char				*ft_copy_split2(const char *s, char c, long *i);
+char				**ft_split2(char const *s);
+long				ft_count_split2(char const *s);
+char				*ft_copy_split2(const char *s, long *i);
 void				ft_fix_norminet_1(char *a, char const *b, long *n1);
 void				ft_fix_norminet_2(long *n2, long *n1);
 
@@ -169,5 +168,6 @@ char				*ft_copy_split4(char const *s, int *k);
 void				ft_free(char **t);
 void				ft_free2(char **t, int s);
 char				**ft_set_charset(void);
+int					ft_isspace(int c);
 
 #endif

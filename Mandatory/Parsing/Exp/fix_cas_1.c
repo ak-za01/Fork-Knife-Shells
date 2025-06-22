@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fix_cas_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 23:54:04 by noctis            #+#    #+#             */
-/*   Updated: 2025/06/10 23:36:32 by noctis           ###   ########.fr       */
+/*   Updated: 2025/06/21 20:35:28 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	ft_check_if_ambiguous(char *str)
 	while (t[i])
 	{
 		f = ft_check_q_status(t[i]);
-		s = ft_count_split2(t[i], ' ');
+		s = ft_count_split2(t[i]);
 		if (f == 0 && s > 1)
 			return (ft_free(t), -2);
 		i++;

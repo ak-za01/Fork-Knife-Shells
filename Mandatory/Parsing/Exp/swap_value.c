@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   swap_value.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 12:41:18 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/09 18:51:52 by noctis           ###   ########.fr       */
+/*   Updated: 2025/06/22 20:30:36 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ char	*ft_get_expand_name(char **ptr, int *f)
 	}
 	else
 	{
+		*f = 0;
 		while (ft_check_ptr_value(**ptr, 2))
 			var[j++] = *(*ptr)++;
 	}

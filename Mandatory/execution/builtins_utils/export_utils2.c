@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 17:24:46 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/30 21:33:13 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/21 20:43:59 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	copy_env_node(t_env *dest, t_env *src)
 		dest->value = ft_strdup(src->value);
 	else
 		dest->value = NULL;
-	dest->original = src->original;
 	dest->next = NULL;
 }
 

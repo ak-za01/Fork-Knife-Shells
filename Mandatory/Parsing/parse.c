@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 02:15:07 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/09 18:39:35 by noctis           ###   ########.fr       */
+/*   Updated: 2025/06/22 19:32:50 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	ft_check_string(char *str)
 	int	i;
 
 	i = 0;
-	while ((9 <= str[i] && str[i] <= 13) || str[i] == 32)
+	while (ft_isspace(str[i]))
 		i++;
 	if (str[i] == '\0')
 		return (0);

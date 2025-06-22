@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 21:48:57 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/20 11:58:39 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/22 17:02:25 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	**env_to_arr(t_env *env_list)
 	current = env_list;
 	while (current)
 	{
-		if (current->original)
+		if (current->value)
 			count++;
 		current = current->next;
 	}
@@ -62,7 +62,7 @@ char	**env_to_arr(t_env *env_list)
 	current = env_list;
 	while (current)
 	{
-		if (current->original)
+		if (current->value)
 			env[i++] = ft_strjoin3(current->name, "=", current->value);
 		current = current->next;
 	}
@@ -103,6 +103,7 @@ void	exec_child(t_token *data, t_extra *x)
 	x->env = env_to_arr(x->env_list);
 	if (!x->env)
 		(free(x->cmd_path), exit(1));
+	// ft_print_tab(x->env);
 	// fprintf(stderr, RED"exit_status: %d, cmd_num: %d, cmd: %s\n"RESET, x->exit_status, x->cmd_index, data->value);
 	execve(x->cmd_path, data->c_arg, x->env);
 	perror("execve");

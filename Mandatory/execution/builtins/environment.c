@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:53:28 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/20 14:12:11 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/22 18:54:42 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_env	*create_env_list(char **env)
 			return ((free(new_node)), NULL);
 		new_node->name = temp[0];
 		new_node->value = temp[1];
-		new_node->original = ((new_node->next = NULL), 1);
+		new_node->next = NULL;
 		if (!env_list)
 			env_list = new_node;
 		else
@@ -41,6 +41,18 @@ t_env	*create_env_list(char **env)
 	return (env_list);
 }
 
+int	add(t_env *env_list, char *name, char *value)
+{
+	if (add_var(env_list, name, value))
+	{
+		free(env_list->name);
+		free(env_list->value);
+		free(env_list);
+		return (1);
+	}
+	return (0);
+}
+
 t_env	*create_env()
 {
 	t_env	*env_list;
@@ -49,23 +61,9 @@ t_env	*create_env()
 	env_list = malloc(sizeof(t_env));
 	if (!env_list)
 		return (NULL);
-	env_list->name = ft_strdup("SHLVL");
-	if (!env_list->name)
-	{
-		free(env_list);
-		return (NULL);
-	}
-	env_list->value = ft_strdup("1");  // Need to strdup, not assign literal
-	if (!env_list->value)
-	{
-		free(env_list->name);
-		free(env_list);
-		return (NULL);
-	}
-	env_list->original = 1;
+	env_list->name = ft_strdup("OLDPWD");
+	env_list->value = NULL;
 	env_list->next = NULL;
-	
-	// Fix the getcwd logic - it returns NULL on failure, not success
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 	{
 		perror("getcwd() error");
@@ -74,16 +72,10 @@ t_env	*create_env()
 		free(env_list);
 		return (NULL);
 	}
-	
-	// Add PWD to environment
-	if (add_var(env_list, "PWD", cwd))
-	{
-		// Clean up on failure
-		free(env_list->name);
-		free(env_list->value);
-		free(env_list);
+	if (add(env_list, "PWD", cwd))
 		return (NULL);
-	}
+	if (add(env_list, "SHLVL", "0"))
+		return (NULL);
 	return (env_list);
 }
 
@@ -132,7 +124,10 @@ void	init_extra(t_extra *x, char **env)
 	if (env && *env)
 		x->env_list = create_env_list(env);
 	else
+	{
 		x->env_list = create_env();
+		printf("env is null\n");
+	}
 	if (!var_exist(x->env_list, "SHLVL"))
 	{
 		if (add_var(x->env_list, "SHLVL", "1"))
@@ -143,4 +138,5 @@ void	init_extra(t_extra *x, char **env)
 		if (update_var(x->env_list, "SHLVL"))
 			return ;
 	}
+	x->exit_status = 0;
 }

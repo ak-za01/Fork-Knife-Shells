@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:05:15 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/22 12:12:56 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/22 16:47:25 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,15 @@ int	ft_unset(t_token *data, t_extra x)
 
 	i = 1;
 	if (!data->c_arg[i])
-		return ((x.exit_status = 1));
+		return ((x.exit_status = 0));
 	while (data->c_arg[i])
 	{
-		if (remove_variable(data->c_arg[i], x.env_list))
-		{
-			error_message("unset", data->c_arg[i]);
-			return ((x.exit_status = 1));
-		}
+		remove_variable(data->c_arg[i], x.env_list);
+		// if (remove_variable(data->c_arg[i], x.env_list))
+		// {
+		// 	error_message("unset", data->c_arg[i]);
+		// 	return ((x.exit_status = 0));
+		// }
 		i++;
 	}
 	return ((x.exit_status = 0));

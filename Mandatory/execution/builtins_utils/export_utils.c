@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:49:14 by anktiri           #+#    #+#             */
-/*   Updated: 2025/05/30 21:57:18 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/21 21:01:41 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_env	*add_new_node(char *arg, t_env *env_list)
 	}
 	new_node->name = value[0];
 	new_node->value = value[1];
-	new_node->original = 0;
+	
 	new_node->next = NULL;
 	while (current && current->next)
 		current = current->next;

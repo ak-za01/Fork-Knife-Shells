@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 21:46:46 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/21 17:43:28 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/22 19:02:36 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	exec_child(t_token *data, t_extra *x);
 int		handle_ambiguous(int a, int red_s);
 int		free_pipes(t_extra *x, int i);
 void	free_pipe(t_extra *x);
+int	file_errors(char *file, int output);
+
 
 //	execution functions
 int		ft_execution(t_token *data, t_extra *x);

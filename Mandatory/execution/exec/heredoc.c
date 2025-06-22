@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 12:22:54 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/21 18:05:36 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/22 21:17:34 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,144 +46,19 @@ int	count_heredoc(t_token *data)
 	count = 0;
 	while (i < data->red_s)
 	{
-		if (ft_strcmp(data->c_red[i], "<<") == 0)
+		if (data->c_red[i] && ft_strcmp(data->c_red[i], "<<") == 0)
 			count++;
 		i++;
 	}
 	return (count);
 }
-
-
-// -----------------------------------------------------------------
-
-
-// int	handle_heredoc(char *del, int *pipefd)
-// {
-// 	char	*line;
-
-// 	while (1)
-// 	{
-// 		line = readline("> ");
-// 		if (!line)
-// 			break ;
-// 		// filter 1
-// 		if (ft_strcmp(line, del) == 0)
-// 		{
-// 			free(line);
-// 			break ;
-// 		}
-// 		// filter 2
-// 		ft_putstr_fd(line, pipefd[1]);
-// 		ft_putstr_fd("\n", pipefd[1]);
-// 		free(line);
-// 	}
-// 	close(pipefd[0]);
-// 	close(pipefd[1]);
-// 	return (SUCCESS);
-// }
-
-// int	process_heredoc(t_token *data, t_extra *x)
-// {
-// 	int	a;
-
-// 	a = 0;
-// 	while (a < data->red_s)
-// 	{
-// 		if (ft_strcmp(data->c_red[a], "<<") == 0)
-// 		{
-// 			if (data->pi_doc[0] != -1)
-// 				close(data->pi_doc[0]);
-// 			if (handle_heredoc(data->c_red[++a], data->pi_doc) != 0)
-// 				return (ERROR);
-// 		}
-// 		else
-// 			a++;
-// 	}
-// 	return ((x->exit_status = 0));
-// }
-
-// int	setup_heredoc(t_token *data, t_extra *x)
-// {
-// 	t_token	*current;
-// 	pid_t	pid;
-// 	int		pipefd[2];
-
-// 		if (pipe(pipefd) == -1)
-// 			return ((perror("pipe")), ERROR);
-// 	current = data;
-// 	while (current)
-// 	{
-// 		pid = fork();
-// 		if (pid == 0)
-// 		{
-// 			signal_init_child();
-// 			if (current->c_red && has_heredoc(current->c_red))
-// 			{
-// 				if (process_heredoc(current, pipefd, x) != 0)
-// 					exit(ERROR);
-// 			}
-// 			close(pipefd[0]);
-// 			close(pipefd[1]);
-// 			exit(SUCCESS);
-// 		}
-// 		else if (pid)
-// 			wait(&x->exit_status);
-// 		current->pi_doc = pipefd[0];
-// 		close(pipefd[0]);
-// 		close(pipefd[1]);
-// 		current = current->next;
-// 	}
-// 	return (SUCCESS);
-// }
-
-
-// -----------------------------------------------------------------
-
-// int	handle_heredoc1(char *del,t_token *data)
-// {
-// 	char	*line;
-
-// 	while (1)
-// 	{
-// 		line = readline("> ");
-// 		if (!line)
-// 			break ;
-// 		// filter 1
-// 		if (ft_strcmp(line, del) == 0)
-// 		{
-// 			free(line);
-// 			break ;
-// 		}
-// 		// filter 2
-// 		free(line);
-// 	}
-// 	return (SUCCESS);
-// }
-
-// int	handle_heredoc2(char *del,t_token *data)
-// {
-// 	char	*line;
-
-// 	while (1)
-// 	{
-// 		line = readline("> ");
-// 		if (!line)
-// 			break ;
-// 		// filter 1
-// 		if (ft_strcmp(line, del) == 0)
-// 		{
-// 			free(line);
-// 			break ;
-// 		}
-// 		// filter 2
-// 		ft_putstr_fd(line, data->pi_doc[1]);
-// 		ft_putstr_fd("\n", data->pi_doc[1]);
-// 		free(line);
-// 	}
-// 	close(data->pi_doc[0]);
-// 	close(data->pi_doc[1]);
-// 	return (SUCCESS);
-// }
+int	ft_check33(char *t, char *ar)
+{
+	if ((ft_strnstr(t, ar, ft_strlen(ar)) != NULL) && (ft_strlen(t)
+			- 1 == ft_strlen(ar)))
+		return (1);
+	return (0);
+}
 
 int	ft_check_q_status2(char *t)
 {
@@ -205,7 +80,7 @@ int	ft_check_q_status2(char *t)
 	return (ft_free(s1), 0);
 }
 
-int	filter_heredoc_line(char **t, char *del, t_extra *x)
+int	filter_heredoc_line(char **line, char *del, t_extra *x)
 {
 	int		f1;
 	int		f2;
@@ -217,20 +92,20 @@ int	filter_heredoc_line(char **t, char *del, t_extra *x)
 		return (-1);
 	f1 = ft_check_q_status2(t1);
 	t1 = ft_remove_q(t1);
-	if (f1 != 0) // no expanding
+	if (f1 != 0)
 	{
-		f2 = ft_strcmp(*t, t1);
+		f2 = ft_check33(*line, t1);
 		return (free(t1), f2);
 	}
-	else // expand
+	else
 	{
-		t2 = ft_strdup(*t);
+		t2 = ft_strdup(*line);
 		if (!t2)
 			return (-1);
-		free(*t);
-		f2 = ft_strcmp(*t, t1);
-		*t = ft_swap_value(0, t2, x, 0);
-		return (free(t1), f2);
+		free(*line);
+		*line = ft_swap_value(0, t2, x, 0);
+		f2 = ft_check33(t2, t1);
+		return (free(t1),free(t2), f2);
 	}
 }
 
@@ -243,13 +118,14 @@ int	handle_heredoc1(char *del, t_token *data, t_extra *x)
 
 	while (1)
 	{
-		line = readline("> ");
+		write(STDOUT_FILENO, "> ", 2);
+		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
 		f = filter_heredoc_line(&line, del, x);
 		if (f == -1)
 			return (-1);
-		if (f == 0)
+		if (f == 1)
 			break ;
 		free(line);
 	}
@@ -263,16 +139,16 @@ int	handle_heredoc2(char *del, t_token *data, t_extra *x)
 
 	while (1)
 	{
-		line = readline("> ");
+		write(STDOUT_FILENO, "> ", 2);
+		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
 		f = filter_heredoc_line(&line, del, x);
 		if (f == -1)
 			return (-1);
-		if (f == 0)
+		if (f == 1)
 			break ;
 		ft_putstr_fd(line, data->pi_doc[1]);
-		ft_putstr_fd("\n", data->pi_doc[1]);
 		free(line);
 	}
 	close(data->pi_doc[0]);
@@ -291,7 +167,7 @@ int	process_heredoc(t_token *data, t_extra *x)
 	count = count_heredoc(data);
 	while (a < data->red_s)
 	{	
-		if (ft_strcmp(data->c_red[a], "<<") == 0)
+		if (data->c_red[a] && ft_strcmp(data->c_red[a], "<<") == 0)
 		{
 			if(c2 == (count-1))
 			{
@@ -303,7 +179,7 @@ int	process_heredoc(t_token *data, t_extra *x)
 			{
 				if (handle_heredoc1(data->c_red[++a], data, x) != 0)
 					return (ERROR);
-				c2++;	
+				c2++;
 			}
 		}
 		else 

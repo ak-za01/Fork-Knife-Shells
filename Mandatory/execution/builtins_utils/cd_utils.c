@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 11:26:23 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/20 21:46:38 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/21 20:44:06 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	add_var(t_env *env_list, char *name, char *value)
 		free(new_var);
 		return (1);
 	}
-	new_var->original = 1;
 	new_var->next = NULL;
 	if (!env_list)
 		return ((free(new_var->name), free(new_var->value), free(new_var)), 1);
