@@ -6,37 +6,58 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:53:28 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/22 18:54:42 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/24 01:10:22 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/builtins.h"
+
+t_env	*create_env_node(char *env_str)
+{
+	t_env	*new_node;
+	char	**temp;
+
+	new_node = malloc(sizeof(t_env));
+	if (!new_node)
+		return (NULL);
+	temp = ft_split_env(env_str, '=');
+	if (!temp)
+	{
+		free(new_node);
+		return (NULL);
+	}
+	new_node->name = temp[0];
+	if (strcmp(temp[0], "OLDPWD") == 0)
+	{
+		new_node->value = NULL;
+		free(temp[1]);
+	}
+	else
+		new_node->value = temp[1];
+	new_node->next = NULL;
+	free(temp);
+	return (new_node);
+}
 
 t_env	*create_env_list(char **env)
 {
 	t_env	*env_list;
 	t_env	*current;
 	t_env	*new_node;
-	char	**temp;
 
-	env_list = ((current = NULL), NULL);
+	env_list = NULL;
+	current = NULL;
 	while (*env)
 	{
-		new_node = malloc(sizeof(t_env));
+		new_node = create_env_node(*env);
 		if (!new_node)
 			return (NULL);
-		temp = ft_split_env(*env, '=');
-		if (!temp)
-			return ((free(new_node)), NULL);
-		new_node->name = temp[0];
-		new_node->value = temp[1];
-		new_node->next = NULL;
 		if (!env_list)
 			env_list = new_node;
 		else
 			current->next = new_node;
 		current = new_node;
-		((free(temp)), env++);
+		env++;
 	}
 	return (env_list);
 }
@@ -79,14 +100,14 @@ t_env	*create_env()
 	return (env_list);
 }
 
-int	ft_env(t_token	*data, t_extra x)
+int	ft_env(t_token	*data, t_extra *x)
 {
 	t_env	*current;
 
 	(void)data;
-	if (!x.env_list)
+	if (!x->env_list)
 		return (ERROR);
-	current = x.env_list;
+	current = x->env_list;
 	while (current)
 	{
 		if (current->value && current->name)
@@ -127,6 +148,11 @@ void	init_extra(t_extra *x, char **env)
 	{
 		x->env_list = create_env();
 		printf("env is null\n");
+	}
+	if (!var_exist(x->env_list, "OLDPWD"))
+	{
+		if (add_var(x->env_list, "OLDPWD", NULL))
+			return ;
 	}
 	if (!var_exist(x->env_list, "SHLVL"))
 	{

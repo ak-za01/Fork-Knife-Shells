@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 12:22:54 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/22 21:17:34 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/24 01:03:56 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@ int	has_heredoc(char **c_red)
 	int	a;
 
 	if(!c_red)
-		return (ERROR);
+		return (0);
 	a = 0;
 	while (c_red[a])
 	{
 		if (ft_strcmp(c_red[a], "<<") == 0)
-			return (ERROR);
+			return (1);
 		a++;
 	}
-	return (SUCCESS);
+	return (0);
 }
 
 int	count_heredoc(t_token *data)
@@ -52,6 +52,7 @@ int	count_heredoc(t_token *data)
 	}
 	return (count);
 }
+
 int	ft_check33(char *t, char *ar)
 {
 	if ((ft_strnstr(t, ar, ft_strlen(ar)) != NULL) && (ft_strlen(t)
@@ -109,7 +110,6 @@ int	filter_heredoc_line(char **line, char *del, t_extra *x)
 	}
 }
 
-// -----------------------------------------------------------------
 
 int	handle_heredoc1(char *del, t_token *data, t_extra *x)
 {
@@ -156,14 +156,10 @@ int	handle_heredoc2(char *del, t_token *data, t_extra *x)
 	return (SUCCESS);
 }
 
-int	process_heredoc(t_token *data, t_extra *x)
+int	process_heredoc(t_token *data, t_extra *x, int a, int c2)
 {
-	int	a;
-	int	c2;
 	int count;
 
-	a = 0;
-	c2 = 0;
 	count = count_heredoc(data);
 	while (a < data->red_s)
 	{	
@@ -188,33 +184,40 @@ int	process_heredoc(t_token *data, t_extra *x)
 	return ((x->exit_status = 0));
 }
 
+int	handle_single_heredoc(t_token *current, t_extra *x)
+{
+	pid_t	pid;
+
+	if (pipe(current->pi_doc) == -1)
+		return ((perror("pipe")), ERROR);
+	pid = fork();
+	if (pid == 0)
+	{
+		signal_init_child();
+		if (current->c_red)
+		{
+			if (process_heredoc(current, x, 0, 0) != 0)
+				exit(ERROR);
+		}
+		exit(SUCCESS);
+	}
+	else if (pid)
+		wait(&x->exit_status);
+	close(current->pi_doc[1]);
+	return (SUCCESS);
+}
 
 int	setup_heredoc(t_token *data, t_extra *x)
 {
 	t_token	*current;
-	pid_t	pid;
 
 	current = data;
 	while (current)
 	{
-		if(has_heredoc(current->c_red))
+		if (has_heredoc(current->c_red))
 		{
-			if (pipe(current->pi_doc) == -1)
-				return ((perror("pipe")), ERROR);
-			pid = fork();
-			if (pid == 0)
-			{
-				signal_init_child();
-				if (current->c_red )
-				{
-					if (process_heredoc(current, x) != 0)
-						exit(ERROR);
-				}
-				exit(SUCCESS);
-			}
-			else if (pid)
-				wait(&x->exit_status);
-			close(current->pi_doc[1]);
+			if (handle_single_heredoc(current, x) != SUCCESS)
+				return (ERROR);
 		}
 		current = current->next;
 	}

@@ -6,11 +6,28 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 21:48:57 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/22 17:02:25 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/24 01:00:21 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/builtins.h"
+
+int	file_errors2(char *file)
+{
+	struct stat	file_stat;
+	if (stat(file, &file_stat) == 0)
+	{
+		if (S_ISDIR(file_stat.st_mode))
+			return (1);
+		if (access(file, F_OK) != 0)
+			return (3);
+		if (access(file, X_OK ) != 0)
+			return (2);
+	}
+	else
+		return (3);
+	return (0);
+}
 
 char	*find_path(char	*cmd, t_env *env_list, int i)
 {
@@ -21,10 +38,10 @@ char	*find_path(char	*cmd, t_env *env_list, int i)
 		return (NULL);
 	if (ft_strchr(cmd, '/'))
 	{
-		if (access(cmd, F_OK | X_OK) == 0)
 			return (ft_strdup(cmd));
-		return (NULL);
 	}
+	else if (!var_exist(env_list, "PATH"))
+		return (cmd);
 	paths = ft_split(get_env_value(env_list, "PATH"), ':');
 	if (!paths)
 		return (NULL);
@@ -77,16 +94,44 @@ void	free_external(char *cmd_path, char **env)
 		ft_free(env);
 }
 
-int	cmd_error(char *cmd, int status)
+int	cmd_error(char *cmd, int f)
+{
+	if(f == 1)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putendl_fd(": is a directory", 2);
+		return (126);
+	}
+	else if (f == 2)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putendl_fd(": Permission denied", 2);
+		return (126);
+	}
+	else if (f == 3)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putendl_fd(": No such file or directory", 2);
+		return (127);
+	}
+	return (127);
+}
+
+int	cmd_error1(char *cmd)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd, 2);
 	ft_putendl_fd(": command not found", 2);
-	return (status);
+	return (127);
 }
 
 void	exec_child(t_token *data, t_extra *x)
 {
+	int f;
+	
 	signal_init_child();
 	if (data->c_red)
 	{
@@ -94,21 +139,22 @@ void	exec_child(t_token *data, t_extra *x)
 			exit(1);
 	}
 	if (data->type == b_cmd_t)
-		exit(exec_builtin(data, *x));
+		exit(exec_builtin(data, x));
 	if (!data->value)
 		exit (0);
 	x->cmd_path = find_path(data->value, x->env_list, 0);
 	if (!x->cmd_path)
-		exit(cmd_error(data->value, 127));
+		exit(cmd_error1(data->value));
+	f=file_errors2(x->cmd_path);
+	if(f!=0)
+		exit(cmd_error(data->value,f));
 	x->env = env_to_arr(x->env_list);
 	if (!x->env)
 		(free(x->cmd_path), exit(1));
-	// ft_print_tab(x->env);
-	// fprintf(stderr, RED"exit_status: %d, cmd_num: %d, cmd: %s\n"RESET, x->exit_status, x->cmd_index, data->value);
 	execve(x->cmd_path, data->c_arg, x->env);
 	perror("execve");
 	free_external(x->cmd_path, x->env);
-	exit(127);
+	exit(126);
 }
 
 void	external_helper(t_token *current, t_extra *x)
@@ -127,6 +173,7 @@ void	external_helper(t_token *current, t_extra *x)
 			}
 			else if (pid == -1)
 			{
+				failled_pipes(x);
 				x->exit_status = (perror("fork"), 1);
 				break;
 			}

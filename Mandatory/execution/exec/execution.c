@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:11:52 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/20 11:56:27 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/23 17:32:01 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,5 @@ int	ft_execution(t_token *data, t_extra *x)
 		return (exec_single(data, x));
 	if (exec_external(data, x) != 0)
 		return (x->exit_status);
-	return (cleanup_execution_vars(x));
+	return (cleanup_execution_vars(data, x));
 }

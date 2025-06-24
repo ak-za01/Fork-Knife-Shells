@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 18:18:51 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/20 13:09:07 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/23 17:37:10 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,11 @@ int	ft_dup2(int f1, int f2)
 	return (SUCCESS);
 }
 
-int	cleanup_execution_vars(t_extra *x)
+int	cleanup_execution_vars(t_token *data, t_extra *x)
 {
+	t_token	*current;
+
+	current = data;
 	if (x->stdin_backup != -1)
 	{
 		close(x->stdin_backup);
@@ -60,6 +63,12 @@ int	cleanup_execution_vars(t_extra *x)
 	}
 	if (x->pipe_count > 0)
 		free_pipe(x);
+	while (current)
+	{
+		if(has_heredoc(current->c_red))
+			close(current->pi_doc[0]);
+		current = current->next;
+	}
 	return (x->exit_status);
 }
 

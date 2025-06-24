@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:49:37 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/20 08:09:53 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/23 21:53:33 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,27 @@ void	free_pipe(t_extra *x)
 		i++;
 	}
     free(x->pipefd);
+}
+
+void	failled_pipes(t_extra *x)
+{
+	int	i;
+
+	i = 0;
+	while (i < x->cmd_index - 1)
+	{
+		 if (x->pipefd[i][0] != -1)
+        {
+            close(x->pipefd[i][0]);
+            x->pipefd[i][0] = -1;
+        }
+        if (x->pipefd[i][1] != -1)
+        {
+            close(x->pipefd[i][1]);
+            x->pipefd[i][1] = -1;
+        }
+		i++;
+	}
 }
 
 void	close_all_pipes(t_extra *x)

@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 12:41:18 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/22 20:30:36 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/23 17:00:40 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*ft_swap_value(int i, char *ptr, t_extra *x, int f)
 	while (*ptr)
 	{
 		ft_toggle_quote(&ptr, &s_q, &d_q);
-		if (*ptr == '$' && ft_check_ptr_value(*(ptr + 1), 0) && !s_q)
+		if (*ptr == '$' && ft_check_ptr_status(ptr + 1, s_q, d_q) && ft_check_ptr_value(*(ptr + 1), 0) && !s_q)
 		{
 			n_data.var = (ptr++, ft_get_expand_name(&ptr, &f));
 			if (!n_data.var)
