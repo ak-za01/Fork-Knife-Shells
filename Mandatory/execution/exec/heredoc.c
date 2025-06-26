@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 12:22:54 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/26 12:09:07 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/26 13:26:27 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,11 +238,13 @@ int	handle_single_heredoc(t_token *current, t_extra *x)
 	}
 	else if (pid > 0)
 	{
+		signal(SIGINT, SIG_IGN);
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 			x->exit_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-			x->exit_status = 130;
+			x->exit_status = 1;
+		signal_init_interactive();
 	}
 	close(current->pi_doc[1]);
 	return (SUCCESS);

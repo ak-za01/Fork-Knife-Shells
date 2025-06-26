@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 00:45:01 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/26 12:09:13 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/26 13:21:46 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,13 @@ void signal_init_interactive()
     sa.sa_handler = SIG_IGN;
     sigaction(SIGQUIT, &sa, NULL);
     sigaction(SIGPIPE, &sa, NULL);
-    
     rl_catch_signals = 0;
 }
 
 void signal_init_exec()
 {
     struct sigaction sa;
-    
+
     sa.sa_handler = SIG_IGN;
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = 0;
@@ -58,7 +57,7 @@ void sig_handler_heredoc(int signal)
     
     if (signal == SIGINT)
     {
-		g_signal_received = 0;
+		// g_signal_received = 0;
         close(STDIN_FILENO);
     }
 }
@@ -86,5 +85,6 @@ void signal_init_child()
 void handle_signal_in_main()
 {
     if (g_signal_received == SIGINT)
-        g_signal_received = 0;
+	{}
+        // g_signal_received = 0;
 }
