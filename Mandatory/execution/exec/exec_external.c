@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 21:48:57 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/24 01:00:21 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/26 11:55:36 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,6 @@ void	external_helper(t_token *current, t_extra *x)
 int exec_external(t_token *data, t_extra *x)
 {
 	t_token *current;
-	pid_t 	pid;
 	int		status;
 	int		a;
 
@@ -202,9 +201,19 @@ int exec_external(t_token *data, t_extra *x)
 	external_helper(current, x);
 	while (a < x->cmd_count)
 	{
-		pid = waitpid(-1, &status, 0);
+		wait(&status);
         if (WIFEXITED(status))
             x->exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+        {
+            if (WTERMSIG(status) == SIGINT)
+                x->exit_status = 130;
+            else if (WTERMSIG(status) == SIGQUIT)
+			{
+				ft_putstr_fd("Quit: 3\n", 2);
+                x->exit_status = 131;
+			}
+        }
 		a++;
 	}
 	close_all_pipes(x);

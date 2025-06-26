@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:28 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/24 01:08:24 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/26 01:09:56 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ int	main_engine(char *str, t_extra *x)
 		return (1);
 	}
 	else if (!str)
+	{
+		ft_putstr_fd("exit\n", 1);
 		return (0);
+	}
 	return (1);
 }
 
@@ -51,7 +54,8 @@ int	main(int ac, char **av, char **env)
 		continue_loop = main_engine(str, &x);
 		if (!continue_loop)
 			break ;
-		free(str);
+		if (str)
+			free(str);
 	}
 	free_env_list(&x);
 	return (x.exit_status);

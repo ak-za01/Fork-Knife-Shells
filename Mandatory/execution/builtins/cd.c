@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 18:27:50 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/24 00:44:55 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/24 18:48:05 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*get_env_value(t_env *env_list, char *name)
 	return (NULL);
 }
 
-int	handle_cd_tilde(t_extra *x, char *old_dir)
+int	handle_home(t_extra *x, char *old_dir)
 {
 	char	*home;
 
@@ -80,7 +80,7 @@ int	ft_cd(char **c_args, t_extra *x)
 		return ((x->exit_status = 1));
 	}
 	if (!c_args[1])
-		return (handle_cd_tilde(x, old_dir));
+		return (handle_home(x, old_dir));
 	else if ((ft_strcmp(c_args[1], "-") == 0) || (ft_strcmp(c_args[1], "--") == 0))
 		return (handle_cd_dash(x, old_dir));
 	if (chdir(c_args[1]) != 0)

@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 12:22:54 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/24 01:03:56 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/26 12:09:07 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,32 @@ int	filter_heredoc_line(char **line, char *del, t_extra *x)
 	}
 }
 
+int	check_signal(t_token *data, char *line, int f)
+{
+	if (f)
+	{
+		if (g_signal_received == SIGINT)
+        {
+			if (line)
+                free(line);
+            g_signal_received = 0;
+            close(data->pi_doc[0]);
+            close(data->pi_doc[1]);
+            return (1);
+        }
+	}
+	else
+	{
+		if (g_signal_received == SIGINT)
+        {
+			if (line)
+                free(line);
+            g_signal_received = 0;
+            return (1);
+        }
+	}
+	return (0);
+}
 
 int	handle_heredoc1(char *del, t_token *data, t_extra *x)
 {
@@ -118,8 +144,12 @@ int	handle_heredoc1(char *del, t_token *data, t_extra *x)
 
 	while (1)
 	{
+		if (check_signal(data, NULL, 0))
+			return (1);
 		write(STDOUT_FILENO, "> ", 2);
 		line = get_next_line(STDIN_FILENO);
+		if (check_signal(data, line, 0))
+			return (1);
 		if (!line)
 			break ;
 		f = filter_heredoc_line(&line, del, x);
@@ -139,8 +169,12 @@ int	handle_heredoc2(char *del, t_token *data, t_extra *x)
 
 	while (1)
 	{
+		if (check_signal(data, NULL, 1))
+			return (1);
 		write(STDOUT_FILENO, "> ", 2);
 		line = get_next_line(STDIN_FILENO);
+		if (check_signal(data, line, 1))
+			return (1);
 		if (!line)
 			break ;
 		f = filter_heredoc_line(&line, del, x);
@@ -187,13 +221,14 @@ int	process_heredoc(t_token *data, t_extra *x, int a, int c2)
 int	handle_single_heredoc(t_token *current, t_extra *x)
 {
 	pid_t	pid;
+	int		status;
 
 	if (pipe(current->pi_doc) == -1)
 		return ((perror("pipe")), ERROR);
 	pid = fork();
 	if (pid == 0)
 	{
-		signal_init_child();
+		signal_init_heredoc();
 		if (current->c_red)
 		{
 			if (process_heredoc(current, x, 0, 0) != 0)
@@ -201,8 +236,14 @@ int	handle_single_heredoc(t_token *current, t_extra *x)
 		}
 		exit(SUCCESS);
 	}
-	else if (pid)
-		wait(&x->exit_status);
+	else if (pid > 0)
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			x->exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+			x->exit_status = 130;
+	}
 	close(current->pi_doc[1]);
 	return (SUCCESS);
 }

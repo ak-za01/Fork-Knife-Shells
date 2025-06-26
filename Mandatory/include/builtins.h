@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 21:46:46 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/24 01:04:37 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/26 01:21:30 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,11 @@ void	exec_child(t_token *data, t_extra *x);
 int		handle_ambiguous(int a, int red_s);
 int		free_pipes(t_extra *x, int i);
 void	free_pipe(t_extra *x);
-int	file_errors(char *file, int output);
+int		file_errors(char *file, int output);
 void	failled_pipes(t_extra *x);
+void 	signal_init_heredoc();
+void 	sig_handler_heredoc(int signal);
+void 	signal_init_exec();
 
 
 //	execution functions
