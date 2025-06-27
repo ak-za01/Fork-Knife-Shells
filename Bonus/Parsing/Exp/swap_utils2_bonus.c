@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 16:28:59 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/16 21:31:11 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/26 20:49:28 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,19 @@ int	ft_calcul_total_len_fix_norm(t_extra *x, int f, int *s, char **ptr)
 		(*s) += ft_calculs_exp_len(x->env_list, var);
 	free(var);
 	return (0);
+}
+
+int	ft_check_ptr_status(char *ptr, int s_q, int d_q)
+{
+	if (s_q == 1 || d_q == 1)
+	{
+		if (*ptr == '\'' || *ptr == '\"')
+			return (0);
+	}
+	else
+	{
+		if (*ptr == '\0')
+			return (0);
+	}
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:41:31 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/16 21:29:58 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/26 21:14:38 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,13 @@ static int	str_to_exit_code(char *str, int *exit_code)
 	return (1);
 }
 
-int	ft_exit(t_token *data, t_extra x)
+int	ft_exit(t_token *data, t_extra *x)
 {
 	printf("exit\n");
 	if (!data->c_arg[1])
-		exit(x.exit_status);
-	if (!is_numeric_arg(data->c_arg[1]) || 
-		!str_to_exit_code(data->c_arg[1], &x.exit_status))
+		exit(x->exit_status);
+	if (!is_numeric_arg(data->c_arg[1]) || !str_to_exit_code(data->c_arg[1],
+			&x->exit_status))
 	{
 		ft_putstr_fd("Minishell: exit: ", 2);
 		ft_putstr_fd(data->c_arg[1], 2);
@@ -82,6 +82,6 @@ int	ft_exit(t_token *data, t_extra x)
 		ft_putstr_fd("Minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
-	exit(x.exit_status);
+	exit(x->exit_status);
 	return (SUCCESS);
 }

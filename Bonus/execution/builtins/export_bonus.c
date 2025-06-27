@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:50:37 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/16 21:30:00 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/26 21:14:43 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ void	error_message(char *cmd, char *str)
 	char	*clean_str;
 
 	clean_str = NULL;
-	// clean_str = remove_quotes(str);
-	// later add a flag to detect if there are quotes
 	if (!clean_str)
 	{
 		ft_putstr_fd("minishell: ", 2);
@@ -77,7 +75,7 @@ static int	process_export_arg(char *arg, t_env *env_list)
 	return (0);
 }
 
-int	ft_export(t_token *data, t_extra x)
+int	ft_export(t_token *data, t_extra *x)
 {
 	int		i;
 	t_env	*copy;
@@ -86,14 +84,14 @@ int	ft_export(t_token *data, t_extra x)
 	copy = NULL;
 	if (!data->c_arg[i])
 	{
-		sort_env_list(x.env_list, &copy);
+		sort_env_list(x->env_list, &copy);
 		print_env_list(copy);
 	}
 	while (data->c_arg[i])
 	{
-		if (process_export_arg(data->c_arg[i], x.env_list))
-			x.exit_status = 1;
+		if (process_export_arg(data->c_arg[i], x->env_list))
+			x->exit_status = 1;
 		i++;
 	}
-	return (x.exit_status);
+	return (x->exit_status);
 }

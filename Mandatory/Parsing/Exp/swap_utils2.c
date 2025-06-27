@@ -46,17 +46,17 @@ int	ft_calcul_total_len_fix_norm(t_extra *x, int f, int *s, char **ptr)
 	return (0);
 }
 
-int ft_check_ptr_status(char *ptr, int s_q, int d_q)
+int	ft_check_ptr_status(char *ptr, int s_q, int d_q)
 {
-	if(s_q==1|| d_q==1)
+	if (s_q == 1 || d_q == 1)
 	{
-		if(*ptr=='\'' ||*ptr=='\"' )
-			return 0;
+		if (*ptr == '\'' || *ptr == '\"')
+			return (0);
 	}
 	else
 	{
-		if(*ptr == '\0')
-			return 0;
+		if (*ptr == '\0')
+			return (0);
 	}
-	return 1;
+	return (1);
 }

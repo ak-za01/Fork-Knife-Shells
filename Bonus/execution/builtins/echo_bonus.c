@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 07:32:22 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/16 21:29:54 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/26 21:14:29 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,18 @@ int	ft_echo(t_token *data)
 	newline = 1;
 	i = 1;
 	if (!data || !data->c_arg || !data->c_arg[0])
-		return ((printf("\n")), 0);
+		return ((ft_putstr_fd("\n", 1)), 0);
 	while (data->c_arg[i] && is_n_flag(data->c_arg[i]))
 		newline = ((i++), 0);
 	while (data->c_arg[i])
 	{
 		if (!first_arg)
-			printf(" ");
-		printf("%s", data->c_arg[i]);
+			ft_putstr_fd(" ", 1);
+		ft_putstr_fd(data->c_arg[i], 1);
 		first_arg = 0;
 		i++;
 	}
 	if (newline)
-		printf("\n");
+		ft_putstr_fd("\n", 1);
 	return (0);
 }

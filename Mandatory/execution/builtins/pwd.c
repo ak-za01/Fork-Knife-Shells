@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:01:40 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/17 21:50:11 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/26 19:32:20 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	ft_pwd(void)
 
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
-		// printf("%s\n", cwd);
 		ft_putstr_fd(cwd, STDOUT_FILENO);
 		ft_putstr_fd("\n", STDOUT_FILENO);
 		return (SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 18:18:51 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/16 21:30:19 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/26 21:19:38 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 char	*ft_strjoin3(char *s1, char *s2, char *s3)
 {
 	char	*t;
-	int		s, i, j, k;  // Fixed syntax error
 
+	int (s), (i), (j), (k);
 	if (!s1 || !s2 || !s3)
 		return (NULL);
 	s = ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3);
@@ -46,40 +46,11 @@ int	ft_dup2(int f1, int f2)
 	return (SUCCESS);
 }
 
-int	pipes_count(t_token *data)
+int	cleanup_execution_vars(t_token *data, t_extra *x)
 {
 	t_token	*current;
-	int		count;
 
-	count = 0;
 	current = data;
-	while (current)
-	{
-		if (current->value)
-		{
-			if (ft_strcmp(current->value, "|") == 0)
-				count++;
-		}
-		current = current->next;
-	}
-	return (count);
-}
-
-void	free_pipe(t_extra *x)
-{
-	int	i;
-
-	i = 0;
-	while (i < x->pipe_count)
-	{
-        free(x->pipefd[i]);
-		i++;
-	}
-    free(x->pipefd);
-}
-
-int	cleanup_execution_vars(t_extra *x)
-{
 	if (x->stdin_backup != -1)
 	{
 		close(x->stdin_backup);
@@ -92,5 +63,28 @@ int	cleanup_execution_vars(t_extra *x)
 	}
 	if (x->pipe_count > 0)
 		free_pipe(x);
+	while (current)
+	{
+		if (has_heredoc(current->c_red))
+			close(current->pi_doc[0]);
+		current = current->next;
+	}
 	return (x->exit_status);
+}
+
+void	print_error(char *file, char *error_msg)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(file, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putstr_fd(error_msg, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
+}
+
+int	ft_check33(char *t, char *ar)
+{
+	if ((ft_strnstr(t, ar, ft_strlen(ar)) != NULL) && (ft_strlen(t)
+			- 1 == ft_strlen(ar)))
+		return (1);
+	return (0);
 }

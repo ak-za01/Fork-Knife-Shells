@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 02:45:32 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/16 21:33:16 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/26 21:12:18 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,22 @@ typedef struct s_env
 {
 	char			*name;
 	char			*value;
-	int				original;
 	struct s_env	*next;
 }					t_env;
 
 typedef struct s_extra
 {
-	t_env				*env_list;
-	int					exit_status;
-	char				*cmd_path;
-	char				**env;
-	int					stdin_backup;
-    int					stdout_backup;
-    int					pipe_count;
-    int					cmd_count;
-    int					cmd_index;
-    int					**pipefd;
-}						t_extra;
+	t_env			*env_list;
+	int				exit_status;
+	char			*cmd_path;
+	char			**env;
+	int				stdin_backup;
+	int				stdout_backup;
+	int				pipe_count;
+	int				cmd_count;
+	int				cmd_index;
+	int				**pipefd;
+}					t_extra;
 
 typedef struct s_token
 {
@@ -62,6 +61,7 @@ typedef struct s_token
 	char			**c_arg;
 	int				red_s;
 	char			**c_red;
+	int				pi_doc[2];
 	struct s_token	*next;
 	struct s_token	*prev;
 }					t_token;
@@ -110,7 +110,8 @@ void				ft_free_arg_node3(t_token **data);
 int					ft_handle_cas_1(t_token **data, t_token *ptr);
 int					ft_check_if_ambiguous(char *str);
 int					ft_add_nodes(char *t, t_token *ptr, t_token **data);
-void				ft_connect_list(t_token *prev, t_token *next, t_token *new, t_token **data);
+void				ft_connect_list(t_token *prev, t_token *next, t_token *new,
+						t_token **data);
 void				ft_set_mini_tokens(t_token **new);
 int					ft_handle_cas_2(t_token *ptr);
 int					ft_get_node_count(t_token *ptr);
@@ -141,6 +142,7 @@ int					ft_check_dollar(char *t);
 int					ft_check_q_status(char *t);
 int					ft_strlen_2(char **t);
 int					ft_strcmp(const char *s1, const char *s2);
+int					ft_check_ptr_status(char *ptr, int s_q, int d_q);
 
 //------------------------------ Wildcards :
 int					ft_wildcard(t_token **data);
@@ -185,9 +187,9 @@ int					ft_filter_cas_2(t_token **ptr);
 void				ft_free_arg_node2(t_token **data);
 
 //------------------------------ Utils :
-char				**ft_split2(char const *s, char c);
-long				ft_count_split2(char const *s, char c);
-char				*ft_copy_split2(const char *s, char c, long *i);
+char				**ft_split2(char const *s);
+long				ft_count_split2(char const *s);
+char				*ft_copy_split2(const char *s, long *i);
 void				ft_fix_norminet_1(char *a, char const *b, long *n1);
 void				ft_fix_norminet_2(long *n2, long *n1);
 
@@ -215,5 +217,6 @@ void				ft_free(char **t);
 void				ft_free2(char **t, int s);
 char				**ft_set_charset(void);
 char				**ft_set_charset2(void);
+int					ft_isspace(int c);
 
 #endif

@@ -2,14 +2,14 @@
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -I./readline/include
+CFLAGS = -Wall -Werror -Wextra -I$(HOME)/readline/include
 
-# CFLAGS = -fsanitize=address -g -I./libs/readline/include
+# CFLAGS = -fsanitize=address -g -I$(HOME)/readline/include
 
 # CFLAGS = -I./libs/readline/include
 
-RDFLAGS = -L./readline/lib -lreadline
-
+LDFLAGS = -L$(HOME)/readline/lib
+LDLIBS  = -lreadline -lncurses
 
 #               ----------------      LNX :    ----------------
 
@@ -28,12 +28,13 @@ RDFLAGS = -L./readline/lib -lreadline
 #               ----------------                ----------------
 
 
+# Mandatory 
+
 headers  =	./Mandatory/include/main.h \
 			./Mandatory/include/parse.h \
 			./Mandatory/include/builtins.h \
 
 PARSING  =	./Mandatory/main.c \
-			./Mandatory/utils_delet.c \
 			./Mandatory/Parsing/parse.c \
 			./Mandatory/Parsing/Tokenize/tokenize.c \
 			./Mandatory/Parsing/Tokenize/set_token.c\
@@ -55,8 +56,9 @@ PARSING  =	./Mandatory/main.c \
 			./Mandatory/Parsing/Utils/ft_split3.c \
 			./Mandatory/Parsing/Utils/ft_split4.c \
 			./Mandatory/Parsing/Utils/utils1.c \
+			./Mandatory/Parsing/Utils/utils2.c \
 
-BUILTINS =	./Mandatory/execution/builtins/builtins.c \
+BUILTINS =	./Mandatory/execution/builtins/pwd.c \
 			./Mandatory/execution/builtins/cd.c \
 			./Mandatory/execution/builtins/echo.c \
 			./Mandatory/execution/builtins/environment.c \
@@ -67,53 +69,145 @@ BUILTINS =	./Mandatory/execution/builtins/builtins.c \
 			./Mandatory/execution/builtins_utils/export_utils.c \
 			./Mandatory/execution/builtins_utils/export_utils2.c \
 			./Mandatory/execution/builtins_utils/split_env.c \
+			./Mandatory/execution/builtins_utils/env_utils.c \
 
 EXEC = 		./Mandatory/execution/exec/execution.c \
+			./Mandatory/execution/exec/exec_external.c \
+			./Mandatory/execution/exec/exec_ext_utils.c \
 			./Mandatory/execution/exec/exec_single.c \
 			./Mandatory/execution/exec/helpers.c \
-			./Mandatory/execution/exec/helpers2.c \
 			./Mandatory/execution/exec/redirection.c \
+			./Mandatory/execution/exec/red_utils.c \
 			./Mandatory/execution/exec/heredoc.c \
+			./Mandatory/execution/exec/here_utils.c \
 			./Mandatory/execution/exec/pipe.c \
-			./Mandatory/execution/signals.c \
+			./Mandatory/execution/exec/pipe_utils.c \
+			./Mandatory/execution/signal/signals.c \
+			./Mandatory/execution/signal/signals_utils.c \
+
 
 EXECUTION = ${BUILTINS} \
 			${EXEC} \
+
 
 SRC =	${PARSING} \
 		${EXECUTION} \
 
 OBJC = $(SRC:%.c=%.o)
 
-libft_Dir = ./Mandatory/libs/42_Libft
-libft = $(libft_Dir)/libft.a
 
-NAME = minishell
+# Bonus
+
+headers_B  =	./Bonus/include/main_bonus.h \
+			./Bonus/include/parse_bonus.h \
+			./include/builtins_bonus.h \
+
+PARSING_B  =	./Bonus/main_bonus.c \
+			./Bonus/Parsing/parse_bonus.c \
+			./Bonus/Parsing/Tokenize/tokenize_bonus.c \
+			./Bonus/Parsing/Tokenize/set_token_bonus.c\
+			./Bonus/Parsing/Tokenize/validate_list_bonus.c \
+			./Bonus/Parsing/Tokenize/list_bonus.c \
+			./Bonus/Parsing/Exp/expand_bonus.c \
+			./Bonus/Parsing/Exp/swap_value_bonus.c \
+			./Bonus/Parsing/Exp/swap_utils_bonus.c \
+			./Bonus/Parsing/Exp/swap_utils2_bonus.c \
+			./Bonus/Parsing/Exp/fix_list_bonus.c \
+			./Bonus/Parsing/Exp/fix_cas_1_bonus.c \
+			./Bonus/Parsing/Exp/fix_cas_2_bonus.c \
+			./Bonus/Parsing/Exp/set_token_bonus.c \
+			./Bonus/Parsing/Exp/quotes_bonus.c \
+			./Bonus/Parsing/Exp/utils_bonus.c \
+			./Bonus/Parsing/Wildcard/wildcard_bonus.c \
+			./Bonus/Parsing/Wildcard/get_wc_list_bonus.c \
+			./Bonus/Parsing/Wildcard/files_list_bonus.c \
+			./Bonus/Parsing/Wildcard/cmd_list_bonus.c \
+			./Bonus/Parsing/Wildcard/filter_list_bonus.c \
+			./Bonus/Parsing/Wildcard/fix_wc_list_bonus.c \
+			./Bonus/Parsing/Filter/filter_list_bonus.c  \
+			./Bonus/Parsing/Filter/filter_list2_bonus.c  \
+			./Bonus/Parsing/Utils/ft_split2_bonus.c \
+			./Bonus/Parsing/Utils/ft_split3_bonus.c \
+			./Bonus/Parsing/Utils/ft_split4_bonus.c \
+			./Bonus/Parsing/Utils/ft_split5_bonus.c \
+			./Bonus/Parsing/Utils/ft_strjoin4_bonus.c \
+			./Bonus/Parsing/Utils/utils1_bonus.c \
+
+BUILTINS_B =	./Bonus/execution/builtins/pwd_bonus.c \
+			./Bonus/execution/builtins/cd_bonus.c \
+			./Bonus/execution/builtins/echo_bonus.c \
+			./Bonus/execution/builtins/environment_bonus.c \
+			./Bonus/execution/builtins/exit_bonus.c \
+			./Bonus/execution/builtins/export_bonus.c \
+			./Bonus/execution/builtins/unset_bonus.c \
+			./Bonus/execution/builtins_utils/cd_utils_bonus.c \
+			./Bonus/execution/builtins_utils/export_utils_bonus.c \
+			./Bonus/execution/builtins_utils/export_utils2_bonus.c \
+			./Bonus/execution/builtins_utils/split_env_bonus.c \
+			./Bonus/execution/builtins_utils/env_utils_bonus.c \
+
+EXEC_B = 		./Bonus/execution/exec/execution_bonus.c \
+			./Bonus/execution/exec/exec_external_bonus.c \
+			./Bonus/execution/exec/exec_ext_utils_bonus.c \
+			./Bonus/execution/exec/exec_single_bonus.c \
+			./Bonus/execution/exec/helpers_bonus.c \
+			./Bonus/execution/exec/redirection_bonus.c \
+			./Bonus/execution/exec/red_utils_bonus.c \
+			./Bonus/execution/exec/heredoc_bonus.c \
+			./Bonus/execution/exec/here_utils_bonus.c \
+			./Bonus/execution/exec/pipe_bonus.c \
+			./Bonus/execution/exec/pipe_utils_bonus.c \
+			./Bonus/execution/signal/signals_bonus.c \
+			./Bonus/execution/signal/signals_utils_bonus.c \
+
+
+EXECUTION_B = ${BUILTINS_B} \
+			${EXEC_B} \
+
+
+SRC_B =	${PARSING_B} \
+		${EXECUTION_B} \
+
+OBJC_B = $(SRC_B:%.c=%.o)
+
+libft_DIR = ./42_Libft
+libft = $(libft_DIR)/libft.a
+
+NAME = ./minishell
+NAME_B = ./minishell_bonus
+
+
 
 all: $(NAME)
 
-bonus:
-	make -C ./Bonus
-
 $(NAME): $(OBJC)
-	@make -C $(libft_Dir)
-	@$(CC) $(CFLAGS) $(OBJC) -o $(NAME) $(libft) $(RDFLAGS) && ./$(NAME)
+	make -C $(libft_DIR)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJC) -o $(NAME) $(libft) $(LDLIBS)
 
-%.o: %.c $(headers)
-	@$(CC) $(CFLAGS) -c $< -o $@
+Mandatory/%.o: Mandatory/%.c $(headers) $(libft_DIR)/libft.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+
+bonus: $(NAME_B)
+
+$(NAME_B): $(OBJC_B)
+	make -C $(libft_DIR)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJC_B) -o $(NAME_B) $(libft) $(LDLIBS)
+
+
+Bonus/%.o: Bonus/%.c $(headers) $(libft_DIR)/libft.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@make -C $(libft_Dir) clean
-	@make -C ./Bonus clean
-	@rm -rf $(OBJC) 
+	make -C $(libft_DIR) clean
+	rm -rf $(OBJC) 
+	rm -rf $(OBJC_B) 
 
 fclean: clean
-	@make -C $(libft_Dir) fclean
-	@make -C ./Bonus fclean
-	@rm -rf $(NAME)
+	make -C $(libft_DIR) fclean
+	rm -rf $(NAME)
+	rm -rf $(NAME_B)
 
 re: fclean all
 
 .PHONY: all bonus clean fclean re
-
-

@@ -69,8 +69,8 @@ int	ft_exit(t_token *data, t_extra *x)
 	printf("exit\n");
 	if (!data->c_arg[1])
 		exit(x->exit_status);
-	if (!is_numeric_arg(data->c_arg[1]) || 
-		!str_to_exit_code(data->c_arg[1], &x->exit_status))
+	if (!is_numeric_arg(data->c_arg[1]) || !str_to_exit_code(data->c_arg[1],
+			&x->exit_status))
 	{
 		ft_putstr_fd("Minishell: exit: ", 2);
 		ft_putstr_fd(data->c_arg[1], 2);

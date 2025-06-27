@@ -6,30 +6,13 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 21:48:57 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/26 11:55:36 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/27 17:30:25 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/builtins.h"
 
-int	file_errors2(char *file)
-{
-	struct stat	file_stat;
-	if (stat(file, &file_stat) == 0)
-	{
-		if (S_ISDIR(file_stat.st_mode))
-			return (1);
-		if (access(file, F_OK) != 0)
-			return (3);
-		if (access(file, X_OK ) != 0)
-			return (2);
-	}
-	else
-		return (3);
-	return (0);
-}
-
-char	*find_path(char	*cmd, t_env *env_list, int i)
+char	*find_path(char *cmd, t_env *env_list, int i)
 {
 	char	**paths;
 	char	*cmd_path;
@@ -38,7 +21,7 @@ char	*find_path(char	*cmd, t_env *env_list, int i)
 		return (NULL);
 	if (ft_strchr(cmd, '/'))
 	{
-			return (ft_strdup(cmd));
+		return (ft_strdup(cmd));
 	}
 	else if (!var_exist(env_list, "PATH"))
 		return (cmd);
@@ -49,7 +32,7 @@ char	*find_path(char	*cmd, t_env *env_list, int i)
 	{
 		cmd_path = ft_strjoin3(paths[i], "/", cmd);
 		if (cmd_path && access(cmd_path, F_OK | X_OK) == 0)
-			return((ft_free(paths)), cmd_path);
+			return ((ft_free(paths)), cmd_path);
 		free(cmd_path);
 		i++;
 	}
@@ -73,7 +56,7 @@ char	**env_to_arr(t_env *env_list)
 			count++;
 		current = current->next;
 	}
-	env = ft_calloc((count + 1), sizeof (char *));
+	env = ft_calloc((count + 1), sizeof(char *));
 	if (!env)
 		return (NULL);
 	current = env_list;
@@ -86,52 +69,10 @@ char	**env_to_arr(t_env *env_list)
 	return (env);
 }
 
-void	free_external(char *cmd_path, char **env)
-{
-	if (cmd_path)
-		free(cmd_path);
-	if (env)
-		ft_free(env);
-}
-
-int	cmd_error(char *cmd, int f)
-{
-	if(f == 1)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd, 2);
-		ft_putendl_fd(": is a directory", 2);
-		return (126);
-	}
-	else if (f == 2)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd, 2);
-		ft_putendl_fd(": Permission denied", 2);
-		return (126);
-	}
-	else if (f == 3)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd, 2);
-		ft_putendl_fd(": No such file or directory", 2);
-		return (127);
-	}
-	return (127);
-}
-
-int	cmd_error1(char *cmd)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(cmd, 2);
-	ft_putendl_fd(": command not found", 2);
-	return (127);
-}
-
 void	exec_child(t_token *data, t_extra *x)
 {
-	int f;
-	
+	int	f;
+
 	signal_init_child();
 	if (data->c_red)
 	{
@@ -141,13 +82,13 @@ void	exec_child(t_token *data, t_extra *x)
 	if (data->type == b_cmd_t)
 		exit(exec_builtin(data, x));
 	if (!data->value)
-		exit (0);
+		exit(0);
 	x->cmd_path = find_path(data->value, x->env_list, 0);
 	if (!x->cmd_path)
 		exit(cmd_error1(data->value));
-	f=file_errors2(x->cmd_path);
-	if(f!=0)
-		exit(cmd_error(data->value,f));
+	f = file_errors2(x->cmd_path);
+	if (f != 0)
+		exit(cmd_error(data->value, f));
 	x->env = env_to_arr(x->env_list);
 	if (!x->env)
 		(free(x->cmd_path), exit(1));
@@ -159,7 +100,8 @@ void	exec_child(t_token *data, t_extra *x)
 
 void	external_helper(t_token *current, t_extra *x)
 {
-	pid_t 	pid;
+	pid_t	pid;
+
 	while (current)
 	{
 		if (current->type == b_cmd_t || current->type == cmd_t)
@@ -175,7 +117,7 @@ void	external_helper(t_token *current, t_extra *x)
 			{
 				failled_pipes(x);
 				x->exit_status = (perror("fork"), 1);
-				break;
+				break ;
 			}
 			close_pipe_in_parent(x);
 		}
@@ -185,13 +127,11 @@ void	external_helper(t_token *current, t_extra *x)
 	}
 }
 
-int exec_external(t_token *data, t_extra *x)
+int	exec_external(t_token *data, t_extra *x)
 {
-	t_token *current;
-	int		status;
-	int		a;
+	t_token	*current;
 
-	a = 0;
+	int (status), a = 0;
 	current = data;
 	if (x->pipe_count > 0)
 	{
@@ -202,21 +142,16 @@ int exec_external(t_token *data, t_extra *x)
 	while (a < x->cmd_count)
 	{
 		wait(&status);
-        if (WIFEXITED(status))
-            x->exit_status = WEXITSTATUS(status);
+		if (WIFEXITED(status))
+			x->exit_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
-        {
-            if (WTERMSIG(status) == SIGINT)
-                x->exit_status = 130;
-            else if (WTERMSIG(status) == SIGQUIT)
-			{
-				ft_putstr_fd("Quit: 3\n", 2);
-                x->exit_status = 131;
-			}
-        }
+		{
+			if (WTERMSIG(status) == SIGINT)
+				x->exit_status = 130;
+			else if (WTERMSIG(status) == SIGQUIT)
+				(ft_putstr_fd("Quit: 3\n", 2), x->exit_status = 131);
+		}
 		a++;
 	}
-	close_all_pipes(x);
-	return (x->exit_status);
+	return (close_all_pipes(x), x->exit_status);
 }
-

@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:02:17 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/16 21:31:39 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/26 20:41:45 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,21 +91,30 @@ t_token_type	ft_get_token_type(char *t, int f)
 
 int	ft_check_buildin_cmd(char *t)
 {
-	if (ft_check_word("echo", t) == 0)
-		return (0);
-	else if (ft_check_word("cd", t) == 0)
-		return (0);
-	else if (ft_check_word("pwd", t) == 0)
-		return (0);
-	else if (ft_check_word("export", t) == 0)
-		return (0);
-	else if (ft_check_word("unset", t) == 0)
-		return (0);
-	else if (ft_check_word("env", t) == 0)
-		return (0);
-	else if (ft_check_word("exit", t) == 0)
-		return (0);
-	return (-1);
+	char	*tmp1;
+	char	*tmp2;
+
+	tmp1 = ft_strdup(t);
+	if (!tmp1)
+		return (-1);
+	tmp2 = ft_remove_q(tmp1);
+	if (!tmp1)
+		return (free(tmp1), -1);
+	if (ft_check_word("echo", tmp2) == 0)
+		return (free(tmp2), 0);
+	else if (ft_check_word("cd", tmp2) == 0)
+		return (free(tmp2), 0);
+	else if (ft_check_word("pwd", tmp2) == 0)
+		return (free(tmp2), 0);
+	else if (ft_check_word("export", tmp2) == 0)
+		return (free(tmp2), 0);
+	else if (ft_check_word("unset", tmp2) == 0)
+		return (free(tmp2), 0);
+	else if (ft_check_word("env", tmp2) == 0)
+		return (free(tmp2), 0);
+	else if (ft_check_word("exit", tmp2) == 0)
+		return (free(tmp2), 0);
+	return (free(tmp2), -1);
 }
 
 int	ft_check_word(char *t1, char *t2)

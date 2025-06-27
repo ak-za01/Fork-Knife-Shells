@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 02:59:30 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/16 21:32:07 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/26 20:45:47 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,11 @@ char	**ft_set_charset2(void)
 	charset[0] = "*";
 	charset[1] = NULL;
 	return (charset);
+}
+
+int	ft_isspace(int c)
+{
+	if ((9 <= c && c <= 13) || c == 32)
+		return (1);
+	return (0);
 }

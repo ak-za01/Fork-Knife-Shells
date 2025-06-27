@@ -81,7 +81,7 @@ char	*ft_copy_split2(const char *s, long *i)
 	i_c = 0;
 	k = 0;
 	j = *i;
-	while (s[j] && (ft_isspace(s[j]) == 0  || i_c == 1))
+	while (s[j] && (ft_isspace(s[j]) == 0 || i_c == 1))
 	{
 		if ((s[j] == '\'' || s[j] == '\"') && i_c == 0)
 			ft_fix_norminet_1(&q, s + j, &i_c);

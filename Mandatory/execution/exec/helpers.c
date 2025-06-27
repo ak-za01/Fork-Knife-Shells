@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 18:18:51 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/23 17:37:10 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/27 16:54:22 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 char	*ft_strjoin3(char *s1, char *s2, char *s3)
 {
 	char	*t;
-	int		s, i, j, k;  // Fixed syntax error
 
+	int (s), (i), (j), (k);
 	if (!s1 || !s2 || !s3)
 		return (NULL);
 	s = ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3);
@@ -65,37 +65,29 @@ int	cleanup_execution_vars(t_token *data, t_extra *x)
 		free_pipe(x);
 	while (current)
 	{
-		if(has_heredoc(current->c_red))
+		if (has_heredoc(current->c_red) && current->pi_doc[0] != -1)
+		{
 			close(current->pi_doc[0]);
+			current->pi_doc[0] = -1;
+		}
 		current = current->next;
 	}
 	return (x->exit_status);
 }
 
-int	restore_std_fds(t_extra *x)
+void	print_error(char *file, char *error_msg)
 {
-	if (x->stdin_backup != -1)
-	{
-		if (ft_dup2(x->stdin_backup, STDIN_FILENO) != 0)
-		{
-			x->exit_status = ERROR;
-			return (ERROR);
-		}
-		close(x->stdin_backup);
-		x->stdin_backup = -1;
-	}
-	if (x->stdout_backup != -1)
-	{
-		if (ft_dup2(x->stdout_backup, STDOUT_FILENO) != 0)
-		{
-			x->exit_status = ERROR;
-			return (ERROR);
-		}
-		close(x->stdout_backup);
-		x->stdout_backup = -1;
-	}
-	return (SUCCESS);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(file, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putstr_fd(error_msg, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
 }
 
-
-
+int	ft_check33(char *t, char *ar)
+{
+	if ((ft_strnstr(t, ar, ft_strlen(ar)) != NULL) && (ft_strlen(t)
+			- 1 == ft_strlen(ar)))
+		return (1);
+	return (0);
+}

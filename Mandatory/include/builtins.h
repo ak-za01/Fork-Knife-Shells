@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 21:46:46 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/26 01:21:30 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/27 16:00:17 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,6 @@
 # define BUILTINS_H
 
 # include "main.h"
-# include <errno.h>
-# include <signal.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <sys/stat.h>
-# include <unistd.h>
 
 // Return values
 # define SUCCESS 0
@@ -33,7 +26,6 @@ int		cleanup_execution_vars(t_token *data, t_extra *x);
 int		create_pipe(t_extra *x);
 int		setup_pipe(int index, int cmd_count, int **pipefd);
 int		cmd_error(char *cmd, int f);
-int		free_pipes(t_extra *x, int i);
 void	close_pipe_in_parent(t_extra *x);
 void	close_all_pipes(t_extra *x);
 void	exec_child(t_token *data, t_extra *x);
@@ -41,30 +33,33 @@ int		handle_ambiguous(int a, int red_s);
 int		free_pipes(t_extra *x, int i);
 void	free_pipe(t_extra *x);
 int		file_errors(char *file, int output);
+int		file_errors2(char *file);
 void	failled_pipes(t_extra *x);
-void 	signal_init_heredoc();
-void 	sig_handler_heredoc(int signal);
-void 	signal_init_exec();
-
 
 //	execution functions
 int		ft_execution(t_token *data, t_extra *x);
 int		exec_single(t_token *data, t_extra *x);
+void	free_external(char *cmd_path, char **env);
+int		cmd_error1(char *cmd);
 
 // Redirection Functions
 int		setup_redirections(t_token *data, t_extra *x);
-// int		setup_heredoc(t_token *data, t_extra *x);
-// int		process_heredoc(t_token *data, int *pipefd, t_extra *x);
-// int		handle_heredoc(char *del, int *pipefd);
-int		has_heredoc(char **c_red);
 int		restore_std_fds(t_extra *x);
 void	print_error(char *file, char *error_msg);
+int		handle_hd(t_token *data);
 
-int	setup_heredoc(t_token *data, t_extra *x);
-// int	process_heredoc(t_token *data, t_extra *x);
-// int	handle_heredoc1(char *del,t_token *data);
-// int	handle_heredoc2(char *del,t_token *data);
-int	count_heredoc(t_token *data);
+// heredoc Functions
+int		has_heredoc(char **c_red);
+int		count_heredoc(t_token *data);
+int		ft_check33(char *t, char *ar);
+int		ft_check_q_status2(char *t);
+int		filter_heredoc_line(char **line, char *del, t_extra *x);
+int		check_signal(t_token *data, char *line, int f);
+int		handle_heredoc1(char *del, t_token *data, t_extra *x);
+int		handle_heredoc2(char *del, t_token *data, t_extra *x);
+int		process_heredoc(t_token *data, t_extra *x, int a, int c2);
+int		handle_single_heredoc(t_token *current, t_extra *x);
+int		setup_heredoc(t_token *data, t_extra *x);
 
 // Built-in function prototypes
 int		ft_echo(t_token *data);
@@ -87,6 +82,7 @@ char	*ft_strjoin3(char *s1, char *s2, char *s3);
 void	init_extra(t_extra *x, char **env);
 int		var_exist(t_env *env_list, char *name);
 int		add_var(t_env *env_list, char *name, char *value);
+t_env	*create_env_node(char *env_str);
 
 //	Helper functions for export
 int		search_variable(t_env **current, char *str);
@@ -96,5 +92,14 @@ void	sort_env_list(t_env *env_list, t_env **copy);
 void	print_env_node(t_env *node);
 void	free_temp_env(t_env *node);
 void	print_env_list(t_env *list);
+
+//	signal functions
+void	signal_init_interactive(void);
+void	signal_init_exec(void);
+void	signal_init_heredoc(void);
+void	signal_init_child(void);
+void	handle_signal_in_main(void);
+void	sig_handler_interactive(int signal);
+void	sig_handler_heredoc(int signal);
 
 #endif

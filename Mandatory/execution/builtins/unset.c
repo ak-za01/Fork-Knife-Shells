@@ -43,8 +43,8 @@ int	remove_variable(char *arg, t_env **env_list)
 
 int	valid_variable2(char *str)
 {
-	int		i;
-	int		valid;
+	int	i;
+	int	valid;
 
 	i = 0;
 	valid = 1;

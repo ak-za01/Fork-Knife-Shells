@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 12:41:11 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/16 21:31:04 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/26 20:49:04 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ int	ft_calcul_total_len(int s, char *ptr, t_extra *x, int f)
 	while (*ptr)
 	{
 		ft_toggle_quote(&ptr, &s_q, &d_q);
-		if (*ptr == '$' && ft_check_ptr_value(*(ptr + 1), 0) && !s_q)
+		if (*ptr == '$' && ft_check_ptr_status(ptr + 1, s_q, d_q)
+			&& ft_check_ptr_value(*(ptr + 1), 0) && !s_q)
 		{
 			if (ft_calcul_total_len_fix_norm(x, f, &s, &ptr) == -1)
 				return (-1);

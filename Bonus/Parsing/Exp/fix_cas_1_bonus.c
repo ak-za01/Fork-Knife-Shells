@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 23:54:04 by noctis            #+#    #+#             */
-/*   Updated: 2025/06/16 21:30:46 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/26 20:47:46 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	ft_check_if_ambiguous(char *str)
 	while (t[i])
 	{
 		f = ft_check_q_status(t[i]);
-		s = ft_count_split2(t[i], ' ');
+		s = ft_count_split2(t[i]);
 		if (f == 0 && s > 1)
 			return (ft_free(t), -2);
 		i++;

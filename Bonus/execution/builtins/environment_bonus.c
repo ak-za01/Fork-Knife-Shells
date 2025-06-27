@@ -6,49 +6,58 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:53:28 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/16 21:29:57 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/26 21:14:31 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/builtins_bonus.h"
 
-t_env	*create_env_list(char **env)
+int	add(t_env *env_list, char *name, char *value)
+{
+	if (add_var(env_list, name, value))
+	{
+		free(env_list->name);
+		free(env_list->value);
+		free(env_list);
+		return (1);
+	}
+	return (0);
+}
+
+t_env	*create_env(void)
 {
 	t_env	*env_list;
-	t_env	*current;
-	t_env	*new_node;
-	char	**temp;
+	char	cwd[1024];
 
-	env_list = ((current = NULL), NULL);
-	while (*env)
+	env_list = malloc(sizeof(t_env));
+	if (!env_list)
+		return (NULL);
+	env_list->name = ft_strdup("OLDPWD");
+	env_list->value = NULL;
+	env_list->next = NULL;
+	if (getcwd(cwd, sizeof(cwd)) == NULL)
 	{
-		new_node = malloc(sizeof(t_env));
-		if (!new_node)
-			return (NULL);
-		temp = ft_split_env(*env, '=');
-		if (!temp)
-			return ((free(new_node)), NULL);
-		new_node->name = temp[0];
-		new_node->value = temp[1];
-		new_node->original = ((new_node->next = NULL), 1);
-		if (!env_list)
-			env_list = new_node;
-		else
-			current->next = new_node;
-		current = new_node;
-		((free(temp)), env++);
+		perror("getcwd() error");
+		free(env_list->name);
+		free(env_list->value);
+		free(env_list);
+		return (NULL);
 	}
+	if (add(env_list, "PWD", cwd))
+		return (NULL);
+	if (add(env_list, "SHLVL", "0"))
+		return (NULL);
 	return (env_list);
 }
 
-int	ft_env(t_token	*data, t_extra x)
+int	ft_env(t_token *data, t_extra *x)
 {
 	t_env	*current;
 
 	(void)data;
-	if (!x.env_list)
+	if (!x->env_list)
 		return (ERROR);
-	current = x.env_list;
+	current = x->env_list;
 	while (current)
 	{
 		if (current->value && current->name)
@@ -83,8 +92,18 @@ static int	update_var(t_env *env_list, char *name)
 
 void	init_extra(t_extra *x, char **env)
 {
-	x->env_list = create_env_list(env);
-	x->exit_status = 0;
+	if (env && *env)
+		x->env_list = create_env_list(env);
+	else
+	{
+		x->env_list = create_env();
+		printf("env is null\n");
+	}
+	if (!var_exist(x->env_list, "OLDPWD"))
+	{
+		if (add_var(x->env_list, "OLDPWD", NULL))
+			return ;
+	}
 	if (!var_exist(x->env_list, "SHLVL"))
 	{
 		if (add_var(x->env_list, "SHLVL", "1"))
@@ -95,4 +114,5 @@ void	init_extra(t_extra *x, char **env)
 		if (update_var(x->env_list, "SHLVL"))
 			return ;
 	}
+	x->exit_status = 0;
 }

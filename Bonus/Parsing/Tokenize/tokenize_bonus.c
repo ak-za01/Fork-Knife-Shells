@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 07:07:00 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/16 21:31:42 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/26 20:44:47 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	ft_initialize_list(char *str, t_token **data)
 	char	**t2;
 
 	i = 0;
-	t1 = ft_split2(str, ' ');
+	t1 = ft_split2(str);
 	if (!t1)
 		return (-1);
 	while (t1[i])

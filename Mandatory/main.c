@@ -6,13 +6,18 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:28 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/26 16:09:24 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/27 17:33:32 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/main.h"
 
 volatile sig_atomic_t	g_signal_received = 0;
+
+void	leaks(void)
+{
+	system("lsof -c minishell");
+}
 
 int	main_engine(char *str, t_extra *x)
 {
@@ -23,7 +28,6 @@ int	main_engine(char *str, t_extra *x)
 		data = ft_parse(str, x);
 		if (data)
 		{
-			// ft_print_list(data);
 			x->exit_status = ft_execution(data, x);
 			ft_free_list(&data);
 		}

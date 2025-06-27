@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 18:27:50 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/24 18:48:05 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/26 19:31:28 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,13 @@ int	ft_cd(char **c_args, t_extra *x)
 	}
 	if (!c_args[1])
 		return (handle_home(x, old_dir));
-	else if ((ft_strcmp(c_args[1], "-") == 0) || (ft_strcmp(c_args[1], "--") == 0))
+	else if ((ft_strcmp(c_args[1], "-") == 0) || (ft_strcmp(c_args[1],
+				"--") == 0))
 		return (handle_cd_dash(x, old_dir));
 	if (chdir(c_args[1]) != 0)
 	{
 		ft_putstr_fd("Minishell: cd: ", 2);
-		ft_putstr_fd(c_args[1], 2);
-		ft_putstr_fd(": ", 2);
+		(ft_putstr_fd(c_args[1], 2), ft_putstr_fd(": ", 2));
 		if (errno == EACCES)
 			ft_putstr_fd("Permission denied: ", 2);
 		else

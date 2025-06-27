@@ -6,43 +6,11 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:49:37 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/23 21:53:33 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/27 16:14:47 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/builtins.h"
-
-int	pipes_count(t_token *data)
-{
-	t_token	*current;
-	int		count;
-
-	count = 0;
-	current = data;
-	while (current)
-	{
-		if (current->value)
-		{
-			if (current->type == pipe_t)
-				count++;
-		}
-		current = current->next;
-	}
-	return (count);
-}
-
-void	free_pipe(t_extra *x)
-{
-	int	i;
-
-	i = 0;
-	while (i < x->pipe_count)
-	{
-        free(x->pipefd[i]);
-		i++;
-	}
-    free(x->pipefd);
-}
 
 void	failled_pipes(t_extra *x)
 {
@@ -51,16 +19,16 @@ void	failled_pipes(t_extra *x)
 	i = 0;
 	while (i < x->cmd_index - 1)
 	{
-		 if (x->pipefd[i][0] != -1)
-        {
-            close(x->pipefd[i][0]);
-            x->pipefd[i][0] = -1;
-        }
-        if (x->pipefd[i][1] != -1)
-        {
-            close(x->pipefd[i][1]);
-            x->pipefd[i][1] = -1;
-        }
+		if (x->pipefd[i][0] != -1)
+		{
+			close(x->pipefd[i][0]);
+			x->pipefd[i][0] = -1;
+		}
+		if (x->pipefd[i][1] != -1)
+		{
+			close(x->pipefd[i][1]);
+			x->pipefd[i][1] = -1;
+		}
 		i++;
 	}
 }
@@ -72,42 +40,27 @@ void	close_all_pipes(t_extra *x)
 	i = 0;
 	while (i < x->pipe_count)
 	{
-		 if (x->pipefd[i][0] != -1)
-        {
-            close(x->pipefd[i][0]);
-            x->pipefd[i][0] = -1;
-        }
-        if (x->pipefd[i][1] != -1)
-        {
-            close(x->pipefd[i][1]);
-            x->pipefd[i][1] = -1;
-        }
+		if (x->pipefd[i][0] != -1)
+		{
+			close(x->pipefd[i][0]);
+			x->pipefd[i][0] = -1;
+		}
+		if (x->pipefd[i][1] != -1)
+		{
+			close(x->pipefd[i][1]);
+			x->pipefd[i][1] = -1;
+		}
 		i++;
 	}
 }
 
-void close_pipe_in_parent(t_extra *x)
+void	close_pipe_in_parent(t_extra *x)
 {
-    if (x->cmd_index > 0)
-        close(x->pipefd[x->cmd_index - 1][0]);
-    if (x->cmd_index < x->cmd_count - 1)
-        close(x->pipefd[x->cmd_index][1]);
-    x->cmd_index++;
-}
-
-int	free_pipes(t_extra *x, int i)
-{
-	int	a;
-
-	a = 0;
-	while (a < i)
-	{
-		if (x->pipefd[a])
-			free(x->pipefd[a]);
-		a++;
-	}
-	free(x->pipefd);
-	return (SUCCESS);
+	if (x->cmd_index > 0)
+		close(x->pipefd[x->cmd_index - 1][0]);
+	if (x->cmd_index < x->cmd_count - 1)
+		close(x->pipefd[x->cmd_index][1]);
+	x->cmd_index++;
 }
 
 int	create_pipe(t_extra *x)

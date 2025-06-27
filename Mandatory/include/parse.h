@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 02:45:32 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/23 17:01:16 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/26 21:00:11 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ int					ft_check_dollar(char *t);
 int					ft_check_q_status(char *t);
 int					ft_strlen_2(char **t);
 int					ft_strcmp(const char *s1, const char *s2);
-int 				ft_check_ptr_status(char *ptr, int s_q, int d_q);
+int					ft_check_ptr_status(char *ptr, int s_q, int d_q);
 
 //------------------------------ Filter 1  :
 int					ft_filter_list(t_token **data);
@@ -166,9 +166,11 @@ int					ft_is_special(const char *str, char **charset, int *len);
 char				**ft_split4(char const *str);
 int					ft_count_split4(char const *s);
 char				*ft_copy_split4(char const *s, int *k);
+
 void				ft_free(char **t);
 void				ft_free2(char **t, int s);
 char				**ft_set_charset(void);
 int					ft_isspace(int c);
+void				ft_print_list(t_token *data);
 
 #endif

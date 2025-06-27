@@ -6,112 +6,135 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 12:22:54 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/16 21:30:24 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/26 21:19:43 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/builtins_bonus.h"
 
-void	print_error(char *file, char *error_msg)
+int	handle_heredoc1(char *del, t_token *data, t_extra *x)
 {
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(file, STDERR_FILENO);
-	ft_putstr_fd(": ", STDERR_FILENO);
-	ft_putstr_fd(error_msg, STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
-}
+	char	*line;
+	int		f;
 
-int	has_heredoc(char **c_red)
-{
-	int	a;
-
-	a = 0;
-	while (c_red[a])
+	while (1)
 	{
-		if (ft_strcmp(c_red[a], "<<") == 0)
-			return (ERROR);
-		a++;
+		if (check_signal(data, NULL, 0))
+			return (1);
+		write(STDOUT_FILENO, "> ", 2);
+		line = get_next_line(STDIN_FILENO);
+		if (check_signal(data, line, 0))
+			return (1);
+		if (!line)
+			break ;
+		f = filter_heredoc_line(&line, del, x);
+		if (f == -1)
+			return (-1);
+		if (f == 1)
+			break ;
+		free(line);
 	}
 	return (SUCCESS);
 }
 
-int	handle_heredoc(char *del)
+int	handle_heredoc2(char *del, t_token *data, t_extra *x)
 {
 	char	*line;
-	int		pipefd[2];
+	int		f;
 
-	if (pipe(pipefd) == -1)
-		return ((perror("pipe")), ERROR);
 	while (1)
 	{
-		line = readline("> ");
+		if (check_signal(data, NULL, 1))
+			return (1);
+		write(STDOUT_FILENO, "> ", 2);
+		line = get_next_line(STDIN_FILENO);
+		if (check_signal(data, line, 1))
+			return (1);
 		if (!line)
 			break ;
-		if (ft_strcmp(line, del) == 0)
-		{
-			free(line);
+		f = filter_heredoc_line(&line, del, x);
+		if (f == -1)
+			return (-1);
+		if (f == 1)
 			break ;
-		}
-		ft_putstr_fd(line, pipefd[1]);
-		ft_putstr_fd("\n", pipefd[1]);
+		ft_putstr_fd(line, data->pi_doc[1]);
 		free(line);
 	}
-	close(pipefd[1]);
-	return (pipefd[0]);
+	close(data->pi_doc[0]);
+	close(data->pi_doc[1]);
+	return (SUCCESS);
 }
 
-int	process_heredoc(t_token *data, t_extra *x)
+int	process_heredoc(t_token *data, t_extra *x, int a, int c2)
 {
-	int	fd_heredoc;
-	int	a;
+	int	count;
 
-	a = 0;
-	fd_heredoc = -1;
-	while (data->c_red[a])
+	count = count_heredoc(data);
+	while (a < data->red_s)
 	{
-		if (ft_strcmp(data->c_red[a], "<<") == 0)
+		if (data->c_red[a] && ft_strcmp(data->c_red[a], "<<") == 0)
 		{
-			if (fd_heredoc != -1)
-				close(fd_heredoc);
-			fd_heredoc = handle_heredoc(data->c_red[++a]);
-			if (fd_heredoc == -1)
-				return (ERROR);
+			if (c2 == (count - 1))
+			{
+				if (handle_heredoc2(data->c_red[++a], data, x) != 0)
+					return (ERROR);
+				c2++;
+			}
+			else
+			{
+				if (handle_heredoc1(data->c_red[++a], data, x) != 0)
+					return (ERROR);
+				c2++;
+			}
 		}
 		else
 			a++;
 	}
-	if (fd_heredoc != -1)
-	{
-		if (ft_dup2(fd_heredoc, STDIN_FILENO) != 0)
-			return ((x->exit_status = 1), ERROR);
-		close(fd_heredoc);
-	}
 	return ((x->exit_status = 0));
+}
+
+int	handle_single_heredoc(t_token *current, t_extra *x)
+{
+	pid_t	pid;
+	int		status;
+
+	if (pipe(current->pi_doc) == -1)
+		return ((perror("pipe")), ERROR);
+	pid = fork();
+	if (pid == 0)
+	{
+		signal_init_heredoc();
+		if (current->c_red)
+		{
+			if (process_heredoc(current, x, 0, 0) != 0)
+				exit(ERROR);
+		}
+		exit(SUCCESS);
+	}
+	else if (pid > 0)
+	{
+		signal(SIGINT, SIG_IGN);
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			x->exit_status = WEXITSTATUS(status);
+		signal_init_interactive();
+	}
+	return (close(current->pi_doc[1]), x->exit_status);
 }
 
 int	setup_heredoc(t_token *data, t_extra *x)
 {
 	t_token	*current;
-	pid_t	pid;
 
 	current = data;
-	pid = fork();
-	if (pid == 0)
+	while (current)
 	{
-		signal_init_child();
-		while (current)
+		if (has_heredoc(current->c_red))
 		{
-			if (current->c_red && has_heredoc(current->c_red))
-			{
-				if (process_heredoc(current, x) != 0)
-					return (ERROR);
-			}
-			current = current->next;
+			if (handle_single_heredoc(current, x) != SUCCESS)
+				return (ERROR);
 		}
+		current = current->next;
 	}
-	else if (pid)
-		waitpid(pid, NULL, 0);
-		
-	x->exit_status = 0;
 	return (SUCCESS);
 }

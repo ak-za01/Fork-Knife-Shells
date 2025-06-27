@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 02:15:07 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/16 21:32:36 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/26 20:46:47 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	ft_check_string(char *str)
 	int	i;
 
 	i = 0;
-	while ((9 <= str[i] && str[i] <= 13) || str[i] == 32)
+	while (ft_isspace(str[i]))
 		i++;
 	if (str[i] == '\0')
 		return (0);

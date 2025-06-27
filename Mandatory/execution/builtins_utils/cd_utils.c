@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 11:26:23 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/24 00:43:25 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/26 19:45:43 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ int	add_var(t_env *env_list, char *name, char *value)
 	new_var->name = ft_strdup(name);
 	if (!new_var->name)
 		return ((free(new_var)), 1);
-	if(!value)
+	if (!value)
 		new_var->value = value;
 	else
 	{
 		new_var->value = ft_strdup(value);
 		if (!new_var->value)
 			return (free(new_var->name), free(new_var), 1);
-	}		
+	}
 	new_var->next = NULL;
 	if (!env_list)
 		return ((free(new_var->name), free(new_var->value), free(new_var)), 1);

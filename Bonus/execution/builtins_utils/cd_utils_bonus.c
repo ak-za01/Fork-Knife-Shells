@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 11:26:23 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/24 00:45:12 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/26 21:15:01 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ int	add_var(t_env *env_list, char *name, char *value)
 	new_var->name = ft_strdup(name);
 	if (!new_var->name)
 		return ((free(new_var)), 1);
-	new_var->value = ft_strdup(value);
-	if (!new_var->value)
+	if (!value)
+		new_var->value = value;
+	else
 	{
-		free(new_var->name);
-		free(new_var);
-		return (1);
+		new_var->value = ft_strdup(value);
+		if (!new_var->value)
+			return (free(new_var->name), free(new_var), 1);
 	}
-	new_var->original = 1;
 	new_var->next = NULL;
 	if (!env_list)
 		return ((free(new_var->name), free(new_var->value), free(new_var)), 1);
@@ -75,7 +75,7 @@ static int	update_var(t_env *env_list, char *name, char *dir)
 	return (1);
 }
 
-int	update_pwd(t_extra x, char *old_dir)
+int	update_pwd(t_extra *x, char *old_dir)
 {
 	char	current[PATH_MAX];
 
@@ -83,19 +83,14 @@ int	update_pwd(t_extra x, char *old_dir)
 	{
 		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd(strerror(errno), 2);
-		return ((x.exit_status = 1));
-	}
-	if (!var_exist(x.env_list, "OLDPWD"))
-	{
-		if (add_var(x.env_list, "OLDPWD", old_dir))
-			return ((x.exit_status = 1));
+		return ((x->exit_status = 1));
 	}
 	else 
 	{
-		if (update_var(x.env_list, "OLDPWD", old_dir))
-			return ((x.exit_status = 1));
+		if (update_var(x->env_list, "OLDPWD", old_dir))
+			return ((x->exit_status = 1));
 	}
-	if (update_var(x.env_list, "PWD", current))
-		return ((x.exit_status = 1));
-	return ((x.exit_status = 0));
+	if (update_var(x->env_list, "PWD", current))
+		return ((x->exit_status = 1));
+	return ((x->exit_status = 0));
 }
