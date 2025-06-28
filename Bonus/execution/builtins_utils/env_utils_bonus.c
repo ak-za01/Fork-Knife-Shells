@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 19:33:08 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/26 21:15:08 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/28 19:09:02 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,11 @@ t_env	*create_env_list(char **env)
 		env++;
 	}
 	return (env_list);
+}
+
+void	shellvl_error(int new_value)
+{
+	ft_putstr_fd("minishell: warning: shell level (", 2);
+	ft_putstr_fd(ft_itoa(new_value), 2);
+	ft_putstr_fd(") too high, resetting to 1\n", 2);
 }

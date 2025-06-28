@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 11:26:23 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/26 21:15:01 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/28 19:11:24 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,17 +75,34 @@ static int	update_var(t_env *env_list, char *name, char *dir)
 	return (1);
 }
 
+int	get_var(t_env *env_list, char *name, char *value)
+{
+	t_env	*current;
+
+	current = env_list;
+	while (current)
+	{
+		if (ft_strcmp(current->name, name) == 0)
+		{
+			value = current->value;
+			return (1);
+		}
+		current = current->next;
+	}
+	return (0);
+}
+
 int	update_pwd(t_extra *x, char *old_dir)
 {
 	char	current[PATH_MAX];
 
-	if (!getcwd(current, PATH_MAX))
+	if (!getcwd(current, PATH_MAX) && !get_var(x->env_list, "PWD", current))
 	{
 		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd(strerror(errno), 2);
 		return ((x->exit_status = 1));
 	}
-	else 
+	else
 	{
 		if (update_var(x->env_list, "OLDPWD", old_dir))
 			return ((x->exit_status = 1));

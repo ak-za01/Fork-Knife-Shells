@@ -3,12 +3,14 @@
 CC = cc
 
 CFLAGS = -Wall -Werror -Wextra -I$(HOME)/readline/include
+# CFLAGS = -Wall -Werror -Wextra -I$(HOME)/goinfre/homebrew/Cellar/readline/8.2.13/include
 
-# CFLAGS = -fsanitize=address -g -I$(HOME)/readline/include
+# CFLAGS = -fsanitize=address -g -I$(HOME)/goinfre/homebrew/Cellar/readline/8.2.13/include
 
 # CFLAGS = -I./libs/readline/include
 
 LDFLAGS = -L$(HOME)/readline/lib
+# LDFLAGS = -L$(HOME)/goinfre/homebrew/Cellar/readline/8.2.13/lib
 LDLIBS  = -lreadline -lncurses
 
 #               ----------------      LNX :    ----------------
@@ -66,6 +68,7 @@ BUILTINS =	./Mandatory/execution/builtins/pwd.c \
 			./Mandatory/execution/builtins/export.c \
 			./Mandatory/execution/builtins/unset.c \
 			./Mandatory/execution/builtins_utils/cd_utils.c \
+			./Mandatory/execution/builtins_utils/cd_utils2.c \
 			./Mandatory/execution/builtins_utils/export_utils.c \
 			./Mandatory/execution/builtins_utils/export_utils2.c \
 			./Mandatory/execution/builtins_utils/split_env.c \
@@ -132,6 +135,7 @@ PARSING_B  =	./Bonus/main_bonus.c \
 			./Bonus/Parsing/Utils/ft_split5_bonus.c \
 			./Bonus/Parsing/Utils/ft_strjoin4_bonus.c \
 			./Bonus/Parsing/Utils/utils1_bonus.c \
+			./Bonus/Parsing/Utils/utils2_bonus.c \
 
 BUILTINS_B =	./Bonus/execution/builtins/pwd_bonus.c \
 			./Bonus/execution/builtins/cd_bonus.c \
@@ -141,6 +145,7 @@ BUILTINS_B =	./Bonus/execution/builtins/pwd_bonus.c \
 			./Bonus/execution/builtins/export_bonus.c \
 			./Bonus/execution/builtins/unset_bonus.c \
 			./Bonus/execution/builtins_utils/cd_utils_bonus.c \
+			./Bonus/execution/builtins_utils/cd_utils2_bonus.c \
 			./Bonus/execution/builtins_utils/export_utils_bonus.c \
 			./Bonus/execution/builtins_utils/export_utils2_bonus.c \
 			./Bonus/execution/builtins_utils/split_env_bonus.c \

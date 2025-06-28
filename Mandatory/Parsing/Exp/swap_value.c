@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   swap_value.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 12:41:18 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/26 19:26:51 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/27 21:29:33 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ void	ft_copy_exp_value(t_env *env_list, char *var, char *t, int *i)
 	{
 		if (ft_strcmp(var, env->name) == 0)
 		{
+			if (!env->value)
+				break ;
 			j = 0;
 			while (env->value[j])
 			{

@@ -3,21 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:28 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/26 21:06:36 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/28 19:07:31 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/main_bonus.h"
 
 volatile sig_atomic_t	g_signal_received = 0;
-
-void	leaks(void)
-{
-	system("leaks -q minishell");
-}
 
 int	main_engine(char *str, t_extra *x)
 {

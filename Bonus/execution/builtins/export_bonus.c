@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:50:37 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/26 21:14:43 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/28 19:13:09 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,11 @@
 
 void	error_message(char *cmd, char *str)
 {
-	char	*clean_str;
-
-	clean_str = NULL;
-	if (!clean_str)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": `", 2);
-		ft_putstr_fd(str, 2);
-		ft_putstr_fd("': not a valid identifier\n", 2);
-	}
-	else
-		fprintf(stderr, "minishell: %s: invalid argument\n", cmd);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": `", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
 }
 
 char	*get_var_value(char *str)

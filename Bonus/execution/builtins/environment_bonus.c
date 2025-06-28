@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:53:28 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/26 21:14:31 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/28 19:13:45 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,12 @@ int	ft_env(t_token *data, t_extra *x)
 	while (current)
 	{
 		if (current->value && current->name)
-			printf("%s=%s\n", current->name, current->value);
+		{
+			ft_putstr_fd(current->name, 1);
+			ft_putstr_fd("=", 1);
+			ft_putstr_fd(current->value, 1);
+			ft_putstr_fd("\n", 1);
+		}
 		current = current->next;
 	}
 	return (SUCCESS);
@@ -78,7 +83,12 @@ static int	update_var(t_env *env_list, char *name)
 		if (ft_strcmp(current->name, name) == 0)
 		{
 			new_value = ft_atoi(current->value);
-			new_value++;
+			if (new_value < 0)
+				new_value = 0;
+			else
+				new_value++;
+			if (new_value >= 1000)
+				new_value = ((shellvl_error(new_value)), 1);
 			free(current->value);
 			current->value = ft_itoa(new_value);
 			if (!current->value)
@@ -95,10 +105,7 @@ void	init_extra(t_extra *x, char **env)
 	if (env && *env)
 		x->env_list = create_env_list(env);
 	else
-	{
 		x->env_list = create_env();
-		printf("env is null\n");
-	}
 	if (!var_exist(x->env_list, "OLDPWD"))
 	{
 		if (add_var(x->env_list, "OLDPWD", NULL))

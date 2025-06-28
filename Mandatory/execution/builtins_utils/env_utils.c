@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 19:33:08 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/27 14:19:12 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/28 17:52:35 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,11 @@ t_env	*create_env_list(char **env)
 		env++;
 	}
 	return (env_list);
+}
+
+void	shellvl_error(int new_value)
+{
+	ft_putstr_fd("minishell: warning: shell level (", 2);
+	ft_putstr_fd(ft_itoa(new_value), 2);
+	ft_putstr_fd(") too high, resetting to 1\n", 2);
 }

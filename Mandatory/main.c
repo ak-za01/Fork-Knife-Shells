@@ -6,18 +6,13 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:28 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/27 17:33:32 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/28 18:48:08 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/main.h"
 
 volatile sig_atomic_t	g_signal_received = 0;
-
-void	leaks(void)
-{
-	system("lsof -c minishell");
-}
 
 int	main_engine(char *str, t_extra *x)
 {

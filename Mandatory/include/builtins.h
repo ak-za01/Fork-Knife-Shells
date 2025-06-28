@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 21:46:46 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/27 16:00:17 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/28 17:53:24 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int		setup_heredoc(t_token *data, t_extra *x);
 // Built-in function prototypes
 int		ft_echo(t_token *data);
 int		ft_cd(char **c_args, t_extra *x);
-int		ft_pwd(void);
+int		ft_pwd(t_env *env_list);
 int		ft_export(t_token *data, t_extra *x);
 int		ft_unset(t_token *data, t_extra **x);
 int		ft_env(t_token *data, t_extra *x);
@@ -83,6 +83,10 @@ void	init_extra(t_extra *x, char **env);
 int		var_exist(t_env *env_list, char *name);
 int		add_var(t_env *env_list, char *name, char *value);
 t_env	*create_env_node(char *env_str);
+int		get_var(t_env *env_list, char *name, char *value);
+int		expand_tilde(char *home, char *path, char *old_dir, t_extra *x);
+void	chdir_error(char *path);
+void	shellvl_error(int new_value);
 
 //	Helper functions for export
 int		search_variable(t_env **current, char *str);

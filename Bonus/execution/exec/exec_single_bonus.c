@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_single_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 17:13:15 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/26 21:19:32 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/28 19:05:49 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,19 @@ int	exec_builtin(t_token *data, t_extra *x)
 {
 	if (!data->value || !data->value[0])
 		return (ERROR);
-	if (strcmp(data->value, "echo") == 0)
+	if (ft_strcmp(data->value, "echo") == 0)
 		return (ft_echo(data));
-	else if (strcmp(data->value, "cd") == 0)
+	else if (ft_strcmp(data->value, "cd") == 0)
 		return (ft_cd(data->c_arg, x));
-	if (strcmp(data->value, "pwd") == 0)
-		return (ft_pwd());
-	else if (strcmp(data->value, "export") == 0)
+	if (ft_strcmp(data->value, "pwd") == 0)
+		return (ft_pwd(x->env_list));
+	else if (ft_strcmp(data->value, "export") == 0)
 		return (ft_export(data, x));
-	else if (strcmp(data->value, "unset") == 0)
+	else if (ft_strcmp(data->value, "unset") == 0)
 		return (ft_unset(data, &x));
-	else if (strcmp(data->value, "env") == 0)
+	else if (ft_strcmp(data->value, "env") == 0)
 		return (ft_env(data, x));
-	else if (strcmp(data->value, "exit") == 0)
+	else if (ft_strcmp(data->value, "exit") == 0)
 		return (ft_exit(data, x));
 	return (ERROR);
 }

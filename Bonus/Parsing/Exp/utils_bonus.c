@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 07:59:14 by noctis            #+#    #+#             */
-/*   Updated: 2025/06/26 20:45:37 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/27 21:27:49 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,18 @@ int	ft_check_q_status(char *t)
 }
 
 int	ft_strlen_2(char **t)
+{
+	int	s;
+
+	if (!t)
+		return (0);
+	s = 0;
+	while (t[s])
+		s++;
+	return (s);
+}
+
+int	ft_strlen_3(char *t)
 {
 	int	s;
 

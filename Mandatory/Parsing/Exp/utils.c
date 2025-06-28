@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noctis <noctis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 07:59:14 by noctis            #+#    #+#             */
-/*   Updated: 2025/06/10 23:36:37 by noctis           ###   ########.fr       */
+/*   Updated: 2025/06/27 21:29:51 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,18 @@ int	ft_strlen_2(char **t)
 {
 	int	s;
 
+	s = 0;
+	while (t[s])
+		s++;
+	return (s);
+}
+
+int	ft_strlen_3(char *t)
+{
+	int	s;
+
+	if (!t)
+		return (0);
 	s = 0;
 	while (t[s])
 		s++;

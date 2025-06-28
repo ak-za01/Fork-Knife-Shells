@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 02:45:32 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/26 21:00:11 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/27 21:28:07 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ int					ft_check_q_status(char *t);
 int					ft_strlen_2(char **t);
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_check_ptr_status(char *ptr, int s_q, int d_q);
+int					ft_strlen_3(char *t);
 
 //------------------------------ Filter 1  :
 int					ft_filter_list(t_token **data);

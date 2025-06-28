@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:41:31 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/26 21:14:38 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/28 19:13:26 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,19 @@ static int	is_numeric_arg(char *str)
 
 static int	check_overflow(long long result, int digit, int sign)
 {
+	unsigned long long	abs_min;
+
 	if (sign == 1 && result > (LLONG_MAX - digit) / 10)
 		return (1);
-	if (sign == -1 && result > (LLONG_MAX - digit) / 10)
-		return (1);
+	else
+	{
+		abs_min = (unsigned long long)LLONG_MAX + 1;
+		if ((unsigned long long)result > abs_min / 10)
+			return (1);
+		if ((unsigned long long)result == abs_min / 10 
+			&& (unsigned long long)digit > abs_min % 10)
+			return (1);
+	}
 	return (0);
 }
 
@@ -64,15 +73,33 @@ static int	str_to_exit_code(char *str, int *exit_code)
 	return (1);
 }
 
+static int	handle_exit_arg(char *arg, int *exit_code)
+{
+	char	**split;
+	int		is_valid;
+
+	split = ft_split(arg, ' ');
+	if (!split)
+		return (0);
+	if (!split[0] || split[1])
+	{
+		ft_free(split);
+		return (0);
+	}
+	is_valid = is_numeric_arg(split[0])
+		&& str_to_exit_code(split[0], exit_code);
+	ft_free(split);
+	return (is_valid);
+}
+
 int	ft_exit(t_token *data, t_extra *x)
 {
-	printf("exit\n");
+	ft_putstr_fd("exit\n", 1);
 	if (!data->c_arg[1])
 		exit(x->exit_status);
-	if (!is_numeric_arg(data->c_arg[1]) || !str_to_exit_code(data->c_arg[1],
-			&x->exit_status))
+	if (!handle_exit_arg(data->c_arg[1], &x->exit_status))
 	{
-		ft_putstr_fd("Minishell: exit: ", 2);
+		ft_putstr_fd("Minishell: line: exit: ", 2);
 		ft_putstr_fd(data->c_arg[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		exit(255);

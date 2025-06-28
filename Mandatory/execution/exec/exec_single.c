@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 17:13:15 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/27 14:19:24 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/27 22:20:59 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	exec_builtin(t_token *data, t_extra *x)
 	else if (ft_strcmp(data->value, "cd") == 0)
 		return (ft_cd(data->c_arg, x));
 	if (ft_strcmp(data->value, "pwd") == 0)
-		return (ft_pwd());
+		return (ft_pwd(x->env_list));
 	else if (ft_strcmp(data->value, "export") == 0)
 		return (ft_export(data, x));
 	else if (ft_strcmp(data->value, "unset") == 0)

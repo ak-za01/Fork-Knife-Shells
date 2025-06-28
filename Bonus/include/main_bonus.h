@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_bonus.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:26 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/26 21:29:36 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/27 21:17:09 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@
 #  include <readline/history.h>
 #  include <readline/readline.h>
 # else
-#  include "../../readline/history.h"
-#  include "../../readline/readline.h"
+#  include "readline/history.h"
+#  include "readline/readline.h"
 # endif
 
 # define RED "\033[1;31m"

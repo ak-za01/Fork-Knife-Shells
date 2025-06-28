@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   swap_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 12:41:11 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/26 19:27:03 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/27 21:27:18 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	ft_calculs_exp_len(t_env *env_list, char *var)
 	{
 		if (ft_strcmp(var, env->name) == 0)
 		{
-			return (ft_strlen(env->value));
+			return (ft_strlen_3(env->value));
 		}
 		env = env->next;
 	}

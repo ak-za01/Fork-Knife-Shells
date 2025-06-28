@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils2_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 17:24:46 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/26 21:15:30 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/28 19:08:39 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,15 @@ void	free_temp_env(t_env *node)
 
 void	print_env_node(t_env *node)
 {
-	printf("declare -x %s", node->name);
+	ft_putstr_fd("declare -x ", 1);
+	ft_putstr_fd(node->name, 1);
 	if (node->value)
-		printf("=\"%s\"", node->value);
-	printf("\n");
+	{
+		ft_putstr_fd("=\"", 1);
+		ft_putstr_fd(node->value, 1);
+		ft_putstr_fd("\"", 1);
+	}
+	ft_putstr_fd("\n", 1);
 }
 
 void	copy_env_node(t_env *dest, t_env *src)
