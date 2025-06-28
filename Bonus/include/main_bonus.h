@@ -6,14 +6,14 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:26 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/27 21:17:09 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/28 21:32:25 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAIN_BONUS_H
 # define MAIN_BONUS_H
 
-# include "../../42_Libft/libft.h"
+# include "../42_Libft/libft.h"
 # include "./parse_bonus.h"
 # include "./builtins_bonus.h"
 # include <errno.h>

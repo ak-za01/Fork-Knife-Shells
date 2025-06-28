@@ -6,14 +6,14 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:26 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/28 16:40:46 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/28 21:32:32 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAIN_H
 # define MAIN_H
 
-# include "../../42_Libft/libft.h"
+# include "../42_Libft/libft.h"
 # include "./parse.h"
 # include "./builtins.h"
 # include <errno.h>

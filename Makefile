@@ -1,34 +1,10 @@
-#               ----------------      MAC :    ----------------
-
 CC = cc
 
 CFLAGS = -Wall -Werror -Wextra -I$(HOME)/readline/include
-# CFLAGS = -Wall -Werror -Wextra -I$(HOME)/goinfre/homebrew/Cellar/readline/8.2.13/include
-
-# CFLAGS = -fsanitize=address -g -I$(HOME)/goinfre/homebrew/Cellar/readline/8.2.13/include
-
-# CFLAGS = -I./libs/readline/include
 
 LDFLAGS = -L$(HOME)/readline/lib
-# LDFLAGS = -L$(HOME)/goinfre/homebrew/Cellar/readline/8.2.13/lib
+
 LDLIBS  = -lreadline -lncurses
-
-#               ----------------      LNX :    ----------------
-
-
-# CC = cc
-
-# CFLAGS = -Wall -Werror -Wextra -I./libs/readline/include
-
-# # CFLAGS = -fsanitize=address -g -I./libs/readline/include
-
-# # CFLAGS = -I./libs/readline/include
-
-# RDFLAGS = -lreadline -lncurses
-
-
-#               ----------------                ----------------
-
 
 # Mandatory 
 
@@ -92,12 +68,13 @@ EXEC = 		./Mandatory/execution/exec/execution.c \
 EXECUTION = ${BUILTINS} \
 			${EXEC} \
 
-
 SRC =	${PARSING} \
 		${EXECUTION} \
 
 OBJC = $(SRC:%.c=%.o)
 
+libft_DIR = ./Mandatory/42_Libft
+libft = $(libft_DIR)/libft.a
 
 # Bonus
 
@@ -175,8 +152,8 @@ SRC_B =	${PARSING_B} \
 
 OBJC_B = $(SRC_B:%.c=%.o)
 
-libft_DIR = ./42_Libft
-libft = $(libft_DIR)/libft.a
+libft_DIR_B = ./BONUS/42_Libft
+libft_B = $(libft_DIR_B)/libft.a
 
 NAME = ./minishell
 NAME_B = ./minishell_bonus
@@ -211,7 +188,6 @@ $(NAME): $(OBJC)
 Mandatory/%.o: Mandatory/%.c $(headers) $(libft_DIR)/libft.h
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-
 bonus: $(NAME_B)
 
 $(NAME_B): $(OBJC_B)
@@ -226,17 +202,17 @@ $(NAME_B): $(OBJC_B)
 	@echo "                🌟 Minishell Bonus - With Wildcards! 🌟"
 	@echo "$(PURPLE)                      Created by anktiri & aakritah$(RESET)"
 	@echo ""
-	@make -C $(libft_DIR)
-	@$(CC) $(CFLAGS) $(LDFLAGS) $(OBJC_B) -o $(NAME_B) $(libft) $(LDLIBS)
+	@make -C $(libft_DIR_B)
+	@$(CC) $(CFLAGS) $(LDFLAGS) $(OBJC_B) -o $(NAME_B) $(libft_B) $(LDLIBS)
 	@echo "$(GREEN)✅ Minishell Bonus compiled successfully!$(RESET)"
 
-
-Bonus/%.o: Bonus/%.c $(headers) $(libft_DIR)/libft.h
+Bonus/%.o: Bonus/%.c $(headers) $(libft_DIR_B)/libft.h
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	@echo "$(RED)🧹 Cleaning object files...$(RESET)"
 	@make -C $(libft_DIR) clean
+	@make -C $(libft_DIR_B) clean
 	@rm -rf $(OBJC) 
 	@rm -rf $(OBJC_B) 
 	@echo "$(GREEN)✅ Clean completed!$(RESET)"
@@ -244,6 +220,7 @@ clean:
 fclean: clean
 	@echo "$(RED)🗑️  Full clean - removing executables...$(RESET)"
 	@make -C $(libft_DIR) fclean
+	@make -C $(libft_DIR_B) fclean
 	@rm -rf $(NAME)
 	@rm -rf $(NAME_B)
 	@echo "$(GREEN)✅ Full clean completed!$(RESET)"
