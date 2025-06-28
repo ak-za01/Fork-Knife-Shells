@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 18:18:51 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/26 21:19:38 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/28 20:18:03 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,11 @@ int	cleanup_execution_vars(t_token *data, t_extra *x)
 		free_pipe(x);
 	while (current)
 	{
-		if (has_heredoc(current->c_red))
+		if (has_heredoc(current->c_red) && current->pi_doc[0] != -1)
+		{
 			close(current->pi_doc[0]);
+			current->pi_doc[0] = -1;
+		}
 		current = current->next;
 	}
 	return (x->exit_status);

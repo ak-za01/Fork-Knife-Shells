@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 19:33:08 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/28 19:09:02 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/28 20:17:40 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_env	*create_env_node(char *env_str)
 		return (NULL);
 	}
 	new_node->name = temp[0];
-	if (strcmp(temp[0], "OLDPWD") == 0)
+	if (ft_strcmp(temp[0], "OLDPWD") == 0)
 	{
 		new_node->value = NULL;
 		free(temp[1]);
