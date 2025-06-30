@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 18:18:51 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/27 16:54:22 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/30 17:56:29 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,14 @@ int	cleanup_execution_vars(t_token *data, t_extra *x)
 		close(x->stdout_backup);
 		x->stdout_backup = -1;
 	}
-	if (x->pipe_count > 0)
+	if (x->pipefd && x->pipe_count > 0)
 		free_pipe(x);
+	if (x->child_pids)
+		x->child_pids = ((free(x->child_pids)), NULL);
 	while (current)
 	{
 		if (has_heredoc(current->c_red) && current->pi_doc[0] != -1)
-		{
-			close(current->pi_doc[0]);
-			current->pi_doc[0] = -1;
-		}
+			current->pi_doc[0] = ((close(current->pi_doc[0])), -1);
 		current = current->next;
 	}
 	return (x->exit_status);

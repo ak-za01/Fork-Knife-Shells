@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 02:45:32 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/27 21:28:07 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/30 00:48:12 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ typedef struct s_extra
 	int				cmd_count;
 	int				cmd_index;
 	int				**pipefd;
+	pid_t			*child_pids;
+	int				max_children; 
 }					t_extra;
 
 typedef struct s_token

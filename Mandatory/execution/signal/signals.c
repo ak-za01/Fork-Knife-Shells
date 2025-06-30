@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 00:45:01 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/27 15:59:34 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/30 17:12:48 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,5 @@ void	signal_init_child(void)
 void	handle_signal_in_main(void)
 {
 	if (g_signal_received == SIGINT)
-	{
-	}
-	g_signal_received = 0;
+		g_signal_received = 0;
 }

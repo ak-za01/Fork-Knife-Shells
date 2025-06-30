@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 15:33:17 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/26 21:09:05 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/30 16:58:32 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	handle_output(char *file, int append, t_extra *x)
 		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
-		print_error(file, "Permission denied");
+		perror("minishell");
 		x->exit_status = 1;
 		return (ERROR);
 	}
@@ -43,7 +43,7 @@ int	handle_input(char *file, t_extra *x)
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 	{
-		print_error(file, "No such file or directory");
+		perror("minishell");
 		x->exit_status = 1;
 		return (ERROR);
 	}

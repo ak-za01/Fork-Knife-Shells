@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:41:31 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/28 18:16:16 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/29 22:55:49 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ static int	handle_exit_arg(char *arg, int *exit_code)
 
 int	ft_exit(t_token *data, t_extra *x)
 {
-	ft_putstr_fd("exit\n", 1);
+	if (!data->prev && !data->next)
+		ft_putstr_fd("exit\n", STDERR_FILENO);
 	if (!data->c_arg[1])
 		exit(x->exit_status);
 	if (!handle_exit_arg(data->c_arg[1], &x->exit_status))

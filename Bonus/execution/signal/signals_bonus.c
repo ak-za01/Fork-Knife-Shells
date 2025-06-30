@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 00:45:01 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/28 20:17:49 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/30 17:44:43 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,5 @@ void	signal_init_child(void)
 void	handle_signal_in_main(void)
 {
 	if (g_signal_received == SIGINT)
-	{
-	}
-	g_signal_received = 0;
+		g_signal_received = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 21:46:46 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/28 20:41:37 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/30 17:57:40 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ void	free_pipe(t_extra *x);
 int		file_errors(char *file, int output);
 int		file_errors2(char *file);
 void	failled_pipes(t_extra *x);
+int		external_helper(t_token *current, t_extra *x);
+char	*find_path(char *cmd, t_env *env_list, int i);
+char	**env_to_arr(t_env *env_list);
 
 //	execution functions
 int		ft_execution(t_token *data, t_extra *x);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 15:21:54 by noctis            #+#    #+#             */
-/*   Updated: 2025/06/11 20:37:56 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/29 16:14:23 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	ft_remove_quotes(t_token **data)
 		}
 		else
 		{
-			if (ptr->value)
+			if (ptr->value && ptr->f == 0) // minishell > $"ls"   minishell: "ls": command not found
 			{
 				t = ft_strdup(ptr->value);
 				free(ptr->value);

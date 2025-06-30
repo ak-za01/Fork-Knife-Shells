@@ -1,6 +1,8 @@
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -I$(HOME)/readline/include
+# CFLAGS = -Wall -Werror -Wextra -I$(HOME)/readline/include
+
+CFLAGS = -fsanitize=address -g -I$(HOME)/readline/include
 
 LDFLAGS = -L$(HOME)/readline/lib
 
@@ -52,7 +54,8 @@ BUILTINS =	./Mandatory/execution/builtins/pwd.c \
 
 EXEC = 		./Mandatory/execution/exec/execution.c \
 			./Mandatory/execution/exec/exec_external.c \
-			./Mandatory/execution/exec/exec_ext_utils.c \
+			./Mandatory/execution/exec/exec_external_utils.c \
+			./Mandatory/execution/exec/exec_external_utils2.c \
 			./Mandatory/execution/exec/exec_single.c \
 			./Mandatory/execution/exec/helpers.c \
 			./Mandatory/execution/exec/redirection.c \
@@ -61,6 +64,7 @@ EXEC = 		./Mandatory/execution/exec/execution.c \
 			./Mandatory/execution/exec/here_utils.c \
 			./Mandatory/execution/exec/pipe.c \
 			./Mandatory/execution/exec/pipe_utils.c \
+			./Mandatory/execution/exec/pipe_utils2.c \
 			./Mandatory/execution/signal/signals.c \
 			./Mandatory/execution/signal/signals_utils.c \
 
@@ -130,7 +134,8 @@ BUILTINS_B =	./Bonus/execution/builtins/pwd_bonus.c \
 
 EXEC_B = 		./Bonus/execution/exec/execution_bonus.c \
 			./Bonus/execution/exec/exec_external_bonus.c \
-			./Bonus/execution/exec/exec_ext_utils_bonus.c \
+			./Bonus/execution/exec/exec_external_utils_bonus.c \
+			./Bonus/execution/exec/exec_external_utils2_bonus.c \
 			./Bonus/execution/exec/exec_single_bonus.c \
 			./Bonus/execution/exec/helpers_bonus.c \
 			./Bonus/execution/exec/redirection_bonus.c \
@@ -139,6 +144,7 @@ EXEC_B = 		./Bonus/execution/exec/execution_bonus.c \
 			./Bonus/execution/exec/here_utils_bonus.c \
 			./Bonus/execution/exec/pipe_bonus.c \
 			./Bonus/execution/exec/pipe_utils_bonus.c \
+			./Bonus/execution/exec/pipe_utils2_bonus.c \
 			./Bonus/execution/signal/signals_bonus.c \
 			./Bonus/execution/signal/signals_utils_bonus.c \
 

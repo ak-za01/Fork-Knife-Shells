@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:53:28 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/28 18:54:31 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/06/30 00:48:50 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,5 +121,8 @@ void	init_extra(t_extra *x, char **env)
 		if (update_var(x->env_list, "SHLVL"))
 			return ;
 	}
+	x->pipefd = NULL;
+	x->child_pids = NULL;
+	x->max_children = 0;
 	x->exit_status = 0;
 }

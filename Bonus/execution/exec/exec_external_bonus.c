@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_external_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 21:48:57 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/28 20:17:56 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/06/30 17:46:43 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,89 +69,53 @@ char	**env_to_arr(t_env *env_list)
 	return (env);
 }
 
-void	exec_child(t_token *data, t_extra *x)
+static void	set_exit_status(t_extra *x, int status, int is_last)
 {
-	int	f;
-
-	signal_init_child();
-	if (data->c_red)
+	if (!is_last)
+		return ;
+	if (WIFEXITED(status))
+		x->exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
 	{
-		if (setup_redirections(data, x) != 0)
-			exit(1);
+		if (WTERMSIG(status) == SIGINT)
+			x->exit_status = 130;
+		else if (WTERMSIG(status) == SIGQUIT)
+		{
+			ft_putstr_fd("Quit: 3\n", 2);
+			x->exit_status = 131;
+		}
 	}
-	if (data->type == b_cmd_t)
-		exit(exec_builtin(data, x));
-	if (!data->value)
-		exit(0);
-	x->cmd_path = find_path(data->value, x->env_list, 0);
-	if (!x->cmd_path)
-		exit(cmd_error1(data->value));
-	f = file_errors2(x->cmd_path);
-	if (f != 0)
-		exit(cmd_error(data->value, f));
-	x->env = env_to_arr(x->env_list);
-	if (!x->env)
-		(free(x->cmd_path), exit(1));
-	execve(x->cmd_path, data->c_arg, x->env);
-	perror("execve");
-	free_external(x->cmd_path, x->env);
-	exit(126);
 }
 
-void	external_helper(t_token *current, t_extra *x)
+static void	wait_all_children(t_extra *x)
 {
-	pid_t	pid;
+	int	i;
+	int	status;
 
-	while (current)
+	i = 0;
+	while (i < x->cmd_count)
 	{
-		if (current->type == b_cmd_t || current->type == cmd_t)
+		if (x->child_pids[i] != -1)
 		{
-			pid = fork();
-			if (pid == 0)
-			{
-				if (x->pipe_count > 0)
-					setup_pipe(x->cmd_index, x->cmd_count, x->pipefd);
-				exec_child(current, x);
-			}
-			else if (pid == -1)
-			{
-				failled_pipes(x);
-				x->exit_status = (perror("fork"), 1);
-				break ;
-			}
-			close_pipe_in_parent(x);
+			if (waitpid(x->child_pids[i], &status, 0) == -1)
+				perror("waitpid");
+			else
+				set_exit_status(x, status, (i == x->cmd_count - 1));
 		}
-		else if (current->type == skip_t)
-			close_pipe_in_parent(x);
-		current = current->next;
+		i++;
 	}
 }
 
 int	exec_external(t_token *data, t_extra *x)
 {
-	t_token	*current;
-
-	int (status), a = 0;
-	current = data;
 	if (x->pipe_count > 0)
 	{
 		if (create_pipe(x) != SUCCESS)
-			return (perror("pipe creation failed"), 1);
+			return (perror("pipe creation failed"), ERROR);
 	}
-	external_helper(current, x);
-	while (a < x->cmd_count)
-	{
-		wait(&status);
-		if (WIFEXITED(status))
-			x->exit_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-		{
-			if (WTERMSIG(status) == SIGINT)
-				x->exit_status = 130;
-			else if (WTERMSIG(status) == SIGQUIT)
-				(ft_putstr_fd("Quit: 3\n", 2), x->exit_status = 131);
-		}
-		a++;
-	}
-	return (close_all_pipes(x), x->exit_status);
+	if (external_helper(data, x) != SUCCESS)
+		return (x->exit_status);
+	wait_all_children(x);
+	close_all_pipes(x);
+	return (x->exit_status);
 }
