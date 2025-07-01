@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 15:21:54 by noctis            #+#    #+#             */
-/*   Updated: 2025/06/29 16:14:23 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/07/01 13:18:08 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ char	*ft_remove_q(char *str)
 	s = ft_count_size(t);
 	rs = malloc(s + 1);
 	if (!rs)
-		return (ft_free(t), NULL);
+		return (ft_free(t), free(str), str = NULL, NULL);
 	ft_copy_withe_no_q(rs, t, 0, 0);
-	return (ft_free(t), free(str), rs);
+	return (ft_free(t), free(str), str = NULL, rs);
 }
 
 int	ft_remove_quotes(t_token **data)
@@ -91,14 +91,14 @@ int	ft_remove_quotes(t_token **data)
 	ptr = *data;
 	while (ptr && ptr->type != end_t)
 	{
-		if (ptr->prev && ptr->prev->type == heredoc_t)
+		if (ptr->f != 0 || (ptr->prev && ptr->prev->type == heredoc_t))
 		{
 			ptr = ptr->next;
 			continue ;
 		}
 		else
 		{
-			if (ptr->value && ptr->f == 0) // minishell > $"ls"   minishell: "ls": command not found
+			if (ptr->value)
 			{
 				t = ft_strdup(ptr->value);
 				free(ptr->value);

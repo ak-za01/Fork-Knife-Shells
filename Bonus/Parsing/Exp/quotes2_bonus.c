@@ -1,19 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quotes_bonus.c                                     :+:      :+:    :+:   */
+/*   quotes2_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/09 15:21:54 by noctis            #+#    #+#             */
-/*   Updated: 2025/07/01 13:37:05 by aakritah         ###   ########.fr       */
+/*   Created: 2025/07/01 05:13:55 by noctis            #+#    #+#             */
+/*   Updated: 2025/07/01 13:36:48 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/main_bonus.h"
 #include "../../include/parse_bonus.h"
 
-int	ft_count_size(char **t)
+int	ft__is_marque(char *t)
+{
+	int	i;
+
+	i = 0;
+	while (t[i])
+	{
+		if (t[i] == '\x1F')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	ft_count_size2(char **t)
 {
 	int	i;
 	int	s;
@@ -24,10 +38,10 @@ int	ft_count_size(char **t)
 	count = 0;
 	while (t[i])
 	{
-		if (t[i][0] == '\"' || t[i][0] == '\'')
+		if (ft__is_marque(t[i]))
 		{
 			s = ft_strlen(t[i]);
-			count = count + (s - 2);
+			count = count + (s - 4);
 		}
 		else
 		{
@@ -39,34 +53,35 @@ int	ft_count_size(char **t)
 	return (count);
 }
 
-void	ft_copy_withe_no_q(char *rs, char **t, int i, int k)
+void	ft_copy_withe_no_q2(char *rs, char **t, int i, int k)
 {
 	size_t	j;
+	size_t	len;
 
 	while (t[i])
 	{
-		if (t[i][0] == '\"' || t[i][0] == '\'')
+		if (ft__is_marque(t[i]))
 		{
-			j = 1;
-			while (j < ft_strlen(t[i]) - 1)
+			len = ft_strlen(t[i]);
+			if (len >= 4)
 			{
-				rs[k++] = t[i][j++];
+				j = 2;
+				while (j < len - 2)
+					rs[k++] = t[i][j++];
 			}
 		}
 		else
 		{
 			j = 0;
 			while (t[i][j])
-			{
 				rs[k++] = t[i][j++];
-			}
 		}
 		i++;
 	}
 	rs[k] = '\0';
 }
 
-char	*ft_remove_q(char *str)
+char	*ft_remove_q2(char *str)
 {
 	int		s;
 	char	*rs;
@@ -75,15 +90,15 @@ char	*ft_remove_q(char *str)
 	t = ft_split4(str);
 	if (!t)
 		return (NULL);
-	s = ft_count_size(t);
+	s = ft_count_size2(t);
 	rs = malloc(s + 1);
 	if (!rs)
 		return (ft_free(t), free(str), str = NULL, NULL);
-	ft_copy_withe_no_q(rs, t, 0, 0);
+	ft_copy_withe_no_q2(rs, t, 0, 0);
 	return (ft_free(t), free(str), str = NULL, rs);
 }
 
-int	ft_remove_quotes(t_token **data)
+int	ft_remove_quotes2(t_token **data)
 {
 	char	*t;
 	t_token	*ptr;
@@ -91,18 +106,18 @@ int	ft_remove_quotes(t_token **data)
 	ptr = *data;
 	while (ptr && ptr->type != end_t)
 	{
-		if (ptr->f != 0 || (ptr->prev && ptr->prev->type == heredoc_t))
+		if (ptr->prev && ptr->prev->type == heredoc_t)
 		{
 			ptr = ptr->next;
 			continue ;
 		}
 		else
 		{
-			if (ptr->value)
+			if (ptr->value && ptr->f == 1 && ft__is_marque(ptr->value))
 			{
 				t = ft_strdup(ptr->value);
 				free(ptr->value);
-				ptr->value = ft_remove_q(t);
+				ptr->value = ft_remove_q2(t);
 				if (!ptr->value)
 					return (free(t), -1);
 			}

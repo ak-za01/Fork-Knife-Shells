@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 12:22:54 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/28 20:18:08 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/07/01 12:31:09 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,17 @@ int	handle_heredoc1(char *del, t_token *data, t_extra *x)
 		write(STDOUT_FILENO, "> ", 2);
 		line = get_next_line(STDIN_FILENO);
 		if (check_signal(data, line, 0))
-			return (1);
+			return (free(line), 1);
 		if (!line)
 			break ;
 		f = filter_heredoc_line(&line, del, x);
 		if (f == -1)
-			return (-1);
+			return (free(line), -1);
 		if (f == 1)
+		{
+			free(line);
 			break ;
+		}
 		free(line);
 	}
 	return (SUCCESS);
@@ -49,19 +52,20 @@ int	handle_heredoc2(char *del, t_token *data, t_extra *x)
 		write(STDOUT_FILENO, "> ", 2);
 		line = get_next_line(STDIN_FILENO);
 		if (check_signal(data, line, 1))
-			return (1);
+			return (free(line), 1);
 		if (!line)
 			break ;
 		f = filter_heredoc_line(&line, del, x);
 		if (f == -1)
-			return (-1);
+			return (free(line), -1);
 		if (f == 1)
+		{
+			free(line);
 			break ;
-		ft_putstr_fd(line, data->pi_doc[1]);
-		free(line);
+		}
+		(ft_putstr_fd(line, data->pi_doc[1]), free(line));
 	}
-	close(data->pi_doc[0]);
-	close(data->pi_doc[1]);
+	(close(data->pi_doc[0]), close(data->pi_doc[1]));
 	return (SUCCESS);
 }
 

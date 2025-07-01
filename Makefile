@@ -1,8 +1,8 @@
 CC = cc
 
-# CFLAGS = -Wall -Werror -Wextra -I$(HOME)/readline/include
+CFLAGS = -Wall -Werror -Wextra -I$(HOME)/readline/include
 
-CFLAGS = -fsanitize=address -g -I$(HOME)/readline/include
+# CFLAGS = -fsanitize=address -g -I$(HOME)/readline/include
 
 LDFLAGS = -L$(HOME)/readline/lib
 
@@ -29,6 +29,8 @@ PARSING  =	./Mandatory/main.c \
 			./Mandatory/Parsing/Exp/fix_cas_2.c \
 			./Mandatory/Parsing/Exp/set_token.c \
 			./Mandatory/Parsing/Exp/quotes.c \
+			./Mandatory/Parsing/Exp/quotes2.c \
+			./Mandatory/Parsing/Exp/filter_exp.c \
 			./Mandatory/Parsing/Exp/utils.c \
 			./Mandatory/Parsing/Filter/filter_list.c  \
 			./Mandatory/Parsing/Filter/filter_list2.c  \
@@ -37,6 +39,7 @@ PARSING  =	./Mandatory/main.c \
 			./Mandatory/Parsing/Utils/ft_split4.c \
 			./Mandatory/Parsing/Utils/utils1.c \
 			./Mandatory/Parsing/Utils/utils2.c \
+			./Mandatory/Parsing/Utils/ft_strjoin4.c \
 
 BUILTINS =	./Mandatory/execution/builtins/pwd.c \
 			./Mandatory/execution/builtins/cd.c \
@@ -101,6 +104,8 @@ PARSING_B  =	./Bonus/main_bonus.c \
 			./Bonus/Parsing/Exp/fix_cas_2_bonus.c \
 			./Bonus/Parsing/Exp/set_token_bonus.c \
 			./Bonus/Parsing/Exp/quotes_bonus.c \
+			./Bonus/Parsing/Exp/quotes2_bonus.c \
+			./Bonus/Parsing/Exp/filter_exp_bonus.c \
 			./Bonus/Parsing/Exp/utils_bonus.c \
 			./Bonus/Parsing/Wildcard/wildcard_bonus.c \
 			./Bonus/Parsing/Wildcard/get_wc_list_bonus.c \
@@ -212,7 +217,7 @@ $(NAME_B): $(OBJC_B)
 	@$(CC) $(CFLAGS) $(LDFLAGS) $(OBJC_B) -o $(NAME_B) $(libft_B) $(LDLIBS)
 	@echo "$(GREEN)✅ Minishell Bonus compiled successfully!$(RESET)"
 
-Bonus/%.o: Bonus/%.c $(headers) $(libft_DIR_B)/libft.h
+Bonus/%.o: Bonus/%.c $(headers_B) $(libft_DIR_B)/libft.h
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:

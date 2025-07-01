@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 02:45:32 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/30 17:43:37 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/07/01 13:38:30 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct s_extra
 	int				cmd_index;
 	int				**pipefd;
 	pid_t			*child_pids;
-	int				max_children; 
+	int				max_children;
 }					t_extra;
 
 typedef struct s_token
@@ -81,6 +81,12 @@ typedef struct s_wc
 	struct s_wc		*next;
 	struct s_wc		*prev;
 }					t_wc;
+
+//------------------------------ tmp :
+int					ft__is_marque(char *t);
+
+int					ft_remove_quotes2(t_token **data);
+char				*ft_filter_exp(t_extra *x, char *str, int f2);
 
 //------------------------------ Parsing :
 t_token				*ft_parse(char *str, t_extra *x);
@@ -146,8 +152,16 @@ int					ft_strlen_2(char **t);
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_check_ptr_status(char *ptr, int s_q, int d_q);
 int					ft_strlen_3(char *t);
-void				ft_print_list(t_token *data);
-
+int					ft__is_marque(char *t);
+int					ft_count_size2(char **t);
+void				ft_copy_withe_no_q2(char *rs, char **t, int i, int k);
+char				*ft_remove_q2(char *str);
+int					ft_remove_quotes2(t_token **data);
+char				*ft_marque_q(char *t);
+int					ft_process_dollar(char **t, int i, t_extra *x, char *tmp);
+int					ft_process_token(char **t, int i, t_extra *x, int f2);
+char				*ft_filter_exp(t_extra *x, char *str, int f2);
+;
 //------------------------------ Wildcards :
 int					ft_wildcard(t_token **data);
 int					ft_check_wc_string(char *t);
@@ -222,5 +236,6 @@ void				ft_free2(char **t, int s);
 char				**ft_set_charset(void);
 char				**ft_set_charset2(void);
 int					ft_isspace(int c);
+void				ft_print_list(t_token *data);
 
 #endif

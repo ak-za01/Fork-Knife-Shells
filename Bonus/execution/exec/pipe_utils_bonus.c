@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 19:56:18 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/30 17:49:26 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/07/01 12:38:02 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,4 +110,3 @@ int	free_pipes(t_extra *x, int i)
 	x->pipefd = NULL;
 	return (SUCCESS);
 }
-

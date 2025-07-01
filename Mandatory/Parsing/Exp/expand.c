@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 09:31:09 by aakritah          #+#    #+#             */
-/*   Updated: 2025/06/28 18:35:29 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/07/01 13:34:23 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,17 @@ int	ft_expanding_list(t_token **data, t_extra *x)
 		if (!ptr->prev || (ptr->prev && ptr->prev->type != heredoc_t))
 		{
 			if (ft_check_dollar(ptr->value))
+			{
 				ptr->f = 1;
-			t = ft_strdup(ptr->value);
-			if (!t)
-				return (-1);
-			free(ptr->value);
-			ptr->value = ft_swap_value(0, t, x, 0);
-			if (!ptr->value)
-				return (-1);
-			free(t);
+				t = ft_strdup(ptr->value);
+				if (!t)
+					return (-1);
+				free(ptr->value);
+				ptr->value = ft_filter_exp(x, t, 0);
+				if (!ptr->value)
+					return (free(t), -1);
+				free(t);
+			}
 		}
 		ptr = ptr->next;
 	}
@@ -73,6 +75,8 @@ int	ft_expand(t_token **data, t_extra *x)
 	if (ft_re_tokenizing(data) < 0)
 		return (-1);
 	if (ft_remove_quotes(data) < 0)
+		return (-1);
+	if (ft_remove_quotes2(data) < 0)
 		return (-1);
 	return (0);
 }
