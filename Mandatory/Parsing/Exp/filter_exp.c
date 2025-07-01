@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   filter_exp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 20:32:42 by aakritah          #+#    #+#             */
-/*   Updated: 2025/07/01 21:28:16 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/07/02 00:09:48 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int	ft_process_dollar(char **t, int i, t_extra *x, char *tmp)
 int	ft_process_token(char **t, int i, t_extra *x, int f2)
 {
 	char	*tmp;
+	char	*new;
 
 	tmp = ft_strdup(t[i]);
 	if (!tmp)

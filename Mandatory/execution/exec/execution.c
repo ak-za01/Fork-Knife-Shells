@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:11:52 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/27 17:37:01 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/07/02 00:09:50 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,23 @@ int	init_execution_vars(t_token *data, t_extra *x)
 	return (SUCCESS);
 }
 
+void	cleanup_here(t_token *data, t_extra *x)
+{
+	t_token	*current;
+	int	a;
+
+	a = 0;
+	current = data;
+	while (current)
+	{
+		if (current->pi_doc[0])
+			close(current->pi_doc[0]);
+		current = current->next;
+	}
+	close (x->stdin_backup);
+	close (x->stdout_backup);
+}
+
 int	ft_execution(t_token *data, t_extra *x)
 {
 	int	a;
@@ -35,9 +52,7 @@ int	ft_execution(t_token *data, t_extra *x)
 		return (ERROR);
 	if (setup_heredoc(data, x) != 0)
 	{
-		close(data->pi_doc[0]);
-		close (x->stdin_backup);
-		close (x->stdout_backup);
+		cleanup_here(data, x);
 		return (ERROR);
 	}
 	if (x->cmd_count == 1 && data->type == b_cmd_t)
