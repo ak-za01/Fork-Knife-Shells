@@ -75,7 +75,7 @@ static int	update_var(t_env *env_list, char *name, char *dir)
 	return (1);
 }
 
-int	get_var(t_env *env_list, char *name, char *value)
+int	get_var(t_env *env_list, char *name, char *value __attribute__((unused)))
 {
 	t_env	*current;
 

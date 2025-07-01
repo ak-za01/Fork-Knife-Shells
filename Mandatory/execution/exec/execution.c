@@ -28,7 +28,7 @@ int	init_execution_vars(t_token *data, t_extra *x)
 
 int	ft_execution(t_token *data, t_extra *x)
 {
-	int	a;
+	int	a __attribute__((unused));
 
 	a = 0;
 	if (init_execution_vars(data, x) != 0)
