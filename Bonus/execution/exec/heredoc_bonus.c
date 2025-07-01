@@ -121,6 +121,12 @@ int	handle_single_heredoc(t_token *current, t_extra *x)
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 			x->exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		{
+			x->exit_status = 130;
+			signal_init_interactive();
+			return (close(current->pi_doc[1]), SUCCESS);
+		}
 		signal_init_interactive();
 	}
 	return (close(current->pi_doc[1]), x->exit_status);

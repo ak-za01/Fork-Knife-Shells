@@ -87,7 +87,7 @@ libft = $(libft_DIR)/libft.a
 
 headers_B  =	./Bonus/include/main_bonus.h \
 			./Bonus/include/parse_bonus.h \
-			./include/builtins_bonus.h \
+			./Bonus/include/builtins_bonus.h \
 
 PARSING_B  =	./Bonus/main_bonus.c \
 			./Bonus/Parsing/parse_bonus.c \
@@ -163,7 +163,7 @@ SRC_B =	${PARSING_B} \
 
 OBJC_B = $(SRC_B:%.c=%.o)
 
-libft_DIR_B = ./BONUS/42_Libft
+libft_DIR_B = ./Bonus/42_Libft
 libft_B = $(libft_DIR_B)/libft.a
 
 NAME = ./minishell

@@ -1,0 +1,16 @@
+# Object files
+*.o
+
+# Executables
+minishell
+minishell_bonus
+
+# Dependencies
+.deps/
+
+# Temporary files
+*.tmp
+/tmp/
+
+# Debug files
+*.dSYM/
