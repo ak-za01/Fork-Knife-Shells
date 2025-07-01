@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 20:32:42 by aakritah          #+#    #+#             */
-/*   Updated: 2025/07/01 13:37:22 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/07/01 21:28:33 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,11 @@ int	ft_process_token(char **t, int i, t_extra *x, int f2)
 	}
 	else
 	{
-		t[i] = ft_remove_q(t[i]);
-		if (!t[i])
-			return (free(tmp), -1);
+		new = ft_marque_q(t[i]);
+		if (!new)
+			return (-1);
+		free(t[i]);
+		t[i] = new;
 	}
 	return (free(tmp), 0);
 }
