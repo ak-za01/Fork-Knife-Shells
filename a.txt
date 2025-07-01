@@ -1,0 +1,146 @@
+
+
+// ----------------------------
+int	handle_single_heredoc(t_token *current, t_extra *x)
+{
+	pid_t	pid;
+	int		status;
+
+	if (pipe(current->pi_doc) == -1)
+		return ((perror("pipe")), ERROR);
+	
+	pid = fork();
+	if (pid == 0)
+	{
+		signal_init_heredoc();
+		if (current->c_red)
+		{
+			if (process_heredoc(current, x, 0, 0) != 0)
+				exit(ERROR);
+		}
+		exit(SUCCESS);
+	}
+	else if (pid > 0)
+	{
+		// Save current signal handlers
+		struct sigaction old_sigint;
+		sigaction(SIGINT, NULL, &old_sigint);
+		
+		// Temporarily ignore SIGINT in parent
+		signal(SIGINT, SIG_IGN);
+		
+		waitpid(pid, &status, 0);
+		
+		// Restore original signal handler
+		sigaction(SIGINT, &old_sigint, NULL);
+		
+		// Check if child was terminated by SIGINT
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		{
+			x->exit_status = 130;  // Standard exit code for SIGINT
+			close(current->pi_doc[0]);
+			close(current->pi_doc[1]);
+			return (ERROR);  // Return ERROR to indicate interruption
+		}
+		else if (WIFEXITED(status))
+		{
+			x->exit_status = WEXITSTATUS(status);
+		}
+		
+		// Only close write end here, read end will be used later
+		close(current->pi_doc[1]);
+		
+		// If heredoc was interrupted, return ERROR
+		if (x->exit_status != SUCCESS)
+			return (ERROR);
+	}
+	else
+	{
+		perror("fork");
+		close(current->pi_doc[0]);
+		close(current->pi_doc[1]);
+		return (ERROR);
+	}
+	
+	return (SUCCESS);
+}
+
+
+// ----------------------------
+
+int	setup_heredoc(t_token *data, t_extra *x)
+{
+	t_token	*current;
+	int		result;
+
+	current = data;
+	while (current)
+	{
+		if (has_heredoc(current->c_red))
+		{
+			result = handle_single_heredoc(current, x);
+			if (result != SUCCESS)
+			{
+				// If heredoc was interrupted by SIGINT, clean up and continue shell
+				if (x->exit_status == 130)
+				{
+					// Clean up any remaining heredocs in the pipeline
+					while (current)
+					{
+						if (has_heredoc(current->c_red))
+						{
+							// Close any open pipe descriptors
+							if (current->pi_doc[0] != -1)
+								close(current->pi_doc[0]);
+							if (current->pi_doc[1] != -1)
+								close(current->pi_doc[1]);
+						}
+						current = current->next;
+					}
+					return (ERROR);  // Signal interruption, don't exit shell
+				}
+				return (ERROR);
+			}
+		}
+		current = current->next;
+	}
+	return (SUCCESS);
+}
+
+
+// ----------------------------
+
+
+int	ft_execution(t_token *data, t_extra *x)
+{
+	int	result;
+
+	if (init_execution_vars(data, x) != 0)
+		return (ERROR);
+	
+	result = setup_heredoc(data, x);
+	if (result != 0)
+	{
+		// Clean up file descriptors
+		close(x->stdin_backup);
+		close(x->stdout_backup);
+		
+		// If heredoc was interrupted by SIGINT (exit_status == 130), 
+		// return the exit status but don't treat it as a fatal error
+		if (x->exit_status == 130)
+		{
+			return (130);  // Return SIGINT exit code but continue shell
+		}
+		
+		return (ERROR);
+	}
+	
+	if (x->cmd_count == 1 && data->type == b_cmd_t)
+		return (exec_single(data, x));
+	
+	signal_init_exec();
+	exec_external(data, x);
+	signal_init_interactive();
+	
+	return (cleanup_execution_vars(data, x));
+}
