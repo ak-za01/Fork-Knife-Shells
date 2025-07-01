@@ -34,51 +34,10 @@ free the herdoc line befor break , and maybe in the signall function ??
 
 ---------------------------------
 
-char	*ft_filter_exp(t_extra *x, char *str, int f1, int f2)
-{
-	char	**t;
-	char	*tmp;
+change qouts1 and add qou2 and filter_Exp
+---------------------------------
 
-	int (s), i = 0;
-	t = ft_split4(str);
-	if (!t)
-		return (NULL);
-	s = ft_strlen_2(t);
-	while (t[i])
-	{
-		printf("> we are in %d : %s <\n", i + 1, t[i]);
-		f1 = ft_check_q_status(t[i]);
-		f2 = ft_check_dollar(t[i]);
-		tmp = ft_strdup(t[i]);
-		if (!tmp)
-			return (ft_free2(t, s), NULL);
-		if (f2 == 1)
-		{
-			// printf("> dollar in %d <\n", i + 1);
-			free(t[i]);
-			t[i] = NULL;
-			t[i] = ft_swap_value(0, tmp, x, 0);
-			if (!t[i])
-				return (ft_free2(t, s), NULL);
-			if (f1 != 0)
-			{
-				t[i] = ft_remove_q(t[i]);
-				if (!t[i])
-					return (ft_free2(t, s), NULL);
-			}
-		}
-		else
-		{
-			printf("> no dollar in %d <\n", i + 1);
-			t[i] = ft_remove_q(t[i]);
-			if (!t[i])
-				return (ft_free2(t, s), NULL);
-		}
-		free(tmp);
-		i++;
-	}
-	return (ft_strjoin4(t));
-}
+in expand.c
 
 int	ft_expanding_list(t_token **data, t_extra *x)
 {
@@ -108,9 +67,20 @@ int	ft_expanding_list(t_token **data, t_extra *x)
 	return (0);
 }
 
----------------------------------
-
-
+int	ft_expand(t_token **data, t_extra *x)
+{
+	if (ft_expanding_list(data, x) < 0)
+		return (-1);
+	if (ft_fix_list(data) < 0)
+			return (-1);
+	if (ft_re_tokenizing(data) < 0)
+		return (-1);
+	if (ft_remove_quotes(data) < 0)
+		return (-1);
+	if (ft_remove_quotes2(data) < 0)
+		return (-1);
+	return (0);
+}
 ---------------------------------
 
 
