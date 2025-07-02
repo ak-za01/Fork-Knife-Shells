@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:11:52 by anktiri           #+#    #+#             */
-/*   Updated: 2025/07/02 00:11:54 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/07/02 19:24:41 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	init_execution_vars(t_token *data, t_extra *x)
 void	cleanup_here(t_token *data, t_extra *x)
 {
 	t_token	*current;
-	int	a;
+	int		a;
 
 	a = 0;
 	current = data;
@@ -39,8 +39,8 @@ void	cleanup_here(t_token *data, t_extra *x)
 			close(current->pi_doc[0]);
 		current = current->next;
 	}
-	close (x->stdin_backup);
-	close (x->stdout_backup);
+	close(x->stdin_backup);
+	close(x->stdout_backup);
 }
 
 int	ft_execution(t_token *data, t_extra *x)
