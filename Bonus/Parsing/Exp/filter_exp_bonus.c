@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   filter_exp_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 20:32:42 by aakritah          #+#    #+#             */
-/*   Updated: 2025/07/02 16:19:32 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/07/02 16:24:55 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	ft_process_token(char **t, int i, t_extra *x, int f2)
 		if (ft_process_dollar(t, i, x, tmp) < 0)
 			return (free(tmp), -1);
 	}
-	else if(f2 == 0 && ft_check_q_status(t[i]))
+	else if (f2 == 0 && ft_check_q_status(t[i]))
 	{
 		new = ft_marque_q(t[i]);
 		if (!new)

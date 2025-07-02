@@ -6,7 +6,7 @@
 /*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 21:46:46 by anktiri           #+#    #+#             */
-/*   Updated: 2025/06/30 17:55:18 by anktiri          ###   ########.fr       */
+/*   Updated: 2025/07/02 16:30:46 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	signal_init_interactive(void);
 void	signal_init_exec(void);
 void	signal_init_heredoc(void);
 void	signal_init_child(void);
-void	handle_signal_in_main(void);
+void	handle_signal_in_main(t_extra *x);
 void	sig_handler_interactive(int signal);
 void	sig_handler_heredoc(int signal);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anktiri <anktiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:18:28 by aakritah          #+#    #+#             */
-/*   Updated: 2025/07/01 13:39:36 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/07/02 16:35:26 by anktiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ int	main(int ac, char **av, char **env)
 	init_extra(&x, env);
 	while (1)
 	{
-		str = readline(MAGENTA "minishell > " RESET);
-		handle_signal_in_main();
+		str = readline(GREEN "minishell > " RESET);
+		handle_signal_in_main(&x);
 		continue_loop = main_engine(str, &x);
 		if (!continue_loop)
 			break ;

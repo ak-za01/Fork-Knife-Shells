@@ -87,7 +87,7 @@ libft = $(libft_DIR)/libft.a
 
 headers_B  =	./Bonus/include/main_bonus.h \
 			./Bonus/include/parse_bonus.h \
-			./include/builtins_bonus.h \
+			./Bonus/include/builtins_bonus.h \
 
 PARSING_B  =	./Bonus/main_bonus.c \
 			./Bonus/Parsing/parse_bonus.c \
@@ -178,9 +178,8 @@ YELLOW		= \033[0;33m
 PURPLE		= \033[0;35m
 CYAN		= \033[0;36m
 
-all: $(NAME)
-
-$(NAME): $(OBJC)
+# ASCII Art Display Functions
+define show_mandatory_banner
 	@echo "$(PURPLE)"
 	@echo "███╗   ███╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██╗     ██╗     "
 	@echo "████╗ ████║██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██║     ██║     "
@@ -192,17 +191,10 @@ $(NAME): $(OBJC)
 	@echo "                    🐚 A Simple Shell Implementation 🐚"
 	@echo "$(PURPLE)                      Created by anktiri & aakritah$(RESET)"
 	@echo ""
-	@make -C $(libft_DIR)
-	@$(CC) $(CFLAGS) $(LDFLAGS) $(OBJC) -o $(NAME) $(libft) $(LDLIBS)
-	@echo "$(GREEN)✅ Minishell compiled successfully!$(RESET)"
+endef
 
-Mandatory/%.o: Mandatory/%.c $(headers) $(libft_DIR)/libft.h
-	@$(CC) $(CFLAGS) -c $< -o $@
-
-bonus: $(NAME_B)
-
-$(NAME_B): $(OBJC_B)
-	@echo "$(PURPLE)"
+define show_bonus_banner
+	@echo "$(GREEN)"
 	@echo "███╗   ███╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██╗     ██╗     "
 	@echo "████╗ ████║██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██║     ██║     "
 	@echo "██╔████╔██║██║██╔██╗ ██║██║███████╗███████║█████╗  ██║     ██║     "
@@ -213,11 +205,36 @@ $(NAME_B): $(OBJC_B)
 	@echo "                🌟 Minishell Bonus - With Wildcards! 🌟"
 	@echo "$(PURPLE)                      Created by anktiri & aakritah$(RESET)"
 	@echo ""
+endef
+
+all: $(NAME)
+
+$(NAME): show_banner $(OBJC)
+	@make -C $(libft_DIR)
+	@echo "$(CYAN)🔗 Linking executable...$(RESET)"
+	@$(CC) $(CFLAGS) $(LDFLAGS) $(OBJC) -o $(NAME) $(libft) $(LDLIBS)
+	@echo "$(GREEN)✅ Minishell compiled successfully!$(RESET)"
+
+show_banner:
+	$(call show_mandatory_banner)
+
+Mandatory/%.o: Mandatory/%.c $(headers) $(libft_DIR)/libft.h
+#	@echo "$(CYAN)🔨 Compiling $<...$(RESET)"
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+bonus: $(NAME_B)
+
+$(NAME_B): show_bonus_banner $(OBJC_B)
 	@make -C $(libft_DIR_B)
+	@echo "$(CYAN)🔗 Linking bonus executable...$(RESET)"
 	@$(CC) $(CFLAGS) $(LDFLAGS) $(OBJC_B) -o $(NAME_B) $(libft_B) $(LDLIBS)
 	@echo "$(GREEN)✅ Minishell Bonus compiled successfully!$(RESET)"
 
+show_bonus_banner:
+	$(call show_bonus_banner)
+
 Bonus/%.o: Bonus/%.c $(headers_B) $(libft_DIR_B)/libft.h
+#	@echo "$(CYAN)🔨 Compiling $<...$(RESET)"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
@@ -239,4 +256,4 @@ fclean: clean
 re: fclean all
 	@echo "$(CYAN)🔄 Rebuild completed!$(RESET)"
 
-.PHONY: all bonus clean fclean re
+.PHONY: all bonus clean fclean re show_banner show_bonus_banner
