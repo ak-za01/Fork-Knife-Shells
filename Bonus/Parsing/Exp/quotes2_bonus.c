@@ -6,7 +6,7 @@
 /*   By: aakritah <aakritah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 05:13:55 by noctis            #+#    #+#             */
-/*   Updated: 2025/07/01 13:36:48 by aakritah         ###   ########.fr       */
+/*   Updated: 2025/07/02 14:37:52 by aakritah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	ft__is_marque(char *t)
 	int	i;
 
 	i = 0;
+	if (!t)
+		return (0);
 	while (t[i])
 	{
 		if (t[i] == '\x1F')
@@ -38,14 +40,17 @@ int	ft_count_size2(char **t)
 	count = 0;
 	while (t[i])
 	{
-		if (ft__is_marque(t[i]))
+		s = ft_strlen(t[i]);
+		if (ft__is_marque(t[i]) && s == 3)
 		{
-			s = ft_strlen(t[i]);
+			count = count + (s - 3);
+		}
+		else if (ft__is_marque(t[i]))
+		{
 			count = count + (s - 4);
 		}
 		else
 		{
-			s = ft_strlen(t[i]);
 			count += s;
 		}
 		i++;
@@ -56,27 +61,27 @@ int	ft_count_size2(char **t)
 void	ft_copy_withe_no_q2(char *rs, char **t, int i, int k)
 {
 	size_t	j;
-	size_t	len;
+	size_t	s;
 
 	while (t[i])
 	{
-		if (ft__is_marque(t[i]))
+		s = ft_strlen(t[i]);
+		if (ft__is_marque(t[i]) && s == 3)
+			i++;
+		else if (ft__is_marque(t[i]))
 		{
-			len = ft_strlen(t[i]);
-			if (len >= 4)
-			{
-				j = 2;
-				while (j < len - 2)
-					rs[k++] = t[i][j++];
-			}
+			j = 2;
+			while (j < s - 2)
+				rs[k++] = t[i][j++];
+			i++;
 		}
 		else
 		{
 			j = 0;
 			while (t[i][j])
 				rs[k++] = t[i][j++];
+			i++;
 		}
-		i++;
 	}
 	rs[k] = '\0';
 }
